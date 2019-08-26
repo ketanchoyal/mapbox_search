@@ -79,3 +79,17 @@ Add the following to your `pubspec.yaml` file:
           onSelected: (place) {},
           context: context,
     )
+
+
+
+# Screenshots
+
+## Static Map Image
+
+<img src="https://github.com/ketanchoyal/mapbox_search/raw/dev/Screenshots/staticImages.png" alt="Static Map Image"/>
+
+## Search Widget
+
+<img src="https://github.com/ketanchoyal/mapbox_search/raw/dev/Screenshots/search2.png" alt="Demo"/>
+
+<img src="https://github.com/ketanchoyal/mapbox_search/raw/dev/Screenshots/search1.png" alt="Demo"/>
