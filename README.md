@@ -6,9 +6,9 @@
 
 #### A Flutter package for place search using MapBox Api and for Static map image
 
-### I made this package because google place search was not working that much efficently(daily quota limit) and MapBox offers plenty of free search rerquests.
+### I made this package because google place search was not working that much efficiently(daily quota limit) and MapBox offers plenty of free search requests.
 
-### Way more useful than google if you want staitic map images
+### Way more useful than google if you want static map images
 
 ## Installing
 
