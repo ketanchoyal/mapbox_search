@@ -82,7 +82,7 @@ class MapBoxStaticImage {
   );
 
   final MapBoxPath _defaultPath =
-      MapBoxPath(pathColor: Colors.red, pathOpacity: 0.5, pathWidth: 5);
+      MapBoxPath(pathColor: Colors.red, pathOpacity: 0.5, pathWidth: 5, pathPolyline: "%7DrpeFxbnjVsFwdAvr@cHgFor@jEmAlFmEMwM_FuItCkOi@wc@bg@wBSgM",);
 
   String _buildUrlwithApi({
     Location center,
@@ -264,6 +264,7 @@ class MapBoxPath {
     this.pathOpacity,
   })  : assert(pathColor != null),
         assert(pathOpacity != null),
+        assert(pathPolyline != null),
         assert(pathWidth != null);
 
   @override
