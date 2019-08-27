@@ -256,20 +256,21 @@ class MapBoxPath {
   final int pathWidth;
 
   final double pathOpacity;
-
+  final String pathPolyline;
   MapBoxPath({
     this.pathColor,
     this.pathWidth,
+    this.pathPolyline,
     this.pathOpacity,
   })  : assert(pathColor != null),
         assert(pathOpacity != null),
+        assert(pathPolyline != null),
         assert(pathWidth != null);
 
   @override
   String toString() {
     String color = pathColor.value.toRadixString(16).substring(2);
-    String path =
-        "path-$pathWidth+$color-$pathOpacity(%7DrpeFxbnjVsFwdAvr@cHgFor@jEmAlFmEMwM_FuItCkOi@wc@bg@wBSgM)";
+    String path = "path-$pathWidth+$color-$pathOpacity(${pathPolyline})";
     return path;
   }
 }
