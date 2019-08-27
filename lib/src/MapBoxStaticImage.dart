@@ -268,7 +268,6 @@ class MapBoxPath {
 
   @override
   String toString() {
-    print(pathPolyline);
     String color = pathColor.value.toRadixString(16).substring(2);
     String path = "path-$pathWidth+$color-$pathOpacity(${pathPolyline})";
     return path;
