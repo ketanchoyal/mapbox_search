@@ -12,3 +12,8 @@ Feature:
 
 Feature:
 - add defaultPathPolyline and add assert(Merge Request)
+
+## [1.0.2] - 30 August 2019.
+
+Feature:
+- Reverse Geooding Added
