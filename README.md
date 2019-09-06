@@ -2,13 +2,17 @@
 
 [![Pub](https://img.shields.io/pub/v/mapbox_search)](https://pub.dartlang.org/packages/mapbox_search)
 
+# PR ? You're most welcomed....
+
 # MapBox Search and Static Image pure Dart Implementation
 
-#### A Flutter package for place search using MapBox Api and for Static map image
+#### A Flutter package for place search using MapBox Api, Reverse Geocoding and for Static map image.
+
+### Reverse Geocoding displays the nearby places based on the feeded Location data.
 
 ### I made this package because google place search was not working that much efficiently(daily quota limit) and MapBox offers plenty of free search requests.
 
-### Way more useful than google if you want static map images
+### Way more useful than google if you want static map images...
 
 ## Installing
 
@@ -80,7 +84,18 @@ Add the following to your `pubspec.yaml` file:
           context: context,
     )
 
+## Reverse GeoCoding
 
+    ReverseGeoCoding reverseGeoCoding = ReverseGeoCoding(
+        apiKey: 'API Key',
+        limit: 5,
+    );
+
+
+    Future<List<MapBoxPlace>> getPlaces() async =>
+      await reverseGeoCoding.getAddress(
+        Location(lat: 72.0, lng: 76.00),
+    );
 
 # Screenshots
 
