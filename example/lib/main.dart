@@ -26,6 +26,16 @@ class MapBoxExample extends StatefulWidget {
 class _MapBoxExampleState extends State<MapBoxExample> {
   MapBoxStaticImage staticImage = MapBoxStaticImage(apiKey: "API Key");
 
+  ReverseGeoCoding reverseGeoCoding = ReverseGeoCoding(
+    apiKey: 'API Key',
+    limit: 5,
+  );
+
+  Future<List<MapBoxPlace>> getPlaces() async =>
+      await reverseGeoCoding.getAddress(
+        Location(lat: 72.0, lng: 76.00),
+      );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,7 +109,13 @@ class _MapBoxExampleState extends State<MapBoxExample> {
         width: 600,
         zoomLevel: 16,
         style: MapBoxStyle.Mapbox_Dark,
-        path: MapBoxPath(pathColor: Colors.red, pathOpacity: 0.5, pathWidth: 5),
+        path: MapBoxPath(
+          pathColor: Colors.red,
+          pathOpacity: 0.5,
+          pathWidth: 5,
+          pathPolyline:
+              "%7DrpeFxbnjVsFwdAvr@cHgFor@jEmAlFmEMwM_FuItCkOi@wc@bg@wBSgM",
+        ),
         render2x: true,
       );
 
@@ -142,8 +158,7 @@ class SearchPage extends StatelessWidget {
         bottom: false,
         child: MapBoxPlaceSearchWidget(
           popOnSelect: true,
-          apiKey:
-              "API KEY",
+          apiKey: "API KEY",
           limit: 10,
           onSelected: (place) {},
           context: context,

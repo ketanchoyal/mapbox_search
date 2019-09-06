@@ -258,10 +258,10 @@ class MapBoxPath {
   final double pathOpacity;
   final String pathPolyline;
   MapBoxPath({
-    this.pathColor,
-    this.pathWidth,
-    this.pathPolyline,
-    this.pathOpacity,
+    @required this.pathColor,
+    @required this.pathWidth,
+    @required this.pathPolyline,
+    @required this.pathOpacity,
   })  : assert(pathColor != null),
         assert(pathOpacity != null),
         assert(pathPolyline != null),
