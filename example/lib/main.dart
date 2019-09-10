@@ -24,17 +24,20 @@ class MapBoxExample extends StatefulWidget {
 }
 
 class _MapBoxExampleState extends State<MapBoxExample> {
-  MapBoxStaticImage staticImage = MapBoxStaticImage(apiKey: "API Key");
+  MapBoxStaticImage staticImage = MapBoxStaticImage(
+      apiKey:
+          "pk.eyJ1IjoicGFya2luZ3N5c3RlbSIsImEiOiJjanpqbW9oZ2owYW5zM2dwZWlyd3RuaHRwIn0.kTF1XSrSe23_N-72xCRV4w");
 
-  ReverseGeoCoding reverseGeoCoding = ReverseGeoCoding(
-    apiKey: 'API Key',
-    limit: 5,
-  );
-
-  Future<List<MapBoxPlace>> getPlaces() async =>
-      await reverseGeoCoding.getAddress(
-        Location(lat: 72.0, lng: 76.00),
-      );
+  Future<List<MapBoxPlace>> getPlaces() async {
+    ReverseGeoCoding reverseGeoCoding = ReverseGeoCoding(
+      apiKey:
+          'pk.eyJ1IjoicGFya2luZ3N5c3RlbSIsImEiOiJjanpqbW9oZ2owYW5zM2dwZWlyd3RuaHRwIn0.kTF1XSrSe23_N-72xCRV4w',
+      limit: 5,
+    );
+    return await reverseGeoCoding.getAddress(
+      Location(lng: 73.231451, lat: 22.293768),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,9 +72,15 @@ class _MapBoxExampleState extends State<MapBoxExample> {
               fit: BoxFit.cover,
             ),
           ),
-          Text(
-            'Static Image with polyline',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          InkWell(
+            onTap: () async {
+              var places = await getPlaces();
+              print(places);
+            },
+            child: Text(
+              'Static Image with polyline',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
           ),
           Expanded(
             child: Image.network(
