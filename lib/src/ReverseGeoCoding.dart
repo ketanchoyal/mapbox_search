@@ -34,14 +34,17 @@ class ReverseGeoCoding {
   final String _url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
 
   String _createUrl(Location location) {
-    String finalUrl =
-        _url + location.lng.toString() + location.lat.toString() + '.json?';
+    String finalUrl = _url +
+        location.lng.toString() +
+        "," +
+        location.lat.toString() +
+        '.json?';
     finalUrl += 'access_token=$apiKey';
-    finalUrl += '&cachebuster=1567167369462';
+    // finalUrl += '&cachebuster=1567167369462';
     if (this.location != null) {
       finalUrl += '&proximity=${this.location.lng}%2C${this.location.lat}';
     }
-    finalUrl += '&limit=$limit';
+    // finalUrl += '&limit=$limit';
 
     return finalUrl;
   }
@@ -50,6 +53,8 @@ class ReverseGeoCoding {
     try {
       String url = _createUrl(location);
       final response = await http.get(url);
+      // print(url);
+      // print(response.body);
       final predictions = Predections.fromRawJson(response.body);
 
       return predictions.features;
