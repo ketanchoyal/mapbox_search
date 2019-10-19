@@ -16,8 +16,12 @@ Feature:
 ## [1.0.2] - 30 August 2019.
 
 Feature:
-- Reverse Geooding Added
+- Reverse Geocoding Added
 
 ## [1.0.3] - 10 September 2019.
 
-- Reverse Geooding returning empty list bug Solved
+- Reverse Geocoding returning empty list bug Solved
+
+## [1.0.4] - 19 October 2019.
+
+- Reverse Geocoding query type set to dynamic(String or double)
