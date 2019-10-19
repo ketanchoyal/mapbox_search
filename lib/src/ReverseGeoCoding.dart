@@ -59,6 +59,7 @@ class ReverseGeoCoding {
 
       return predictions.features;
     } catch (e) {
+      print(e);
       return [];
     }
   }

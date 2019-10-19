@@ -2,7 +2,7 @@ part of mapbox_search;
 
 class Predections {
   String type;
-  List<String> query;
+  List<dynamic> query;
   List<MapBoxPlace> features;
 
   Predections.Prediction({
@@ -24,7 +24,7 @@ class Predections {
 
   factory Predections.fromJson(Map<String, dynamic> json) => Predections.Prediction(
         type: json["type"],
-        query: List<String>.from(json["query"].map((x) => x)),
+        query: List<dynamic>.from(json["query"].map((x) => x)),
         features: List<MapBoxPlace>.from(
             json["features"].map((x) => MapBoxPlace.fromJson(x))),
       );

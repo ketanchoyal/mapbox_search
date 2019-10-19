@@ -23,20 +23,20 @@ class MapBoxExample extends StatefulWidget {
   _MapBoxExampleState createState() => _MapBoxExampleState();
 }
 
+String api_key =
+    'API_KEY';
+
 class _MapBoxExampleState extends State<MapBoxExample> {
-  MapBoxStaticImage staticImage = MapBoxStaticImage(
-      apiKey:
-          "pk.eyJ1IjoicGFya2luZ3N5c3RlbSIsImEiOiJjanpqbW9oZ2owYW5zM2dwZWlyd3RuaHRwIn0.kTF1XSrSe23_N-72xCRV4w");
+  MapBoxStaticImage staticImage = MapBoxStaticImage(apiKey: api_key);
 
   Future<List<MapBoxPlace>> getPlaces() async {
     ReverseGeoCoding reverseGeoCoding = ReverseGeoCoding(
-      apiKey:
-          'pk.eyJ1IjoicGFya2luZ3N5c3RlbSIsImEiOiJjanpqbW9oZ2owYW5zM2dwZWlyd3RuaHRwIn0.kTF1XSrSe23_N-72xCRV4w',
+      apiKey: api_key,
       limit: 5,
     );
-    return await reverseGeoCoding.getAddress(
-      Location(lng: 73.231451, lat: 22.293768),
-    );
+    return await reverseGeoCoding.getAddress(Location(
+        lat: 48.8584, // this is eiffel tower position
+        lng: 2.2945));
   }
 
   @override
@@ -75,7 +75,7 @@ class _MapBoxExampleState extends State<MapBoxExample> {
           InkWell(
             onTap: () async {
               var places = await getPlaces();
-              print(places);
+              print(places.length);
             },
             child: Text(
               'Static Image with polyline',
