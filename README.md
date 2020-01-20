@@ -82,6 +82,7 @@ Add the following to your `pubspec.yaml` file:
           apiKey:
               "API KEY",
           limit: 10,
+          searchHint: 'Your Hint here',
           onSelected: (place) {},
           context: context,
     )

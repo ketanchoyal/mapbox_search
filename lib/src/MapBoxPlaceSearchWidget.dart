@@ -5,6 +5,7 @@ class MapBoxPlaceSearchWidget extends StatefulWidget {
     @required this.apiKey,
     this.onSelected,
     // this.onSearch,
+    this.searchHint = 'Search',
     this.language = 'en',
     this.location,
     this.limit = 5,
@@ -47,6 +48,9 @@ class MapBoxPlaceSearchWidget extends StatefulWidget {
   ///
   /// Check the full list of [supported countries](https://docs.mapbox.com/api/search/) for the MapBox API
   final String country;
+
+  ///Search Hint Localization
+  final String searchHint;
 
   @override
   _MapBoxPlaceSearchWidgetState createState() =>
@@ -197,7 +201,7 @@ class _MapBoxPlaceSearchWidgetState extends State<MapBoxPlaceSearchWidget>
   // Styling
   InputDecoration _inputStyle() {
     return InputDecoration(
-      hintText: "Search",
+      hintText: widget.searchHint,
       border: InputBorder.none,
       contentPadding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
     );
