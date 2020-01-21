@@ -2,6 +2,10 @@
 
 - Added 'address' property to the Properties class.
 
+## [1.0.5] - 20 Jan 2020
+
+- Search text in search Widget localized
+
 ## [1.0.4] - 19 October 2019.
 
 - Reverse Geocoding query type set to dynamic(String or double)
@@ -9,7 +13,6 @@
 ## [1.0.3] - 10 September 2019.
 
 - Reverse Geocoding returning empty list bug Solved
-
 
 ## [1.0.2] - 30 August 2019.
 

@@ -168,6 +168,7 @@ class SearchPage extends StatelessWidget {
         child: MapBoxPlaceSearchWidget(
           popOnSelect: true,
           apiKey: "API KEY",
+          searchHint: 'Search around',
           limit: 10,
           onSelected: (place) {},
           context: context,
