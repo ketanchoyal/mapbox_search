@@ -12,6 +12,9 @@ class PlacesSearch {
   /// Check the full list of [supported countries](https://docs.mapbox.com/api/search/) for the MapBox API
   final String country;
 
+  /// The point around which you wish to retrieve place information.
+  final Location location;
+
   /// Specify the maximum number of results to return. The default is 5 and the maximum supported is 10.
   final int limit;
 
@@ -21,12 +24,16 @@ class PlacesSearch {
     @required this.apiKey,
     this.country,
     this.limit,
+    this.location,
   }) : assert(apiKey != null);
 
   String _createUrl(String queryText) {
     String finalUrl = '$_url${Uri.encodeFull(queryText)}.json?';
     finalUrl += 'access_token=$apiKey';
 
+    if (this.location != null) {
+      finalUrl += '&proximity=${this.location.lng}%2C${this.location.lat}';
+    }
     if (country != null) {
       finalUrl += "&country=$country";
     }
