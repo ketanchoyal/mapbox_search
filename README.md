@@ -89,16 +89,25 @@ Add the following to your `pubspec.yaml` file:
 
 ## Reverse GeoCoding
 
-    ReverseGeoCoding reverseGeoCoding = ReverseGeoCoding(
+    var reverseGeoCoding = ReverseGeoCoding(
         apiKey: 'API Key',
         limit: 5,
     );
 
-
-    Future<List<MapBoxPlace>> getPlaces() async =>
-      await reverseGeoCoding.getAddress(
+    Future<List<MapBoxPlace>> getPlaces() =>
+      reverseGeoCoding.getAddress(
         Location(lat: 72.0, lng: 76.00),
     );
+    
+## Places Seach
+
+    var placesSearch = PlacesSearch(
+        apiKey: 'API Key',
+        limit: 5,
+    );
+
+    Future<List<MapBoxPlace>> getPlaces() =>
+      placesSearch.getPlaces("New York");
 
 # Screenshots
 
