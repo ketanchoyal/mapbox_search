@@ -18,7 +18,7 @@ class PlacesSearch {
   final String _url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
 
   PlacesSearch({
-    @required this.apiKey,
+    this.apiKey,
     this.country,
     this.limit,
   }) : assert(apiKey != null);

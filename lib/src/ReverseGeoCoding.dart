@@ -24,7 +24,7 @@ class ReverseGeoCoding {
   final String country;
 
   ReverseGeoCoding({
-    @required this.apiKey,
+     this.apiKey,
     this.language = 'en',
     this.location,
     this.limit = 5,

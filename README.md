@@ -4,35 +4,55 @@
    <img alt="Awesome Flutter" src="https://img.shields.io/badge/Awesome-Flutter-blue.svg?longCache=true&style=flat-square" />
 </a>
 
-# PR ? You're most welcomed....
+# MapBox Search 
 
-# MapBox Search and Static Image pure Dart Implementation
+This package provides easy api calls to MapBox Search API. 
 
-#### A Flutter package for place search using MapBox Api, Reverse Geocoding and for Static map image.
+Also, it contains an static map image generator 😆.
 
-### Reverse Geocoding displays the nearby places based on the feeded Location data.
+#Migration to 2.0
+Before 2.0 this library depended on Flutter SDK, preventing its usage on other platforms such as a backend, CLI apps, Dart2Javascript, etc...
 
-### I made this package because google place search was not working that much efficiently(daily quota limit) and MapBox offers plenty of free search requests.
-
-### Way more useful than google if you want static map images...
+Now all the Flutter related code, such as the `MapBoxSearchWidget` was moved to a separated library, here: PUT_NEW_PACKAGE_URL_HERE.
 
 ## Installing
 
-Add the following to your `pubspec.yaml` file:
+First of all you must acquire an API key on the MapBox website https://www.mapbox.com/
+
+Then, add the following to your `pubspec.yaml` file:
 
     dependencies:
       mapbox_search: any
 
 # Example
 
-## Static Image
+### Reverse GeoCoding
+    var reverseGeoCoding = ReverseGeoCoding(
+        apiKey: 'API Key',
+        limit: 5,
+    );
 
+    Future<List<MapBoxPlace>> getPlaces() =>
+      reverseGeoCoding.getAddress(
+        Location(lat: 72.0, lng: 76.00),
+    );
+    
+### Places Seach
+    var placesSearch = PlacesSearch(
+        apiKey: 'API Key',
+        limit: 5,
+    );
+
+    Future<List<MapBoxPlace>> getPlaces() =>
+      placesSearch.getPlaces("New York");
+
+
+### Static Image
     MapBoxStaticImage staticImage = MapBoxStaticImage(
         apiKey:
             "API Key");
 
 ### Image With Polyline
-
     String getStaticImageWithPolyline() => staticImage.getStaticUrlWithPolyline(
       point1: Location(lat: 37.77343, lng: -122.46589),
       point2: Location(lat: 37.75965, lng: -122.42816),
@@ -50,7 +70,6 @@ Add the following to your `pubspec.yaml` file:
     
 
 ### Image with Marker
-
     String getStaticImageWithMarker() => staticImage.getStaticUrlWithMarker(
       center: Location(lat: 37.77343, lng: -122.46589),
       marker: MapBoxMarker(
@@ -64,7 +83,6 @@ Add the following to your `pubspec.yaml` file:
   
 
 ### Image without Marker
-
     String getStaticImageWithoutMarker() => staticImage.getStaticUrlWithoutMarker(
         center: Location(lat: 37.75965, lng: -122.42816),
         height: 300,
@@ -74,40 +92,6 @@ Add the following to your `pubspec.yaml` file:
         render2x: true,
       );
 
-
-## Search Widget
-
-    MapBoxPlaceSearchWidget(
-          popOnSelect: true,
-          apiKey:
-              "API KEY",
-          limit: 10,
-          searchHint: 'Your Hint here',
-          onSelected: (place) {},
-          context: context,
-    )
-
-## Reverse GeoCoding
-
-    var reverseGeoCoding = ReverseGeoCoding(
-        apiKey: 'API Key',
-        limit: 5,
-    );
-
-    Future<List<MapBoxPlace>> getPlaces() =>
-      reverseGeoCoding.getAddress(
-        Location(lat: 72.0, lng: 76.00),
-    );
-    
-## Places Seach
-
-    var placesSearch = PlacesSearch(
-        apiKey: 'API Key',
-        limit: 5,
-    );
-
-    Future<List<MapBoxPlace>> getPlaces() =>
-      placesSearch.getPlaces("New York");
 
 # Screenshots
 
