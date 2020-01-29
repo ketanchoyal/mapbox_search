@@ -123,6 +123,9 @@ class MapBoxPlace {
         "matching_place_name":
             matchingPlaceName == null ? null : matchingPlaceName,
       };
+
+  @override
+  String toString() => text ?? placeName;
 }
 
 class Context {
