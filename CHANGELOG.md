@@ -1,3 +1,8 @@
+## [1.0.7] - 29 January 2020.
+
+- Added Places Search for querying places by text.
+- Fixed `limit` and `country` parameters for ReverseGeocoding.
+
 ## [1.0.6] - 20 January 2020.
 
 - Added 'address' property to the Properties class.

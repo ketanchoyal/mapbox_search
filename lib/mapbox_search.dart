@@ -9,3 +9,4 @@ part 'src/Predections.dart';
 part 'src/MapBoxPlaceSearchWidget.dart';
 part 'src/MapBoxStaticImage.dart';
 part 'src/ReverseGeoCoding.dart';
+part 'src/PlacesSearch.dart';
