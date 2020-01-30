@@ -1,3 +1,10 @@
+## [2.0.0] - 01 February 2020.
+
+- Removed 'flutter' dependency. 
+
+All Flutter code, inclusing 'MapBoxPlaceSearchWidget' has been moved to library 
+[mapbox_search_flutter](https://pub.dev/packages/mapbox_search_flutter). Check README for more details.
+
 ## [1.0.7] - 29 January 2020.
 
 - Added Places Search for querying places by text.

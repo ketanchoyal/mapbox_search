@@ -8,7 +8,15 @@ Also, it contains an static map image generator 😆.
 #Migration to 2.0
 Before 2.0 this library depended on Flutter SDK, preventing its usage on other platforms such as a backend, CLI apps, Dart2Javascript, etc...
 
-Now all the Flutter related code, such as the `MapBoxSearchWidget` was moved to a separated library, here: PUT_NEW_PACKAGE_URL_HERE.
+Now all the Flutter related code, such as the `MapBoxSearchWidget` was moved to a separated library: [mapbox_search_flutter](https://pub.dev/packages/mapbox_search_flutter).
+
+For that reason, you cannot use the `Colors` class anymore on you Flutter project.
+Instead use map_box_search's `Color.rgb` constructor, passing the values as parameters:
+
+```dart
+var myColor = Colors.redAccent; //Flutter's Color class
+var mapBoxColor = Color.rgb( myColor.red, myColor.green, myColor.blue);
+```
 
 ## Installing
 
@@ -19,41 +27,47 @@ Then, add the following to your `pubspec.yaml` file:
     dependencies:
       mapbox_search: any
 
-# Example
+# Examples
 
 ### Reverse GeoCoding
-    var reverseGeoCoding = ReverseGeoCoding(
-        apiKey: 'API Key',
-        limit: 5,
-    );
+```dart
+var reverseGeoCoding = ReverseGeoCoding(
+    apiKey: 'API Key',
+    limit: 5,
+);
 
-    Future<List<MapBoxPlace>> getPlaces() =>
-      reverseGeoCoding.getAddress(
-        Location(lat: 72.0, lng: 76.00),
-    );
+Future<List<MapBoxPlace>> getPlaces() =>
+  reverseGeoCoding.getAddress(
+    Location(lat: 72.0, lng: 76.00),
+);
+```
     
 ### Places Seach
-    var placesSearch = PlacesSearch(
-        apiKey: 'API Key',
-        limit: 5,
-    );
+```dart
+var placesSearch = PlacesSearch(
+    apiKey: 'API Key',
+    limit: 5,
+);
 
-    Future<List<MapBoxPlace>> getPlaces() =>
-      placesSearch.getPlaces("New York");
-
+Future<List<MapBoxPlace>> getPlaces() =>
+  placesSearch.getPlaces("New York");
+```
 
 ### Static Image
-    MapBoxStaticImage staticImage = MapBoxStaticImage(
-        apiKey:
-            "API Key");
+```dart
+MapBoxStaticImage staticImage = MapBoxStaticImage(
+    apiKey:
+        "API Key");
+```
 
 ### Image With Polyline
+```dart
     String getStaticImageWithPolyline() => staticImage.getStaticUrlWithPolyline(
       point1: Location(lat: 37.77343, lng: -122.46589),
       point2: Location(lat: 37.75965, lng: -122.42816),
       marker1: MapBoxMarker( markerColor: Colors.black, markerLetter: 'p', markerSize: MarkerSize.LARGE),
       msrker2: MapBoxMarker(
-          markerColor: Colors.redAccent,
+          markerColor: Color.rgb(244, 67, 54),
           markerLetter: 'q',
           markerSize: MarkerSize.SMALL),
       height: 300,
@@ -62,32 +76,33 @@ Then, add the following to your `pubspec.yaml` file:
       style: MapBoxStyle.Mapbox_Dark,
       path: MapBoxPath(pathColor: Colors.red, pathOpacity: 0.5,     pathWidth: 5),
       render2x: true);
-    
+``` 
 
 ### Image with Marker
-    String getStaticImageWithMarker() => staticImage.getStaticUrlWithMarker(
-      center: Location(lat: 37.77343, lng: -122.46589),
-      marker: MapBoxMarker(
-          markerColor: Colors.black, markerLetter: 'p', markerSize: MarkerSize.LARGE),
-      height: 300,
-      width: 600,
-      zoomLevel: 16,
-      style: MapBoxStyle.Mapbox_Streets,
-      render2x: true,
-    );
-  
+```dart
+String getStaticImageWithMarker() => staticImage.getStaticUrlWithMarker(
+  center: Location(lat: 37.77343, lng: -122.46589),
+  marker: MapBoxMarker(
+      markerColor: Color.rgb(0, 0, 0), markerLetter: 'p', markerSize: MarkerSize.LARGE),
+  height: 300,
+  width: 600,
+  zoomLevel: 16,
+  style: MapBoxStyle.Mapbox_Streets,
+  render2x: true,
+);
+```
 
 ### Image without Marker
-    String getStaticImageWithoutMarker() => staticImage.getStaticUrlWithoutMarker(
-        center: Location(lat: 37.75965, lng: -122.42816),
-        height: 300,
-        width: 600,
-        zoomLevel: 16,
-        style: MapBoxStyle.Mapbox_Outdoors,
-        render2x: true,
-      );
-
-
+```dart
+String getStaticImageWithoutMarker() => staticImage.getStaticUrlWithoutMarker(
+    center: Location(lat: 37.75965, lng: -122.42816),
+    height: 300,
+    width: 600,
+    zoomLevel: 16,
+    style: MapBoxStyle.Mapbox_Outdoors,
+    render2x: true,
+  );
+```
 # Screenshots
 
 ## Static Map Image
