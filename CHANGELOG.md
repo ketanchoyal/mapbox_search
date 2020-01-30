@@ -1,4 +1,35 @@
-## [1.0.0] - 26 August 2019
+## [1.0.7] - 29 January 2020.
+
+- Added Places Search for querying places by text.
+- Fixed `limit` and `country` parameters for ReverseGeocoding.
+
+## [1.0.6] - 20 January 2020.
+
+- Added 'address' property to the Properties class.
+
+## [1.0.5] - 20 Jan 2020
+
+- Search text in search Widget localized
+
+## [1.0.4] - 19 October 2019.
+
+- Reverse Geocoding query type set to dynamic(String or double)
+
+## [1.0.3] - 10 September 2019.
+
+- Reverse Geocoding returning empty list bug Solved
+
+## [1.0.2] - 30 August 2019.
+
+Feature:
+- Reverse Geocoding Added
+
+## [1.0.1] - 27 August 2019.
+
+Feature:
+- add defaultPathPolyline and add assert(Merge Request)
+
+## [1.0.0] - 26 August 2019.
 
 Initial release.
 
@@ -7,25 +38,3 @@ Feature:
 - Static Image with marker
 - Static Image without Marker
 - Static Image with Polyline path
-
-## [1.0.1] - 27 August 2019
-
-Feature:
-- add defaultPathPolyline and add assert(Merge Request)
-
-## [1.0.2] - 30 August 2019
-
-Feature:
-- Reverse Geocoding Added
-
-## [1.0.3] - 10 September 2019
-
-- Reverse Geocoding returning empty list bug Solved
-
-## [1.0.4] - 19 October 2019
-
-- Reverse Geocoding query type set to dynamic(String or double)
-
-## [1.0.5] - 20 Jan 2020
-
-- Search text in search Widget localized

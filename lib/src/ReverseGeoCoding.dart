@@ -15,7 +15,7 @@ class ReverseGeoCoding {
   /// The point around which you wish to retrieve place information.
   final Location location;
 
-  /// Limits the no of predections it shows
+  /// Specify the maximum number of results to return. The default is 5 and the maximum supported is 10.
   final int limit;
 
   ///Limits the search to the given country
@@ -24,7 +24,7 @@ class ReverseGeoCoding {
   final String country;
 
   ReverseGeoCoding({
-    @required this.apiKey,
+     this.apiKey,
     this.language = 'en',
     this.location,
     this.limit = 5,
@@ -44,7 +44,14 @@ class ReverseGeoCoding {
     if (this.location != null) {
       finalUrl += '&proximity=${this.location.lng}%2C${this.location.lat}';
     }
-    // finalUrl += '&limit=$limit';
+
+    if (limit != null) {
+      finalUrl += '&limit=$limit';
+    }
+
+    if (country != null) {
+      finalUrl += '&country=$country';
+    }
 
     return finalUrl;
   }

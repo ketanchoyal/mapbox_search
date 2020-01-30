@@ -22,7 +22,8 @@ class Predections {
 
   String toRawJson() => json.encode(toJson());
 
-  factory Predections.fromJson(Map<String, dynamic> json) => Predections.Prediction(
+  factory Predections.fromJson(Map<String, dynamic> json) =>
+      Predections.Prediction(
         type: json["type"],
         query: List<dynamic>.from(json["query"].map((x) => x)),
         features: List<MapBoxPlace>.from(
@@ -40,6 +41,7 @@ class MapBoxPlace {
   String id;
   FeatureType type;
   List<PlaceType> placeType;
+
   // dynamic relevance;
   Properties properties;
   String text;
@@ -73,36 +75,33 @@ class MapBoxPlace {
   String toRawJson() => json.encode(toJson());
 
   factory MapBoxPlace.fromJson(Map<String, dynamic> json) => MapBoxPlace(
-        id: json["id"] == null ? null : json["id"],
+        id: json["id"],
         type: json["type"] == null ? null : featureTypeValues.map[json["type"]],
         placeType: json["place_type"] == null
             ? null
-            : new List<PlaceType>.from(
+            : List<PlaceType>.from(
                 json["place_type"].map((x) => placeTypeValues.map[x])),
         // relevance: json["relevance"] == null ? null : json["relevance"],
         properties: json["properties"] == null
             ? null
             : Properties.fromJson(json["properties"]),
-        text: json["text"] == null ? null : json["text"],
-        placeName: json["place_name"] == null ? null : json["place_name"],
+        text: json["text"],
+        placeName: json["place_name"],
         bbox: json["bbox"] == null
             ? null
-            : new List<double>.from(json["bbox"].map((x) => x.toDouble())),
+            : List<double>.from(json["bbox"].map((x) => x.toDouble())),
         center: json["center"] == null
             ? null
-            : new List<double>.from(json["center"].map((x) => x.toDouble())),
+            : List<double>.from(json["center"].map((x) => x.toDouble())),
         geometry: json["geometry"] == null
             ? null
             : Geometry.fromJson(json["geometry"]),
         context: json["context"] == null
             ? null
-            : new List<Context>.from(
+            : List<Context>.from(
                 json["context"].map((x) => Context.fromJson(x))),
-        matchingText:
-            json["matching_text"] == null ? null : json["matching_text"],
-        matchingPlaceName: json["matching_place_name"] == null
-            ? null
-            : json["matching_place_name"],
+        matchingText: json["matching_text"],
+        matchingPlaceName: json["matching_place_name"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -124,6 +123,9 @@ class MapBoxPlace {
         "matching_place_name":
             matchingPlaceName == null ? null : matchingPlaceName,
       };
+
+  @override
+  String toString() => text ?? placeName;
 }
 
 class Context {
@@ -199,10 +201,12 @@ final placeTypeValues = EnumValues({
 class Properties {
   String shortCode;
   String wikidata;
+  String address;
 
   Properties({
     this.shortCode,
     this.wikidata,
+    this.address,
   });
 
   factory Properties.fromRawJson(String str) =>
@@ -213,11 +217,13 @@ class Properties {
   factory Properties.fromJson(Map<String, dynamic> json) => Properties(
         shortCode: json["short_code"] == null ? null : json["short_code"],
         wikidata: json["wikidata"],
+        address: json["address"],
       );
 
   Map<String, dynamic> toJson() => {
         "short_code": shortCode == null ? null : shortCode,
         "wikidata": wikidata,
+        "address": address,
       };
 }
 

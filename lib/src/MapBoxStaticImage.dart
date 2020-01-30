@@ -74,15 +74,18 @@ class MapBoxStaticImage {
   final String _render2x = "@2x";
   final String _empty = "";
 
-
   final MapBoxMarker _defaultMarker = MapBoxMarker(
-    markerColor: Colors.black,
+    markerColor: Color.rgb(0, 0, 0),
     markerLetter: 'p',
     markerSize: MarkerSize.LARGE,
   );
 
-  final MapBoxPath _defaultPath =
-      MapBoxPath(pathColor: Colors.red, pathOpacity: 0.5, pathWidth: 5, pathPolyline: "%7DrpeFxbnjVsFwdAvr@cHgFor@jEmAlFmEMwM_FuItCkOi@wc@bg@wBSgM",);
+  final MapBoxPath _defaultPath = MapBoxPath(
+    pathColor: Color.rgb(244, 67, 54),
+    pathOpacity: 0.5,
+    pathWidth: 5,
+    pathPolyline: "%7DrpeFxbnjVsFwdAvr@cHgFor@jEmAlFmEMwM_FuItCkOi@wc@bg@wBSgM",
+  );
 
   String _buildUrlwithApi({
     Location center,
@@ -227,7 +230,7 @@ class MapBoxStaticImage {
 }
 
 class MapBoxMarker {
-  final Color markerColor;
+  final RgbColor markerColor;
 
   final MarkerSize markerSize;
 
@@ -244,24 +247,26 @@ class MapBoxMarker {
 
   @override
   String toString() {
-    String color = markerColor.value.toRadixString(16).substring(2);
-    String marker = "pin-${MarkerSizeHelper.getValue(markerSize)}-$markerLetter+$color";
+    String color = markerColor.htmlColorNotation;
+    String marker =
+        "pin-${MarkerSizeHelper.getValue(markerSize)}-$markerLetter+$color";
     return marker;
   }
 }
 
 class MapBoxPath {
-  final Color pathColor;
+  final RgbColor pathColor;
 
   final int pathWidth;
 
   final double pathOpacity;
   final String pathPolyline;
+
   MapBoxPath({
-    @required this.pathColor,
-    @required this.pathWidth,
-    @required this.pathPolyline,
-    @required this.pathOpacity,
+    this.pathColor,
+    this.pathWidth,
+    this.pathPolyline,
+    this.pathOpacity,
   })  : assert(pathColor != null),
         assert(pathOpacity != null),
         assert(pathPolyline != null),
@@ -269,8 +274,15 @@ class MapBoxPath {
 
   @override
   String toString() {
-    String color = pathColor.value.toRadixString(16).substring(2);
+    String color = pathColor.htmlColorNotation;
     String path = "path-$pathWidth+$color-$pathOpacity(${pathPolyline})";
     return path;
   }
+}
+
+extension on RgbColor {
+  String get htmlColorNotation =>
+      r.toInt().toRadixString(16) +
+      g.toInt().toRadixString(16) +
+      b.toInt().toRadixString(16);
 }
