@@ -8,7 +8,8 @@ Also, it contains an static map image generator 😆.
 #Migration to 2.0
 Before 2.0 this library depended on Flutter SDK, preventing its usage on other platforms such as a backend, CLI apps, Dart2Javascript, etc...
 
-Now all the Flutter related code, such as the `MapBoxSearchWidget` was moved to a separated library, here: PUT_NEW_PACKAGE_URL_HERE.
+Now all the Flutter related code, such as the `MapBoxSearchWidget` was moved to a separated library, here: 
+ [mapbox_search_flutter](https://github.com/ketanchoyal/mapbox_search_flutter)
 
 ## Installing
 

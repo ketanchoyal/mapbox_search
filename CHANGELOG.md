@@ -1,3 +1,7 @@
+## [2.0.0-dev.1] - 30 January 2020.
+
+- Converted into Two Libraries. (mabox_search and mapbox_search_flutter)
+
 ## [1.0.7] - 29 January 2020.
 
 - Added Places Search for querying places by text.
