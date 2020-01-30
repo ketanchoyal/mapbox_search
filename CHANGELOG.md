@@ -1,6 +1,9 @@
-## [2.0.0-dev.1] - 30 January 2020.
+## [2.0.0] - 01 February 2020.
 
-- Converted into Two Libraries. (mabox_search and mapbox_search_flutter)
+- Removed 'flutter' dependency. 
+
+All Flutter code, inclusing 'MapBoxPlaceSearchWidget' has been moved to library 
+[mapbox_search_flutter](https://pub.dev/packages/mapbox_search_flutter). Check README for more details.
 
 ## [1.0.7] - 29 January 2020.
 
