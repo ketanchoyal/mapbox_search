@@ -4,10 +4,7 @@ class ReverseGeoCoding {
   /// API Key of the MapBox.
   final String apiKey;
 
-  /// The callback that is called when the user taps on the search icon.
-  // final void Function(MapBoxPlaces place) onSearch;
-
-  /// Language used for the autocompletion.
+  /// Specify the user’s language. This parameter controls the language of the text supplied in responses.
   ///
   /// Check the full list of [supported languages](https://docs.mapbox.com/api/search/#language-coverage) for the MapBox API
   final String language;
@@ -18,20 +15,20 @@ class ReverseGeoCoding {
   /// Specify the maximum number of results to return. The default is 5 and the maximum supported is 10.
   final int limit;
 
-  ///Limits the search to the given country
+  ///Limit results to one or more countries. Permitted values are ISO 3166 alpha 2 country codes separated by commas.
   ///
-  /// Check the full list of [supported countries](https://docs.mapbox.com/api/search/) for the MapBox API
+  /// Check the full list of [supported countries](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) for the MapBox API
   final String country;
 
+  final String _url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
+
   ReverseGeoCoding({
-     this.apiKey,
-    this.language = 'en',
+    this.apiKey,
+    this.language,
     this.location,
     this.limit = 5,
     this.country,
   }) : assert(apiKey != null);
-
-  final String _url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
 
   String _createUrl(Location location) {
     String finalUrl = _url +
@@ -40,7 +37,7 @@ class ReverseGeoCoding {
         location.lat.toString() +
         '.json?';
     finalUrl += 'access_token=$apiKey';
-    // finalUrl += '&cachebuster=1567167369462';
+
     if (this.location != null) {
       finalUrl += '&proximity=${this.location.lng}%2C${this.location.lat}';
     }
@@ -53,21 +50,21 @@ class ReverseGeoCoding {
       finalUrl += '&country=$country';
     }
 
+    if (language != null) {
+      finalUrl += '&language=$language';
+    }
+
     return finalUrl;
   }
 
   Future<List<MapBoxPlace>> getAddress(Location location) async {
-    try {
-      String url = _createUrl(location);
-      final response = await http.get(url);
-      // print(url);
-      // print(response.body);
-      final predictions = Predections.fromRawJson(response.body);
+    String url = _createUrl(location);
+    final response = await http.get(url);
 
-      return predictions.features;
-    } catch (e) {
-      print(e);
-      return [];
+    if (response?.body?.contains('message') ?? false) {
+      throw Exception(json.decode(response.body)['message']);
     }
+
+    return Predictions.fromRawJson(response.body).features;
   }
 }

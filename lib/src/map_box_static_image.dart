@@ -1,28 +1,28 @@
 part of mapbox_search;
 
 enum MapBoxStyle {
-  Mapbox_Light,
-  Mapbox_Dark,
-  Mapbox_Streets,
-  Mapbox_Outdoors,
-  Mapbox_Satellite_V9,
-  Mapbox_Satellite_Street_V11,
+  Light,
+  Dark,
+  Streets,
+  Outdoors,
+  Satellite_V9,
+  Satellite_Street_V11,
 }
 
 class MapBoxStyleHelper {
   static String getValue(MapBoxStyle mapBoxStyle) {
     switch (mapBoxStyle) {
-      case MapBoxStyle.Mapbox_Light:
+      case MapBoxStyle.Light:
         return 'light-v10';
-      case MapBoxStyle.Mapbox_Dark:
+      case MapBoxStyle.Dark:
         return 'dark-v10';
-      case MapBoxStyle.Mapbox_Streets:
+      case MapBoxStyle.Streets:
         return 'streets-v11';
-      case MapBoxStyle.Mapbox_Outdoors:
+      case MapBoxStyle.Outdoors:
         return 'outdoors-v11';
-      case MapBoxStyle.Mapbox_Satellite_V9:
+      case MapBoxStyle.Satellite_V9:
         return 'satellite-v9';
-      case MapBoxStyle.Mapbox_Satellite_Street_V11:
+      case MapBoxStyle.Satellite_Street_V11:
         return 'satellite-streets-v11';
       default:
         return 'light-v10';
@@ -64,7 +64,7 @@ class MapBoxStaticImage {
   ///tilts the map (perspective effect)(from 0 to 60)
   final int _defaultPitch = 20;
 
-  final MapBoxStyle _defaultMapStyle = MapBoxStyle.Mapbox_Outdoors;
+  final MapBoxStyle _defaultMapStyle = MapBoxStyle.Outdoors;
 
   ///@2x renders the map at 2x scale
   final bool _defaultRender2x = false;
