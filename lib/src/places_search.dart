@@ -4,12 +4,14 @@ class PlacesSearch {
   /// API Key of the MapBox.
   final String apiKey;
 
-  /// The callback that is called when the user taps on the search icon.
-  // final void Function(MapBoxPlaces place) onSearch;
-
-  ///Limits the search to the given country
+  /// Specify the user’s language. This parameter controls the language of the text supplied in responses.
   ///
-  /// Check the full list of [supported countries](https://docs.mapbox.com/api/search/) for the MapBox API
+  /// Check the full list of [supported languages](https://docs.mapbox.com/api/search/#language-coverage) for the MapBox API
+  final String language;
+
+  ///Limit results to one or more countries. Permitted values are ISO 3166 alpha 2 country codes separated by commas.
+  ///
+  /// Check the full list of [supported countries](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) for the MapBox API
   final String country;
 
   /// Specify the maximum number of results to return. The default is 5 and the maximum supported is 10.
@@ -20,7 +22,8 @@ class PlacesSearch {
   PlacesSearch({
     this.apiKey,
     this.country,
-    this.limit,
+    this.limit = 5,
+    this.language,
   }) : assert(apiKey != null);
 
   String _createUrl(String queryText, [Location location]) {
@@ -30,12 +33,17 @@ class PlacesSearch {
     if (location != null) {
       finalUrl += '&proximity=${location.lng}%2C${location.lat}';
     }
+
     if (country != null) {
       finalUrl += "&country=$country";
     }
 
     if (limit != null) {
       finalUrl += "&limit=$limit";
+    }
+
+    if (language != null) {
+      finalUrl += "&language=$language";
     }
 
     return finalUrl;
@@ -45,17 +53,13 @@ class PlacesSearch {
     String queryText, {
     Location location,
   }) async {
-    try {
-      String url = _createUrl(queryText, location);
-      final response = await http.get(url);
-//      print("The url: $url");
-//      print(response.body);
-      final predictions = Predections.fromRawJson(response.body);
+    String url = _createUrl(queryText, location);
+    final response = await http.get(url);
 
-      return predictions.features;
-    } catch (e) {
-      print(e);
-      return [];
+    if (response?.body?.contains('message') ?? false) {
+      throw Exception(json.decode(response.body)['message']);
     }
+
+    return Predictions.fromRawJson(response.body).features;
   }
 }

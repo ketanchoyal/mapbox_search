@@ -5,12 +5,12 @@ import 'package:http/http.dart' as http;
 import 'package:color/color.dart';
 export 'package:color/color.dart';
 
-part 'src/Location.dart';
+part 'src/location.dart';
 
-part 'src/Predections.dart';
+part 'src/predictions.dart';
 
-part 'src/MapBoxStaticImage.dart';
+part 'src/map_box_static_image.dart';
 
-part 'src/ReverseGeoCoding.dart';
+part 'src/reverse_geocoding.dart';
 
-part 'src/PlacesSearch.dart';
+part 'src/places_search.dart';

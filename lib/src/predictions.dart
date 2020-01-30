@@ -1,29 +1,29 @@
 part of mapbox_search;
 
-class Predections {
+class Predictions {
   String type;
   List<dynamic> query;
   List<MapBoxPlace> features;
 
-  Predections.Prediction({
+  Predictions.prediction({
     this.type,
     this.query,
     this.features,
   });
 
-  Predections.empty() {
+  Predictions.empty() {
     this.type = '';
     this.features = [];
     this.query = [];
   }
 
-  factory Predections.fromRawJson(String str) =>
-      Predections.fromJson(json.decode(str));
+  factory Predictions.fromRawJson(String str) =>
+      Predictions.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Predections.fromJson(Map<String, dynamic> json) =>
-      Predections.Prediction(
+  factory Predictions.fromJson(Map<String, dynamic> json) =>
+      Predictions.prediction(
         type: json["type"],
         query: List<dynamic>.from(json["query"].map((x) => x)),
         features: List<MapBoxPlace>.from(
