@@ -1,4 +1,4 @@
-[![Pub](https://img.shields.io/pub/v/mapbox_search)](https://pub.dartlang.org/packages/mapbox_search) 
+[![Pub](https://img.shields.io/pub/v/mapbox_search)](https://pub.dev/packages/mapbox_search/versions/2.0.0-dev.1) 
 # About 
 
 This package provides easy api calls to MapBox Search API. 

@@ -4,7 +4,7 @@ version: 2.0.0-dev.1
 authors:
   - Ketan Choyal <ketanchoyal@gmail.com>
   - Daniel Oliveira <shinayser@gmail.com>
-homepage: https://github.com/ketanchoyal/mapbox_search
+homepage: https://github.com/ketanchoyal/mapbox_search/tree/dev
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
