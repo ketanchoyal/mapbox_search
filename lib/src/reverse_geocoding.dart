@@ -26,7 +26,7 @@ class ReverseGeoCoding {
     this.apiKey,
     this.language,
     this.location,
-    this.limit = 5,
+    this.limit,
     this.country,
   }) : assert(apiKey != null);
 
@@ -43,7 +43,7 @@ class ReverseGeoCoding {
     }
 
     if (limit != null) {
-      finalUrl += '&limit=$limit';
+      finalUrl += '&limit=$limit&types=address';
     }
 
     if (country != null) {

@@ -22,7 +22,7 @@ class PlacesSearch {
   PlacesSearch({
     this.apiKey,
     this.country,
-    this.limit = 5,
+    this.limit,
     this.language,
   }) : assert(apiKey != null);
 
