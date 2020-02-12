@@ -1,4 +1,8 @@
-## [2.0.0] - 01 February 2020.
+## [2.0.0] - 12 February 2020.
+
+- Breaking changes(migration from v1.x ro v2.0)
+
+## [2.0.0-dev] - 01 February 2020.
 
 - Removed 'flutter' dependency. 
 
