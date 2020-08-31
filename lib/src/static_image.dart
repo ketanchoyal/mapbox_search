@@ -47,10 +47,10 @@ class MarkerSizeHelper {
   }
 }
 
-class MapBoxStaticImage {
+class StaticImage {
   final String apiKey;
 
-  MapBoxStaticImage({
+  StaticImage({
     this.apiKey,
   }) : assert(apiKey != null);
 
@@ -69,8 +69,6 @@ class MapBoxStaticImage {
   ///@2x renders the map at 2x scale
   final bool _defaultRender2x = false;
 
-  final String _mainUrl = "https://api.mapbox.com/styles/v1/mapbox/";
-
   final String _render2x = "@2x";
   final String _empty = "";
 
@@ -87,7 +85,13 @@ class MapBoxStaticImage {
     pathPolyline: "%7DrpeFxbnjVsFwdAvr@cHgFor@jEmAlFmEMwM_FuItCkOi@wc@bg@wBSgM",
   );
 
-  String _buildUrlwithApi({
+  void _buildBaseUrl(StringBuffer url, {MapBoxStyle style}) {
+    url.write(
+        "https://api.mapbox.com/styles/v1/mapbox/${MapBoxStyleHelper.getValue(style ?? _defaultMapStyle)}/static");
+  }
+
+  void _buildParams(
+    StringBuffer url, {
     Location center,
     int zoomLevel,
     int width,
@@ -101,115 +105,23 @@ class MapBoxStaticImage {
 
     ///@2x renders the map at 2x scale
     bool render2x,
+
+    /// ignore all customization and adjust map automatically
+    bool auto = false,
   }) {
-    return "${center.lng},${center.lat},${zoomLevel ?? _defaultZoomLevel},${bearing ?? _defaultBearing},${pitch ?? _defaultPitch}/${width ?? _defaultWidth}x${height ?? _defaultHeight}${render2x ?? _defaultRender2x ? _render2x : _empty}?access_token=$apiKey";
-  }
-
-  String getStaticUrlWithoutMarker({
-    Location center,
-    int zoomLevel,
-    int width,
-    int height,
-
-    ///rotates the map around its center(from -180 to 180)
-    int bearing,
-
-    ///tilts the map (perspective effect)(from 0 to 60)
-    int pitch,
-    MapBoxStyle style,
-
-    ///@2x renders the map at 2x scale
-    bool render2x,
-  }) {
-    String url =
-        "$_mainUrl${MapBoxStyleHelper.getValue(style ?? _defaultMapStyle)}/static/${_buildUrlwithApi(
-      bearing: bearing,
-      center: center,
-      height: height,
-      pitch: pitch,
-      render2x: render2x,
-      width: width,
-      zoomLevel: zoomLevel,
-    )}";
-
-    return url;
-  }
-
-  String getStaticUrlWithMarker(
-      {Location center,
-      int zoomLevel,
-      int width,
-      int height,
-
-      ///rotates the map around its center(from -180 to 180)
-      int bearing,
-
-      ///tilts the map (perspective effect)(from 0 to 60)
-      int pitch,
-      MapBoxStyle style,
-
-      ///@2x renders the map at 2x scale
-      bool render2x,
-
-      ///Custom Marker url
-      String markerUrl,
-
-      ///Custom marker
-      MapBoxMarker marker}) {
-    String pinUrl = marker == null
-        ? _generateMarkerLink(markerUrl ?? _defaultMarker.toString())
-        : marker.toString();
-    String url =
-        "$_mainUrl${MapBoxStyleHelper.getValue(style ?? _defaultMapStyle)}/static/$pinUrl(${center.lng},${center.lat})/${_buildUrlwithApi(
-      bearing: bearing,
-      center: center,
-      height: height,
-      pitch: pitch,
-      render2x: render2x,
-      width: width,
-      zoomLevel: zoomLevel,
-    )}";
-
-    return url;
-  }
-
-  /// # Retrieve a map with two points and a polyline overlay,
-  String getStaticUrlWithPolyline({
-    Location point1,
-    Location point2,
-    int zoomLevel,
-    int width,
-    int height,
-
-    ///rotates the map around its center(from -180 to 180)
-    int bearing,
-
-    ///tilts the map (perspective effect)(from 0 to 60)
-    int pitch,
-    MapBoxStyle style,
-
-    ///@2x renders the map at 2x scale
-    bool render2x,
-
-    ///Custom Marker url
-    String markerUrl,
-    MapBoxPath path,
-    MapBoxMarker marker1,
-    MapBoxMarker msrker2,
-  }) {
-    MapBoxPath p = path ?? _defaultPath;
-
-    String pinUrl1 = marker1 == null
-        ? _generateMarkerLink(markerUrl ?? _defaultMarker.toString())
-        : marker1.toString();
-
-    String pinUrl2 = msrker2 == null
-        ? _generateMarkerLink(markerUrl ?? _defaultMarker.toString())
-        : msrker2.toString();
-    String url =
-        "$_mainUrl${MapBoxStyleHelper.getValue(style ?? _defaultMapStyle)}/static/$pinUrl1(${point1.lng},${point1.lat}),$pinUrl2(${point2.lng},${point2.lat}),${p.toString()}/auto/${width ?? _defaultWidth}x${height ?? _defaultHeight}${render2x ?? _defaultRender2x ? _render2x : _empty}?access_token=$apiKey";
-
-    return url;
+    if (auto != null && auto) {
+      url.write("/auto");
+    } else {
+      url
+        ..write("/${center.lng},${center.lat},")
+        ..write("${zoomLevel ?? _defaultZoomLevel},")
+        ..write("${bearing ?? _defaultBearing},")
+        ..write("${pitch ?? _defaultPitch}");
+    }
+    url
+      ..write("/${width ?? _defaultWidth}x${height ?? _defaultHeight}")
+      ..write("${render2x ?? _defaultRender2x ? _render2x : _empty}")
+      ..write("?access_token=$apiKey");
   }
 
   String _generateMarkerLink(String url) {
@@ -226,6 +138,138 @@ class MapBoxStaticImage {
     url = "url-$url";
 
     return url;
+  }
+
+  String getStaticUrlWithoutMarker(
+      {Location center,
+      int zoomLevel,
+      int width,
+      int height,
+
+      ///rotates the map around its center(from -180 to 180)
+      int bearing,
+
+      ///tilts the map (perspective effect)(from 0 to 60)
+      int pitch,
+      MapBoxStyle style,
+
+      ///@2x renders the map at 2x scale
+      bool render2x,
+
+      /// ignore all customization and adjust map automatically
+      bool auto}) {
+    var url = StringBuffer();
+    _buildBaseUrl(url, style: style);
+    _buildParams(url,
+        bearing: bearing,
+        center: center,
+        height: height,
+        pitch: pitch,
+        render2x: render2x,
+        width: width,
+        zoomLevel: zoomLevel,
+        auto: auto);
+
+    return url.toString();
+  }
+
+  String getStaticUrlWithMarker({
+    Location center,
+    int zoomLevel,
+    int width,
+    int height,
+
+    ///rotates the map around its center(from -180 to 180)
+    int bearing,
+
+    ///tilts the map (perspective effect)(from 0 to 60)
+    int pitch,
+    MapBoxStyle style,
+
+    ///@2x renders the map at 2x scale
+    bool render2x,
+
+    ///Custom Marker url
+    String markerUrl,
+
+    ///Custom marker
+    MapBoxMarker marker,
+
+    /// ignore all customization and adjust map automatically
+    bool auto,
+  }) {
+    String pinUrl = marker == null
+        ? _generateMarkerLink(markerUrl ?? _defaultMarker.toString())
+        : marker.toString();
+    var url = StringBuffer();
+    _buildBaseUrl(url, style: style);
+    url.write("/$pinUrl(${center.lng},${center.lat})");
+    _buildParams(url,
+        bearing: bearing,
+        center: center,
+        height: height,
+        pitch: pitch,
+        render2x: render2x,
+        width: width,
+        zoomLevel: zoomLevel,
+        auto: auto);
+
+    return url.toString();
+  }
+
+  /// # Retrieve a map with two points and a polyline overlay,
+  String getStaticUrlWithPolyline({
+    Location point1,
+    Location point2,
+    int zoomLevel,
+    int width,
+    int height,
+    Location center,
+
+    ///rotates the map around its center(from -180 to 180)
+    int bearing,
+
+    ///tilts the map (perspective effect)(from 0 to 60)
+    int pitch,
+    MapBoxStyle style,
+
+    ///@2x renders the map at 2x scale
+    bool render2x,
+
+    /// ignore all customization and adjust map automatically
+    bool auto,
+
+    ///Custom Marker url
+    String markerUrl,
+    MapBoxPath path,
+    MapBoxMarker marker1,
+    MapBoxMarker marker2,
+  }) {
+    String pinUrl1 = marker1 == null
+        ? _generateMarkerLink(markerUrl ?? _defaultMarker.toString())
+        : marker1.toString();
+
+    String pinUrl2 = marker2 == null
+        ? _generateMarkerLink(markerUrl ?? _defaultMarker.toString())
+        : marker2.toString();
+    var url = StringBuffer();
+    _buildBaseUrl(url, style: style);
+    url
+      ..write("/$pinUrl1(${point1.lng},${point1.lat}),")
+      ..write("$pinUrl2(${point2.lng},${point2.lat}),")
+      ..write("${path ?? _defaultPath}");
+
+    _buildParams(url,
+        bearing: bearing,
+        center: center,
+        height: height,
+        pitch: pitch,
+        render2x: render2x,
+        width: width,
+        zoomLevel: zoomLevel,
+        auto: auto);
+
+    return url.toString();
   }
 }
 

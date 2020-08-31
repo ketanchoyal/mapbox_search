@@ -9,7 +9,7 @@ part 'src/location.dart';
 
 part 'src/predictions.dart';
 
-part 'src/map_box_static_image.dart';
+part 'src/static_image.dart';
 
 part 'src/reverse_geocoding.dart';
 

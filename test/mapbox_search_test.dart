@@ -1,16 +1,16 @@
 import 'package:mapbox_search/mapbox_search.dart';
 import 'package:test/test.dart';
 
-void main() async {
-  String apiKey; //Set up a test api key before testing
+import 'credentials.dart';
 
+void main() async {
   test("Has api key", () {
-    expect(apiKey, isNotNull);
+    expect(MAPBOX_KEY, isNotNull);
   });
 
   test("Places search test", () async {
     var search = PlacesSearch(
-      apiKey: apiKey,
+      apiKey: MAPBOX_KEY,
       country: "BR",
       limit: 5,
     );
