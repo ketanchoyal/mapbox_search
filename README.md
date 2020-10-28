@@ -66,8 +66,8 @@ MapBoxStaticImage staticImage = MapBoxStaticImage(
     String getStaticImageWithPolyline() => staticImage.getStaticUrlWithPolyline(
       point1: Location(lat: 37.77343, lng: -122.46589),
       point2: Location(lat: 37.75965, lng: -122.42816),
-      marker1: MapBoxMarker( markerColor: Colors.black, markerLetter: 'p', markerSize: MarkerSize.LARGE),
-      msrker2: MapBoxMarker(
+      marker1: MapBoxMarker( markerColor: Color.rgb(0, 0, 0), markerLetter: 'p', markerSize: MarkerSize.LARGE),
+      marker2: MapBoxMarker(
           markerColor: Color.rgb(244, 67, 54),
           markerLetter: 'q',
           markerSize: MarkerSize.SMALL),
@@ -75,7 +75,7 @@ MapBoxStaticImage staticImage = MapBoxStaticImage(
       width: 600,
       zoomLevel: 16,
       style: MapBoxStyle.Mapbox_Dark,
-      path: MapBoxPath(pathColor: Colors.red, pathOpacity: 0.5,     pathWidth: 5),
+      path: MapBoxPath(pathColor: Color.rgb(255, 0, 0), pathOpacity: 0.5,     pathWidth: 5),
       render2x: true);
 ``` 
 
