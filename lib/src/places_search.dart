@@ -17,6 +17,9 @@ class PlacesSearch {
   /// Specify the maximum number of results to return. The default is 5 and the maximum supported is 10.
   final int limit;
 
+  /// Limit results to only those contained within the supplied bounding box.
+  final BBox bbox;
+
   final String _url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
 
   PlacesSearch({
@@ -24,6 +27,7 @@ class PlacesSearch {
     this.country,
     this.limit,
     this.language,
+    this.bbox,
   }) : assert(apiKey != null);
 
   String _createUrl(String queryText, [Location location]) {
@@ -44,6 +48,11 @@ class PlacesSearch {
 
     if (language != null) {
       finalUrl += "&language=$language";
+    }
+
+    if (bbox != null) {
+      finalUrl +=
+          "&bbox=${bbox.min.lng},${bbox.min.lat},${bbox.max.lng},${bbox.max.lat}";
     }
 
     return finalUrl;

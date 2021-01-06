@@ -7,6 +7,8 @@ export 'package:color/color.dart';
 
 part 'src/location.dart';
 
+part 'src/bbox.dart';
+
 part 'src/predictions.dart';
 
 part 'src/static_image.dart';
