@@ -79,7 +79,7 @@ MapBoxStaticImage staticImage = MapBoxStaticImage(
       width: 600,
       zoomLevel: 16,
       style: MapBoxStyle.Mapbox_Dark,
-      path: MapBoxPath(pathColor: Colors.red, pathOpacity: 0.5,     pathWidth: 5),
+      path: MapBoxPath(pathColor: Color.rgb(255, 0, 0), pathOpacity: 0.5,     pathWidth: 5),
       render2x: true);
 ``` 
 

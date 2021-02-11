@@ -1,3 +1,20 @@
+## [2.0.1] - 31 Aug 2020
+### PR by @lukas-h
+### Some breaking Changes
+- renamed 
+  ```dart
+   MapBoxStaticImage 
+   ``` 
+   ### to 
+   ```dart 
+   StaticImage 
+   ``` 
+   to make the naming in this library more consistent
+### Improvements
+- simplified the url serialisation
+- added the auto attribute to static images
+- added simple unit tests for static images
+
 ## [2.0.0] - 12 February 2020.
 
 - Breaking changes(migration from v1.x ro v2.0)

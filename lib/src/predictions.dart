@@ -43,6 +43,7 @@ class MapBoxPlace {
   List<PlaceType> placeType;
 
   // dynamic relevance;
+  String addressNumber;
   Properties properties;
   String text;
   String placeName;
@@ -58,6 +59,7 @@ class MapBoxPlace {
     this.type,
     this.placeType,
     // this.relevance,
+    this.addressNumber,
     this.properties,
     this.text,
     this.placeName,
@@ -82,6 +84,7 @@ class MapBoxPlace {
             : List<PlaceType>.from(
                 json["place_type"].map((x) => placeTypeValues.map[x])),
         // relevance: json["relevance"] == null ? null : json["relevance"],
+        addressNumber: json["address"],
         properties: json["properties"] == null
             ? null
             : Properties.fromJson(json["properties"]),
@@ -110,6 +113,7 @@ class MapBoxPlace {
         "place_type": List<dynamic>.from(
             placeType.map((x) => placeTypeValues.reverse[x])),
         // "relevance": relevance,
+        "address": addressNumber,
         "properties": properties.toJson(),
         "text": text,
         "place_name": placeName,
