@@ -5,6 +5,8 @@ This package provides easy api calls to MapBox Search API.
 
 Also, it contains an static map image generator 😆.
 
+# Maki Icons can be used now in marker icon 
+
 # Migration to 2.0
 
 Before 2.0 this library depended on Flutter SDK, preventing its usage on other platforms such as a backend, CLI apps, Dart2Javascript, etc...
@@ -66,8 +68,10 @@ MapBoxStaticImage staticImage = MapBoxStaticImage(
     String getStaticImageWithPolyline() => staticImage.getStaticUrlWithPolyline(
       point1: Location(lat: 37.77343, lng: -122.46589),
       point2: Location(lat: 37.75965, lng: -122.42816),
-      marker1: MapBoxMarker( markerColor: Colors.black, markerLetter: 'p', markerSize: MarkerSize.LARGE),
-      msrker2: MapBoxMarker(
+      marker1: MapBoxMarker( markerColor: Colors.black, 
+      markerLetter: MakiIcons.aerialway.value, 
+      markerSize: MarkerSize.LARGE),
+      marker2: MapBoxMarker(
           markerColor: Color.rgb(244, 67, 54),
           markerLetter: 'q',
           markerSize: MarkerSize.SMALL),
