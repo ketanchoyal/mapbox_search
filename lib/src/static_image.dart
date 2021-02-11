@@ -9,9 +9,9 @@ enum MapBoxStyle {
   Satellite_Street_V11,
 }
 
-class MapBoxStyleHelper {
-  static String getValue(MapBoxStyle mapBoxStyle) {
-    switch (mapBoxStyle) {
+extension MapBoxStyleHelper on MapBoxStyle {
+  String get value {
+    switch (this) {
       case MapBoxStyle.Light:
         return 'light-v10';
       case MapBoxStyle.Dark:
@@ -32,9 +32,9 @@ class MapBoxStyleHelper {
 
 enum MarkerSize { SMALL, MEDIUM, LARGE }
 
-class MarkerSizeHelper {
-  static String getValue(MarkerSize size) {
-    switch (size) {
+extension MarkerSizeHelper on MarkerSize {
+  String get value {
+    switch (this) {
       case MarkerSize.SMALL:
         return 's';
       case MarkerSize.MEDIUM:
@@ -79,7 +79,7 @@ class StaticImage {
   );
 
   final MapBoxPath _defaultPath = MapBoxPath(
-    pathColor: Color.rgb(244, 67, 54),
+    pathColor: Color.rgb(114, 52, 54),
     pathOpacity: 0.5,
     pathWidth: 5,
     pathPolyline: "%7DrpeFxbnjVsFwdAvr@cHgFor@jEmAlFmEMwM_FuItCkOi@wc@bg@wBSgM",
@@ -87,7 +87,7 @@ class StaticImage {
 
   void _buildBaseUrl(StringBuffer url, {MapBoxStyle style}) {
     url.write(
-        "https://api.mapbox.com/styles/v1/mapbox/${MapBoxStyleHelper.getValue(style ?? _defaultMapStyle)}/static");
+        "https://api.mapbox.com/styles/v1/mapbox/${(style ?? _defaultMapStyle).value}/static");
   }
 
   void _buildParams(
@@ -278,7 +278,17 @@ class MapBoxMarker {
 
   final MarkerSize markerSize;
 
-  /// letter to display on pin(from 0 to 99 and a to z)
+  /**
+  * letter to display on pin(from 0 to 99 and A to Z)
+  *
+  * [MakiIcons] can also be used now
+  *
+  * Example:
+  * ```dart
+  * MakiIcons.airport.value
+  *
+  * ```
+   **/
   final String markerLetter;
 
   MapBoxMarker({
@@ -287,13 +297,13 @@ class MapBoxMarker {
     this.markerLetter,
   })  : assert(markerColor != null),
         assert(markerLetter != null),
+        assert(markerLetter.runtimeType == String),
         assert(markerSize != null);
 
   @override
   String toString() {
-    String color = markerColor.htmlColorNotation;
-    String marker =
-        "pin-${MarkerSizeHelper.getValue(markerSize)}-$markerLetter+$color";
+    String color = markerColor.toHexColor().toString();
+    String marker = "pin-${markerSize.value}-$markerLetter+$color";
     return marker;
   }
 }
@@ -318,15 +328,8 @@ class MapBoxPath {
 
   @override
   String toString() {
-    String color = pathColor.htmlColorNotation;
+    String color = pathColor.toHexColor().toString();
     String path = "path-$pathWidth+$color-$pathOpacity(${pathPolyline})";
     return path;
   }
-}
-
-extension on RgbColor {
-  String get htmlColorNotation =>
-      r.toInt().toRadixString(16) +
-      g.toInt().toRadixString(16) +
-      b.toInt().toRadixString(16);
 }

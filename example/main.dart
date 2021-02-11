@@ -1,7 +1,9 @@
 import 'package:mapbox_search/mapbox_search.dart';
 
+import 'credentials.dart';
+
 Future<void> main() async {
-  String apiKey = "YOU API KEY HERE"; //Set up a test api key before running
+  String apiKey = MAPBOX_KEY; //Set up a test api key before running
 
   await geoCoding(apiKey).catchError(print);
   await placesSearch(apiKey).catchError(print);
