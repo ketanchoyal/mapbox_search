@@ -5,7 +5,7 @@ This package provides easy api calls to MapBox Search API.
 
 Also, it contains an static map image generator 😆.
 
-# Maki Icons can be used now in marker icon 
+# [Maki Icons](https://labs.mapbox.com/maki-icons/) can be used now in marker icon
 
 # Migration to 2.0
 

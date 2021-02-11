@@ -1,3 +1,12 @@
+## [2.1.0] - 10 Feb 2021
+- Updated dependencies
+- Major missing feature added
+  - Maki Icons can be use now in marker icon
+
+## [2.0.1+1] - 02 Oct 2020
+
+- Added Missing Address Attribute to the fetched MapBoxPlace Data (PR by @ juampiq6).
+
 ## [2.0.1] - 31 Aug 2020
 ### PR by @lukas-h
 ### Some breaking Changes
