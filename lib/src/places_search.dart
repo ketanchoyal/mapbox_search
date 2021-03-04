@@ -54,7 +54,7 @@ class PlacesSearch {
     Location location,
   }) async {
     String url = _createUrl(queryText, location);
-    final response = await http.get(url);
+    final response = await http.get(Uri.parse(url));
 
     if (response?.body?.contains('message') ?? false) {
       throw Exception(json.decode(response.body)['message']);
