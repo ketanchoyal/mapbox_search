@@ -59,7 +59,7 @@ class ReverseGeoCoding {
 
   Future<List<MapBoxPlace>> getAddress(Location location) async {
     String url = _createUrl(location);
-    final response = await http.get(url);
+    final response = await http.get(Uri.parse(url));
 
     if (response?.body?.contains('message') ?? false) {
       throw Exception(json.decode(response.body)['message']);

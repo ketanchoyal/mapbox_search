@@ -1,3 +1,6 @@
+## [2.1.0+1] - 04 Mar 2021
+- Updated http dependency (PR #41)
+
 ## [2.1.0] - 10 Feb 2021
 - Updated dependencies
 - Major missing feature added
