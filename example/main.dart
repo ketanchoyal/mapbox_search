@@ -1,6 +1,7 @@
 import 'package:mapbox_search/mapbox_search.dart';
 
-import 'credentials.dart';
+// import 'credentials.dart';
+final MAPBOX_KEY = '';
 
 Future<void> main() async {
   String apiKey = MAPBOX_KEY; //Set up a test api key before running

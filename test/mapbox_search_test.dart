@@ -1,11 +1,12 @@
 import 'package:mapbox_search/mapbox_search.dart';
 import 'package:test/test.dart';
 
-import 'credentials.dart';
-
 void main() async {
+  final MAPBOX_KEY = '';
+
   test("Has api key", () {
     expect(MAPBOX_KEY, isNotNull);
+    expect(MAPBOX_KEY, isNotEmpty);
   });
 
   test("Places search test", () async {

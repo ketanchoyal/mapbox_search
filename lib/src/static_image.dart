@@ -51,7 +51,7 @@ class StaticImage {
   final String apiKey;
 
   StaticImage({
-    this.apiKey,
+    required this.apiKey,
   }) : assert(apiKey != null);
 
   final int _defaultZoomLevel = 15;
@@ -73,47 +73,47 @@ class StaticImage {
   final String _empty = "";
 
   final MapBoxMarker _defaultMarker = MapBoxMarker(
-    markerColor: Color.rgb(0, 0, 0),
+    markerColor: Color.rgb(0, 0, 0) as RgbColor,
     markerLetter: 'p',
     markerSize: MarkerSize.LARGE,
   );
 
   final MapBoxPath _defaultPath = MapBoxPath(
-    pathColor: Color.rgb(114, 52, 54),
+    pathColor: Color.rgb(114, 52, 54) as RgbColor,
     pathOpacity: 0.5,
     pathWidth: 5,
     pathPolyline: "%7DrpeFxbnjVsFwdAvr@cHgFor@jEmAlFmEMwM_FuItCkOi@wc@bg@wBSgM",
   );
 
-  void _buildBaseUrl(StringBuffer url, {MapBoxStyle style}) {
+  void _buildBaseUrl(StringBuffer url, {MapBoxStyle? style}) {
     url.write(
         "https://api.mapbox.com/styles/v1/mapbox/${(style ?? _defaultMapStyle).value}/static");
   }
 
   void _buildParams(
     StringBuffer url, {
-    Location center,
-    int zoomLevel,
-    int width,
-    int height,
+    Location? center,
+    int? zoomLevel,
+    int? width,
+    int? height,
 
     ///rotates the map around its center(from -180 to 180)
-    int bearing,
+    int? bearing,
 
     ///tilts the map (perspective effect)(from 0 to 60)
-    int pitch,
+    int? pitch,
 
     ///@2x renders the map at 2x scale
-    bool render2x,
+    bool? render2x,
 
     /// ignore all customization and adjust map automatically
-    bool auto = false,
+    bool? auto = false,
   }) {
     if (auto != null && auto) {
       url.write("/auto");
     } else {
       url
-        ..write("/${center.lng},${center.lat},")
+        ..write("/${center!.lng},${center.lat},")
         ..write("${zoomLevel ?? _defaultZoomLevel},")
         ..write("${bearing ?? _defaultBearing},")
         ..write("${pitch ?? _defaultPitch}");
@@ -141,23 +141,23 @@ class StaticImage {
   }
 
   String getStaticUrlWithoutMarker(
-      {Location center,
-      int zoomLevel,
-      int width,
-      int height,
+      {Location? center,
+      int? zoomLevel,
+      int? width,
+      int? height,
 
       ///rotates the map around its center(from -180 to 180)
-      int bearing,
+      int? bearing,
 
       ///tilts the map (perspective effect)(from 0 to 60)
-      int pitch,
-      MapBoxStyle style,
+      int? pitch,
+      MapBoxStyle? style,
 
       ///@2x renders the map at 2x scale
-      bool render2x,
+      bool? render2x,
 
       /// ignore all customization and adjust map automatically
-      bool auto}) {
+      bool? auto}) {
     var url = StringBuffer();
     _buildBaseUrl(url, style: style);
     _buildParams(url,
@@ -174,29 +174,29 @@ class StaticImage {
   }
 
   String getStaticUrlWithMarker({
-    Location center,
-    int zoomLevel,
-    int width,
-    int height,
+    required Location center,
+    int? zoomLevel,
+    int? width,
+    int? height,
 
     ///rotates the map around its center(from -180 to 180)
-    int bearing,
+    int? bearing,
 
     ///tilts the map (perspective effect)(from 0 to 60)
-    int pitch,
-    MapBoxStyle style,
+    int? pitch,
+    MapBoxStyle? style,
 
     ///@2x renders the map at 2x scale
-    bool render2x,
+    bool? render2x,
 
     ///Custom Marker url
-    String markerUrl,
+    String? markerUrl,
 
     ///Custom marker
-    MapBoxMarker marker,
+    MapBoxMarker? marker,
 
     /// ignore all customization and adjust map automatically
-    bool auto,
+    bool? auto,
   }) {
     String pinUrl = marker == null
         ? _generateMarkerLink(markerUrl ?? _defaultMarker.toString())
@@ -219,31 +219,31 @@ class StaticImage {
 
   /// # Retrieve a map with two points and a polyline overlay,
   String getStaticUrlWithPolyline({
-    Location point1,
-    Location point2,
-    int zoomLevel,
-    int width,
-    int height,
-    Location center,
+    required Location point1,
+    required Location point2,
+    int? zoomLevel,
+    int? width,
+    int? height,
+    Location? center,
 
     ///rotates the map around its center(from -180 to 180)
-    int bearing,
+    int? bearing,
 
     ///tilts the map (perspective effect)(from 0 to 60)
-    int pitch,
-    MapBoxStyle style,
+    int? pitch,
+    MapBoxStyle? style,
 
     ///@2x renders the map at 2x scale
-    bool render2x,
+    bool? render2x,
 
     /// ignore all customization and adjust map automatically
-    bool auto,
+    bool? auto,
 
     ///Custom Marker url
-    String markerUrl,
-    MapBoxPath path,
-    MapBoxMarker marker1,
-    MapBoxMarker marker2,
+    String? markerUrl,
+    MapBoxPath? path,
+    MapBoxMarker? marker1,
+    MapBoxMarker? marker2,
   }) {
     String pinUrl1 = marker1 == null
         ? _generateMarkerLink(markerUrl ?? _defaultMarker.toString())
@@ -279,26 +279,23 @@ class MapBoxMarker {
   final MarkerSize markerSize;
 
   /**
-  * letter to display on pin(from 0 to 99 and A to Z)
-  *
-  * [MakiIcons] can also be used now
-  *
-  * Example:
-  * ```dart
-  * MakiIcons.airport.value
-  *
-  * ```
+   * letter to display on pin(from 0 to 99 and A to Z)
+   *
+   * [MakiIcons] can also be used now
+   *
+   * Example:
+   * ```dart
+   * MakiIcons.airport.value
+   *
+   * ```
    **/
   final String markerLetter;
 
   MapBoxMarker({
-    this.markerColor,
-    this.markerSize,
-    this.markerLetter,
-  })  : assert(markerColor != null),
-        assert(markerLetter != null),
-        assert(markerLetter.runtimeType == String),
-        assert(markerSize != null);
+    required this.markerColor,
+    required this.markerSize,
+    required this.markerLetter,
+  }) : assert(markerLetter.runtimeType == String);
 
   @override
   String toString() {
@@ -317,14 +314,11 @@ class MapBoxPath {
   final String pathPolyline;
 
   MapBoxPath({
-    this.pathColor,
-    this.pathWidth,
-    this.pathPolyline,
-    this.pathOpacity,
-  })  : assert(pathColor != null),
-        assert(pathOpacity != null),
-        assert(pathPolyline != null),
-        assert(pathWidth != null);
+    required this.pathColor,
+    required this.pathWidth,
+    required this.pathPolyline,
+    required this.pathOpacity,
+  });
 
   @override
   String toString() {
