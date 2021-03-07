@@ -60,10 +60,12 @@ packages:
   color:
     dependency: "direct main"
     description:
-      name: color
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.1"
+      path: "."
+      ref: null-safety
+      resolved-ref: "36f42e4d8c9a58951ffe5f46d550599d1d072af9"
+      url: "https://github.com/shinayser/Color"
+    source: git
+    version: "2.3.0"
   convert:
     dependency: transitive
     description:
@@ -105,7 +107,7 @@ packages:
       name: http_multi_server
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.0"
+    version: "3.0.0"
   http_parser:
     dependency: transitive
     description:
@@ -352,4 +354,4 @@ packages:
     source: hosted
     version: "2.2.0"
 sdks:
-  dart: ">=2.12.0-0.0 <3.0.0"
+  dart: ">=2.12.0 <3.0.0"
