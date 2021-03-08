@@ -9,10 +9,6 @@ environment:
 
 dependencies:
   http: ^0.13.0
-  color:
-    git:
-      url: https://github.com/shinayser/Color
-      ref: null-safety
 
 dev_dependencies:
   pedantic: ^1.11.0

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:color/color.dart';
+import 'package:mapbox_search/colors/color.dart';
 import 'package:mapbox_search/mapbox_search.dart';
 import 'package:test/test.dart';
 
