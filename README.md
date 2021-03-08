@@ -1,19 +1,13 @@
 [![Pub](https://img.shields.io/pub/v/mapbox_search)](https://pub.dev/packages/mapbox_search/versions/2.0.0) 
-# About 
+# About
 
 This package provides easy api calls to MapBox Search API. 
 
 Also, it contains an static map image generator 😆.
 
-# [Maki Icons](https://labs.mapbox.com/maki-icons/) can be used now in marker icon
+[Maki Icons](https://labs.mapbox.com/maki-icons/) can be used now in marker icon
 
-# Migration to 2.0
-
-Before 2.0 this library depended on Flutter SDK, preventing its usage on other platforms such as a backend, CLI apps, Dart2Javascript, etc...
-
-Now all the Flutter related code, such as the `MapBoxSearchWidget` was moved to a separated library: [mapbox_search_flutter](https://pub.dev/packages/mapbox_search_flutter).
-
-For that reason, you cannot use the `Colors` class anymore on you Flutter project.
+As this package doesn't depend on Flutter SDK you cannot use the `Colors` class anymore on you Flutter project.
 Instead use map_box_search's `Color.rgb` constructor, passing the values as parameters:
 
 ```dart
