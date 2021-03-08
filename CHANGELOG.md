@@ -1,3 +1,6 @@
+## [3.0.0-nullsafety.0] - 07 Mar 2021
+- Migrate to null safety [Pull Request #43]
+
 ## [2.1.0+1] - 04 Mar 2021
 - Updated http dependency (PR #41)
 
