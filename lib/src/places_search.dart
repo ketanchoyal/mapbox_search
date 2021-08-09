@@ -17,6 +17,13 @@ class PlacesSearch {
   /// Specify the maximum number of results to return. The default is 5 and the maximum supported is 10.
   final int? limit;
 
+  /// Filter results to include only a subset (one or more) of the available feature types.
+  /// Options are country, region, postcode, district, place, locality, neighborhood, address, and poi.
+  /// Multiple options can be comma-separated.
+  ///
+  /// For more information on the available types, see the [data types section](https://docs.mapbox.com/api/search/geocoding/#data-types).
+  final String? types;
+
   final String _url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
 
   PlacesSearch({
@@ -24,6 +31,7 @@ class PlacesSearch {
     this.country,
     this.limit,
     this.language,
+    this.types,
   });
 
   String _createUrl(String queryText, [Location? location]) {
@@ -44,6 +52,10 @@ class PlacesSearch {
 
     if (language != null) {
       finalUrl += "&language=$language";
+    }
+
+    if (types != null) {
+      finalUrl += "&types=$types";
     }
 
     return finalUrl;
