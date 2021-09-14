@@ -20,6 +20,13 @@ class ReverseGeoCoding {
   /// Check the full list of [supported countries](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) for the MapBox API
   final String? country;
 
+  /// Filter results to include only a subset (one or more) of the available feature types.
+  /// Options are country, region, postcode, district, place, locality, neighborhood, address, and poi.
+  /// Multiple options can be comma-separated.
+  ///
+  /// For more information on the available types, see the [data types section](https://docs.mapbox.com/api/search/geocoding/#data-types).
+  final PlaceType? types;
+
   final String _url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
 
   ReverseGeoCoding({
@@ -28,7 +35,8 @@ class ReverseGeoCoding {
     this.location,
     this.limit,
     this.country,
-  }) ;
+    this.types,
+  });
 
   String _createUrl(Location location) {
     String finalUrl = _url +
@@ -52,6 +60,10 @@ class ReverseGeoCoding {
 
     if (language != null) {
       finalUrl += '&language=$language';
+    }
+
+    if (types != null) {
+      finalUrl += "&types=${types?.value}";
     }
 
     return finalUrl;
