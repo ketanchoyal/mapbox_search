@@ -15,3 +15,5 @@ part 'src/reverse_geocoding.dart';
 part 'src/places_search.dart';
 
 part "src/maki_icons.dart";
+
+part 'src/types.dart';
