@@ -4,10 +4,8 @@ import 'package:mapbox_search/colors/color.dart';
 import 'package:mapbox_search/mapbox_search.dart';
 import 'package:test/test.dart';
 
-import 'credentials.dart';
-
 main() {
-  // final MAPBOX_KEY = '';
+  final MAPBOX_KEY = '';
 
   group('static image', () {
     late var staticImage;
