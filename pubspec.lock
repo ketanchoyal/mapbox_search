@@ -57,15 +57,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0"
-  color:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: null-safety
-      resolved-ref: "36f42e4d8c9a58951ffe5f46d550599d1d072af9"
-      url: "https://github.com/shinayser/Color"
-    source: git
-    version: "2.3.0"
   convert:
     dependency: transitive
     description:
