@@ -1,3 +1,10 @@
+## [3.0.1] - 14 Sep 2021
+- Added [Places type]((https://docs.mapbox.com/api/search/geocoding/#data-types)) to filter Search  [PR #48]
+
+## [3.0.0-nullsafety.0] - 07 Mar 2021
+- Migrate to null safety [Pull Request #43]
+- Removed Color dependency [Pull Request #44]
+
 ## [2.1.0+1] - 04 Mar 2021
 - Updated http dependency (PR #41)
 

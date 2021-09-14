@@ -7,26 +7,34 @@ class PlacesSearch {
   /// Specify the user’s language. This parameter controls the language of the text supplied in responses.
   ///
   /// Check the full list of [supported languages](https://docs.mapbox.com/api/search/#language-coverage) for the MapBox API
-  final String language;
+  final String? language;
 
   ///Limit results to one or more countries. Permitted values are ISO 3166 alpha 2 country codes separated by commas.
   ///
   /// Check the full list of [supported countries](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) for the MapBox API
-  final String country;
+  final String? country;
 
   /// Specify the maximum number of results to return. The default is 5 and the maximum supported is 10.
-  final int limit;
+  final int? limit;
+
+  /// Filter results to include only a subset (one or more) of the available feature types.
+  /// Options are country, region, postcode, district, place, locality, neighborhood, address, and poi.
+  /// Multiple options can be comma-separated.
+  ///
+  /// For more information on the available types, see the [data types section](https://docs.mapbox.com/api/search/geocoding/#data-types).
+  final PlaceType? types;
 
   final String _url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
 
   PlacesSearch({
-    this.apiKey,
+    required this.apiKey,
     this.country,
     this.limit,
     this.language,
-  }) : assert(apiKey != null);
+    this.types,
+  });
 
-  String _createUrl(String queryText, [Location location]) {
+  String _createUrl(String queryText, [Location? location]) {
     String finalUrl = '$_url${Uri.encodeFull(queryText)}.json?';
     finalUrl += 'access_token=$apiKey';
 
@@ -46,17 +54,21 @@ class PlacesSearch {
       finalUrl += "&language=$language";
     }
 
+    if (types != null) {
+      finalUrl += "&types=${types?.value}";
+    }
+
     return finalUrl;
   }
 
-  Future<List<MapBoxPlace>> getPlaces(
+  Future<List<MapBoxPlace>?> getPlaces(
     String queryText, {
-    Location location,
+    Location? location,
   }) async {
     String url = _createUrl(queryText, location);
     final response = await http.get(Uri.parse(url));
 
-    if (response?.body?.contains('message') ?? false) {
+    if (response.body.contains('message')) {
       throw Exception(json.decode(response.body)['message']);
     }
 
