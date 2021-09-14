@@ -25,7 +25,7 @@ class ReverseGeoCoding {
   /// Multiple options can be comma-separated.
   ///
   /// For more information on the available types, see the [data types section](https://docs.mapbox.com/api/search/geocoding/#data-types).
-  final String? types;
+  final PlaceType? types;
 
   final String _url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
 
@@ -36,7 +36,7 @@ class ReverseGeoCoding {
     this.limit,
     this.country,
     this.types,
-  }) ;
+  });
 
   String _createUrl(Location location) {
     String finalUrl = _url +
@@ -63,7 +63,7 @@ class ReverseGeoCoding {
     }
 
     if (types != null) {
-      finalUrl += "&types=$types";
+      finalUrl += "&types=${types?.value}";
     }
 
     return finalUrl;
