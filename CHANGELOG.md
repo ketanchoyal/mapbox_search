@@ -1,5 +1,5 @@
 ## [3.0.1+1] - 14 Sep 2021
-- Hpmepage URL fixed
+- Homepage URL fixed
 
 ## [3.0.1] - 14 Sep 2021
 - Added [Places type]((https://docs.mapbox.com/api/search/geocoding/#data-types)) to filter Search  [PR #48]
@@ -14,7 +14,7 @@
 ## [2.1.0] - 10 Feb 2021
 - Updated dependencies
 - Major missing feature added
-  - Maki Icons can be use now in marker icon
+  - Maki Icons can now be used in marker icon
 
 ## [2.0.1+1] - 02 Oct 2020
 
@@ -45,7 +45,7 @@
 
 - Removed 'flutter' dependency. 
 
-All Flutter code, inclusing 'MapBoxPlaceSearchWidget' has been moved to library 
+All Flutter code, including 'MapBoxPlaceSearchWidget' has been moved to library 
 [mapbox_search_flutter](https://pub.dev/packages/mapbox_search_flutter). Check README for more details.
 
 ## [1.0.7] - 29 January 2020.
@@ -86,5 +86,5 @@ Initial release.
 Feature:
 - Places Search with prediction
 - Static Image with marker
-- Static Image without Marker
+- Static Image without marker
 - Static Image with Polyline path
