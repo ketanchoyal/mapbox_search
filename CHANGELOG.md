@@ -1,5 +1,8 @@
+## [3.0.1+2] - 20 Dec 2021
+- PlaceType enum to string conversion fixed
+
 ## [3.0.1+1] - 14 Sep 2021
-- Hpmepage URL fixed
+- Homepage URL fixed
 
 ## [3.0.1] - 14 Sep 2021
 - Added [Places type]((https://docs.mapbox.com/api/search/geocoding/#data-types)) to filter Search  [PR #48]
