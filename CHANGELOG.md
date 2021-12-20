@@ -1,3 +1,6 @@
+## [3.0.1+2] - 20 Dec 2021
+- PlaceType enum to string conversion fixed
+
 ## [3.0.1+1] - 14 Sep 2021
 - Homepage URL fixed
 
