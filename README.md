@@ -1,4 +1,4 @@
-[![Pub](https://img.shields.io/pub/v/mapbox_search)](https://pub.dev/packages/mapbox_search/versions/2.0.0) 
+[![Pub](https://img.shields.io/pub/v/mapbox_search)](https://pub.dev/packages/mapbox_search) 
 # About
 
 This package provides easy api calls to MapBox Search API. 
