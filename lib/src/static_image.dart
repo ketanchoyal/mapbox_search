@@ -52,9 +52,9 @@ class StaticImage {
 
   StaticImage({
     required this.apiKey,
-  }) : assert(apiKey != null);
+  });
 
-  final int _defaultZoomLevel = 15;
+  final double _defaultZoomLevel = 15;
   final int _defaultWidth = 600;
   final int _defaultHeight = 400;
 
@@ -93,7 +93,7 @@ class StaticImage {
   void _buildParams(
     StringBuffer url, {
     Location? center,
-    int? zoomLevel,
+    double? zoomLevel,
     int? width,
     int? height,
 
@@ -142,7 +142,7 @@ class StaticImage {
 
   String getStaticUrlWithoutMarker(
       {Location? center,
-      int? zoomLevel,
+      double? zoomLevel,
       int? width,
       int? height,
 
@@ -175,7 +175,7 @@ class StaticImage {
 
   String getStaticUrlWithMarker({
     required Location center,
-    int? zoomLevel,
+    double? zoomLevel,
     int? width,
     int? height,
 
@@ -221,7 +221,7 @@ class StaticImage {
   String getStaticUrlWithPolyline({
     required Location point1,
     required Location point2,
-    int? zoomLevel,
+    double? zoomLevel,
     int? width,
     int? height,
     Location? center,
