@@ -52,9 +52,9 @@ class StaticImage {
 
   StaticImage({
     required this.apiKey,
-  }) : assert(apiKey != null);
+  });
 
-  final int _defaultZoomLevel = 15;
+  final double _defaultZoomLevel = 15;
   final int _defaultWidth = 600;
   final int _defaultHeight = 400;
 
@@ -93,7 +93,7 @@ class StaticImage {
   void _buildParams(
     StringBuffer url, {
     Location? center,
-    int? zoomLevel,
+    num? zoomLevel,
     int? width,
     int? height,
 
@@ -112,9 +112,11 @@ class StaticImage {
     if (auto != null && auto) {
       url.write("/auto");
     } else {
+      if (center != null) {
+        url.write("/${center.asString}");
+      }
       url
-        ..write("/${center!.lng},${center.lat},")
-        ..write("${zoomLevel ?? _defaultZoomLevel},")
+        ..write("${zoomLevel?.toDouble() ?? _defaultZoomLevel},")
         ..write("${bearing ?? _defaultBearing},")
         ..write("${pitch ?? _defaultPitch}");
     }
@@ -140,9 +142,13 @@ class StaticImage {
     return url;
   }
 
+  /// When `auto` is set to `true`, the map will adjust automatically to fit the
+  /// provided markers and paths.
+  ///
+  /// If `auto` is `true` then `center`, `zoomLevel`, `bearing`, `pitch` will be ignored.
   String getStaticUrlWithoutMarker(
       {Location? center,
-      int? zoomLevel,
+      num? zoomLevel,
       int? width,
       int? height,
 
@@ -173,9 +179,21 @@ class StaticImage {
     return url.toString();
   }
 
+  /// When `auto` is set to `true`, the map will adjust automatically to fit the
+  /// provided markers and paths.
+  ///
+  /// If `auto` is `true` then `zoomLevel`, `bearing`, `pitch` will be ignored.
+  ///
+  /// [render2x] is used to render the map at 2x scale.
+  ///
+  /// [marker] is used to render a custom marker.
+  ///
+  /// [markerUrl] is used to render a custom marker using a image/marker url.
+  ///
+  /// If both [marker] and [markerUrl] are provided then [marker] will be used.
   String getStaticUrlWithMarker({
     required Location center,
-    int? zoomLevel,
+    num? zoomLevel,
     int? width,
     int? height,
 
@@ -203,10 +221,9 @@ class StaticImage {
         : marker.toString();
     var url = StringBuffer();
     _buildBaseUrl(url, style: style);
-    url.write("/$pinUrl(${center.lng},${center.lat})");
+    url.write("/$pinUrl(${center.asString})");
     _buildParams(url,
         bearing: bearing,
-        center: center,
         height: height,
         pitch: pitch,
         render2x: render2x,
@@ -217,11 +234,23 @@ class StaticImage {
     return url.toString();
   }
 
-  /// # Retrieve a map with two points and a polyline overlay,
+  /// ## Retrieve a map with two points and a polyline overlay,
+  /// When `auto` is set to `true`, the map will adjust automatically to fit the
+  /// provided markers and paths.
+  ///
+  /// If `auto` is `true` then `center`, `zoomLevel`, `pitch` will be ignored.
+  ///
+  /// [render2x] is used to render the map at 2x scale.
+  ///
+  /// [marker1] and [marker2] are used to render a custom markers.
+  ///
+  /// [markerUrl1] and [markerUrl2] are used to render a custom markers using a image/marker url.
+  ///
+  /// If both [marker1] and [markerUrl1] are provided then [marker1] will be used.
   String getStaticUrlWithPolyline({
     required Location point1,
     required Location point2,
-    int? zoomLevel,
+    num? zoomLevel,
     int? width,
     int? height,
     Location? center,
@@ -240,23 +269,28 @@ class StaticImage {
     bool? auto,
 
     ///Custom Marker url
-    String? markerUrl,
+    @Deprecated('Please use `markerUrl1` and  `markerUrl2` instead')
+        String? markerUrl,
     MapBoxPath? path,
     MapBoxMarker? marker1,
+    String? markerUrl1,
     MapBoxMarker? marker2,
+    String? markerUrl2,
   }) {
     String pinUrl1 = marker1 == null
-        ? _generateMarkerLink(markerUrl ?? _defaultMarker.toString())
+        ? _generateMarkerLink(
+            markerUrl1 ?? markerUrl ?? _defaultMarker.toString())
         : marker1.toString();
 
     String pinUrl2 = marker2 == null
-        ? _generateMarkerLink(markerUrl ?? _defaultMarker.toString())
+        ? _generateMarkerLink(
+            markerUrl2 ?? markerUrl ?? _defaultMarker.toString())
         : marker2.toString();
     var url = StringBuffer();
     _buildBaseUrl(url, style: style);
     url
-      ..write("/$pinUrl1(${point1.lng},${point1.lat}),")
-      ..write("$pinUrl2(${point2.lng},${point2.lat}),")
+      ..write("/$pinUrl1(${point1.asString}),")
+      ..write("$pinUrl2(${point2.asString}),")
       ..write("${path ?? _defaultPath}");
 
     _buildParams(url,

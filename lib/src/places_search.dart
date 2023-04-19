@@ -22,9 +22,10 @@ class PlacesSearch {
   /// Multiple options can be comma-separated.
   ///
   /// For more information on the available types, see the [data types section](https://docs.mapbox.com/api/search/geocoding/#data-types).
-  final PlaceType? types;
+  final List<PlaceType>? types;
 
-  final String _url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
+  final Uri _baseUri =
+      Uri.parse('https://api.mapbox.com/geocoding/v5/mapbox.places/');
 
   PlacesSearch({
     required this.apiKey,
@@ -34,39 +35,64 @@ class PlacesSearch {
     this.types,
   });
 
-  String _createUrl(String queryText, [Location? location]) {
-    String finalUrl = '$_url${Uri.encodeFull(queryText)}.json?';
-    finalUrl += 'access_token=$apiKey';
-
-    if (location != null) {
-      finalUrl += '&proximity=${location.lng}%2C${location.lat}';
+  Uri _createUrl(
+    String queryText, [
+    @Deprecated('Use `proximity` instead') Location? location,
+    Proximity proximity = const LocationNone(),
+  ]) {
+    if (proximity is! Location) {
+      proximity = location ?? const LocationNone();
     }
 
-    if (country != null) {
-      finalUrl += "&country=$country";
-    }
+    final finalUri = Uri(
+      scheme: _baseUri.scheme,
+      host: _baseUri.host,
+      path: _baseUri.path + Uri.encodeFull(queryText) + '.json',
+      queryParameters: {
+        'access_token': apiKey,
+        if (proximity is Location) 'proximity': proximity.asString,
+        if (proximity is LocationIp) 'proximity': 'ip',
+        if (country != null) 'country': country,
+        if (limit != null) 'limit': limit.toString(),
+        if (language != null) 'language': language,
+        if (types != null) 'types': types?.map((e) => e.value).join(','),
+      },
+    );
+    return finalUri;
+    // String finalUrl = '$_url${Uri.encodeFull(queryText)}.json?';
+    // finalUrl += 'access_token=$apiKey';
 
-    if (limit != null) {
-      finalUrl += "&limit=$limit";
-    }
+    // if (location != null) {
+    //   finalUrl += '&proximity=${location.lng}%2C${location.lat}';
+    // }
 
-    if (language != null) {
-      finalUrl += "&language=$language";
-    }
+    // if (country != null) {
+    //   finalUrl += "&country=$country";
+    // }
 
-    if (types != null) {
-      finalUrl += "&types=${types?.value}";
-    }
+    // if (limit != null) {
+    //   finalUrl += "&limit=$limit";
+    // }
 
-    return finalUrl;
+    // if (language != null) {
+    //   finalUrl += "&language=$language";
+    // }
+
+    // if (types != null) {
+    //   finalUrl += "&types=${types?.value}";
+    // }
+
+    // return finalUrl;
   }
 
   Future<List<MapBoxPlace>?> getPlaces(
     String queryText, {
-    Location? location,
+    @Deprecated('Use `proximity` instead, if `proximity` value is passed then it will be used and this value will be ignored')
+        Location? location,
+    Proximity proximity = const LocationNone(),
   }) async {
-    String url = _createUrl(queryText, location);
-    final response = await http.get(Uri.parse(url));
+    final uri = _createUrl(queryText, location, proximity);
+    final response = await http.get(uri);
 
     if (response.body.contains('message')) {
       throw Exception(json.decode(response.body)['message']);

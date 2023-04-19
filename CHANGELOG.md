@@ -1,3 +1,9 @@
+## [3.1.0] - 19 April 2023
+- Added Proximity Type to Search (As per MapBox API we can use location or ip address to get the nearest results)
+- Optimized the code and added tests for reverse geocoding class too
+- Fixed some issues regarding static image to use custom markers
+- Changed zoom level to use double instead of int(Fix #61)
+
 ## [3.0.1+2] - 20 Dec 2021
 - PlaceType enum to string conversion fixed
 
