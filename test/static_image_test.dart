@@ -3,12 +3,13 @@ import 'dart:io';
 import 'package:mapbox_search/colors/color.dart';
 import 'package:mapbox_search/mapbox_search.dart';
 import 'package:test/test.dart';
+import 'credentials.dart' as c;
 
-main() {
-  final MAPBOX_KEY = '';
+void main() async {
+  final MAPBOX_KEY = c.MAPBOX_KEY;
 
   group('static image', () {
-    late var staticImage;
+    late StaticImage staticImage;
 
     setUp(() {
       staticImage = StaticImage(apiKey: MAPBOX_KEY);
@@ -28,7 +29,7 @@ main() {
             markerSize: MarkerSize.SMALL),
         height: 300,
         width: 600,
-        zoomLevel: 16,
+        zoomLevel: 15.5,
         style: MapBoxStyle.Dark,
         render2x: true,
         center: Location(lat: 37.766541503617475, lng: -122.44702324243272),
@@ -55,7 +56,7 @@ main() {
             markerSize: MarkerSize.LARGE),
         height: 300,
         width: 600,
-        zoomLevel: 16,
+        zoomLevel: 15.5,
         style: MapBoxStyle.Streets,
         render2x: true,
       );
@@ -63,7 +64,7 @@ main() {
       print(withMarker);
 
       expect(withMarker,
-          "https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-l-p+000000(-122.46589,37.77343)/-122.46589,37.77343,16,0,20/600x300@2x?access_token=$MAPBOX_KEY");
+          "https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-l-p+000000(-122.46589,37.77343)/-122.46589,37.77343,15.5,0,20/600x300@2x?access_token=$MAPBOX_KEY");
 
       var uri = Uri.tryParse(withMarker)!;
       expect(uri, isNotNull);
@@ -85,7 +86,7 @@ main() {
       print(withoutMarker);
 
       expect(withoutMarker,
-          "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/-122.42816,37.75965,16,0,20/600x300@2x?access_token=$MAPBOX_KEY");
+          "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/-122.42816,37.75965,16.0,0,20/600x300@2x?access_token=$MAPBOX_KEY");
 
       var uri = Uri.tryParse(withoutMarker)!;
       expect(uri, isNotNull);

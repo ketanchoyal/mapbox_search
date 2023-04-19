@@ -12,7 +12,11 @@ class ReverseGeoCoding {
   /// The point around which you wish to retrieve place information.
   final Location? location;
 
-  /// Specify the maximum number of results to return. The default is 5 and the maximum supported is 10.
+  /// Specify the maximum number of results to return. Maximum supported is 10.
+  ///
+  /// If limit is not specified, the default is 1(MapBox Api default behaviour).
+  ///
+  /// If you wan to use limit then please just pass only one [PlaceType], this is a known limitiation of the MapBox API
   final int? limit;
 
   ///Limit results to one or more countries. Permitted values are ISO 3166 alpha 2 country codes separated by commas.
@@ -25,9 +29,10 @@ class ReverseGeoCoding {
   /// Multiple options can be comma-separated.
   ///
   /// For more information on the available types, see the [data types section](https://docs.mapbox.com/api/search/geocoding/#data-types).
-  final PlaceType? types;
+  final List<PlaceType> types;
 
-  final String _url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
+  final Uri _baseUri =
+      Uri.parse('https://api.mapbox.com/geocoding/v5/mapbox.places/');
 
   ReverseGeoCoding({
     required this.apiKey,
@@ -35,43 +40,58 @@ class ReverseGeoCoding {
     this.location,
     this.limit,
     this.country,
-    this.types,
+    this.types = const [PlaceType.address],
   });
 
-  String _createUrl(Location location) {
-    String finalUrl = _url +
-        location.lng.toString() +
-        "," +
-        location.lat.toString() +
-        '.json?';
-    finalUrl += 'access_token=$apiKey';
+  Uri _createUrl(Location location) {
+    final finalUri = Uri(
+      scheme: _baseUri.scheme,
+      host: _baseUri.host,
+      path: _baseUri.path + location.asString + '.json',
+      queryParameters: {
+        'access_token': apiKey,
+        if (country != null) 'country': country,
+        if (limit != null) 'limit': limit.toString(),
+        if (language != null) 'language': language,
+        'types': types.map((e) => e.value).join(','),
+      },
+    );
+    // String finalUrl = _url +
+    //     location.lng.toString() +
+    //     "," +
+    //     location.lat.toString() +
+    //     '.json?';
+    // finalUrl += 'access_token=$apiKey';
 
-    if (this.location != null) {
-      finalUrl += '&proximity=${this.location!.lng}%2C${this.location!.lat}';
-    }
+    // if (this.location != null) {
+    //   finalUrl += '&proximity=${this.location!.lng}%2C${this.location!.lat}';
+    // }
 
-    if (limit != null) {
-      finalUrl += '&limit=$limit&types=address';
-    }
+    // if (limit != null) {
+    //   finalUrl += '&limit=$limit&types=address';
+    // }
 
-    if (country != null) {
-      finalUrl += '&country=$country';
-    }
+    // if (country != null) {
+    //   finalUrl += '&country=$country';
+    // }
 
-    if (language != null) {
-      finalUrl += '&language=$language';
-    }
+    // if (language != null) {
+    //   finalUrl += '&language=$language';
+    // }
 
-    if (types != null) {
-      finalUrl += "&types=${types?.value}";
-    }
+    // if (types != null) {
+    //   finalUrl += "&types=${types?.value}";
+    // }
 
-    return finalUrl;
+    return finalUri;
   }
 
   Future<List<MapBoxPlace>?> getAddress(Location location) async {
-    String url = _createUrl(location);
-    final response = await http.get(Uri.parse(url));
+    // Assert that if limit is not null then only one type is passed
+    assert(limit != null && (types.length == 1) || limit == null,
+        'Limit is not null so you can only pass one type');
+    Uri uri = _createUrl(location);
+    final response = await http.get(uri);
 
     if (response.body.contains('message')) {
       throw Exception(json.decode(response.body)['message']);
