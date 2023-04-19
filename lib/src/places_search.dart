@@ -37,13 +37,8 @@ class PlacesSearch {
 
   Uri _createUrl(
     String queryText, [
-    @Deprecated('Use `proximity` instead') Location? location,
     Proximity proximity = const LocationNone(),
   ]) {
-    if (proximity is! Location) {
-      proximity = location ?? const LocationNone();
-    }
-
     final finalUri = Uri(
       scheme: _baseUri.scheme,
       host: _baseUri.host,
@@ -91,7 +86,10 @@ class PlacesSearch {
         Location? location,
     Proximity proximity = const LocationNone(),
   }) async {
-    final uri = _createUrl(queryText, location, proximity);
+    if (proximity is! Location) {
+      proximity = location ?? const LocationNone();
+    }
+    final uri = _createUrl(queryText, proximity);
     final response = await http.get(uri);
 
     if (response.body.contains('message')) {
