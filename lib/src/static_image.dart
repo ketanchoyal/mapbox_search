@@ -113,7 +113,7 @@ class StaticImage {
       url.write("/auto");
     } else {
       if (center != null) {
-        url.write("/${center.asString}");
+        url.write("/${center.asString},");
       }
       url
         ..write("${zoomLevel?.toDouble() ?? _defaultZoomLevel},")
@@ -226,6 +226,7 @@ class StaticImage {
         bearing: bearing,
         height: height,
         pitch: pitch,
+        center: center,
         render2x: render2x,
         width: width,
         zoomLevel: zoomLevel,

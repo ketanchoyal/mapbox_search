@@ -33,7 +33,7 @@ var reverseGeoCoding = ReverseGeoCoding(
     limit: 5,
 );
 
-Future<List<MapBoxPlace>> getPlaces() =>
+Future<List<MapBoxPlace>> geAddress() =>
   reverseGeoCoding.getAddress(
     Location(lat: 72.0, lng: 76.00),
 );

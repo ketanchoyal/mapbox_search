@@ -36,7 +36,7 @@ void main() async {
         auto: true,
       );
 
-      print(polyline);
+      // print(polyline);
 
       expect(polyline,
           "https://api.mapbox.com/styles/v1/mapbox/dark-v10/static/pin-l-aerialway+000000(-122.46589,37.77343),pin-s-q+f44336(-122.42816,37.75965),path-5+723436-0.5(%7DrpeFxbnjVsFwdAvr@cHgFor@jEmAlFmEMwM_FuItCkOi@wc@bg@wBSgM)/auto/600x300@2x?access_token=$MAPBOX_KEY");
@@ -61,7 +61,7 @@ void main() async {
         render2x: true,
       );
 
-      print(withMarker);
+      // print(withMarker);
 
       expect(withMarker,
           "https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-l-p+000000(-122.46589,37.77343)/-122.46589,37.77343,15.5,0,20/600x300@2x?access_token=$MAPBOX_KEY");
@@ -83,7 +83,7 @@ void main() async {
         render2x: true,
       );
 
-      print(withoutMarker);
+      // print(withoutMarker);
 
       expect(withoutMarker,
           "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/-122.42816,37.75965,16.0,0,20/600x300@2x?access_token=$MAPBOX_KEY");
