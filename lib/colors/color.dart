@@ -50,7 +50,8 @@ abstract class Color {
     return 256 * 256 * rgb.r.toInt() + 256 * rgb.g.toInt() + rgb.b.toInt();
   }
 
-  operator ==(Object other) => other is Color && this.hashCode == other.hashCode;
+  operator ==(Object other) =>
+      other is Color && this.hashCode == other.hashCode;
 
   operator [](String key) => this.toMap()[key];
 
