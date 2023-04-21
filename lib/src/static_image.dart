@@ -1,51 +1,63 @@
 part of mapbox_search;
 
 enum MapBoxStyle {
-  Light,
-  Dark,
-  Streets,
-  Outdoors,
-  Satellite_V9,
-  Satellite_Street_V11,
+  Light("light-v10"),
+  Dark("dark-v10"),
+  Streets("streets-v11"),
+  Outdoors("outdoors-v11"),
+  Satellite_V9("satellite-v9"),
+  Satellite_Street_V11("satellite-streets-v11");
+
+  const MapBoxStyle(this.value);
+
+  final String value;
 }
 
-extension MapBoxStyleHelper on MapBoxStyle {
-  String get value {
-    switch (this) {
-      case MapBoxStyle.Light:
-        return 'light-v10';
-      case MapBoxStyle.Dark:
-        return 'dark-v10';
-      case MapBoxStyle.Streets:
-        return 'streets-v11';
-      case MapBoxStyle.Outdoors:
-        return 'outdoors-v11';
-      case MapBoxStyle.Satellite_V9:
-        return 'satellite-v9';
-      case MapBoxStyle.Satellite_Street_V11:
-        return 'satellite-streets-v11';
-      default:
-        return 'light-v10';
-    }
-  }
+// extension MapBoxStyleHelper on MapBoxStyle {
+//   String get value {
+//     switch (this) {
+//       case MapBoxStyle.Light:
+//         return 'light-v10';
+//       case MapBoxStyle.Dark:
+//         return 'dark-v10';
+//       case MapBoxStyle.Streets:
+//         return 'streets-v11';
+//       case MapBoxStyle.Outdoors:
+//         return 'outdoors-v11';
+//       case MapBoxStyle.Satellite_V9:
+//         return 'satellite-v9';
+//       case MapBoxStyle.Satellite_Street_V11:
+//         return 'satellite-streets-v11';
+//       default:
+//         return 'light-v10';
+//     }
+//   }
+// }
+
+enum MarkerSize {
+  SMALL('s'),
+  MEDIUM('m'),
+  LARGE('l');
+
+  const MarkerSize(this.value);
+
+  final String value;
 }
 
-enum MarkerSize { SMALL, MEDIUM, LARGE }
-
-extension MarkerSizeHelper on MarkerSize {
-  String get value {
-    switch (this) {
-      case MarkerSize.SMALL:
-        return 's';
-      case MarkerSize.MEDIUM:
-        return 'm';
-      case MarkerSize.LARGE:
-        return 'l';
-      default:
-        return 'm';
-    }
-  }
-}
+// extension MarkerSizeHelper on MarkerSize {
+//   String get value {
+//     switch (this) {
+//       case MarkerSize.SMALL:
+//         return 's';
+//       case MarkerSize.MEDIUM:
+//         return 'm';
+//       case MarkerSize.LARGE:
+//         return 'l';
+//       default:
+//         return 'm';
+//     }
+//   }
+// }
 
 class StaticImage {
   final String apiKey;
@@ -85,13 +97,13 @@ class StaticImage {
     pathPolyline: "%7DrpeFxbnjVsFwdAvr@cHgFor@jEmAlFmEMwM_FuItCkOi@wc@bg@wBSgM",
   );
 
-  void _buildBaseUrl(StringBuffer url, {MapBoxStyle? style}) {
-    url.write(
+  Uri _buildBaseUri({MapBoxStyle? style}) {
+    return Uri.parse(
         "https://api.mapbox.com/styles/v1/mapbox/${(style ?? _defaultMapStyle).value}/static");
   }
 
-  void _buildParams(
-    StringBuffer url, {
+  Uri _buildParams(
+    Uri uri, {
     Location? center,
     num? zoomLevel,
     int? width,
@@ -110,24 +122,31 @@ class StaticImage {
     bool? auto = false,
   }) {
     if (auto != null && auto) {
-      url.write("/auto");
+      uri = uri.replace(path: uri.path + "/auto");
     } else {
       if (center != null) {
-        url.write("/${center.asString},");
+        uri = uri.replace(path: uri.path + "/${center.asString},");
       }
-      url
-        ..write("${zoomLevel?.toDouble() ?? _defaultZoomLevel},")
-        ..write("${bearing ?? _defaultBearing},")
-        ..write("${pitch ?? _defaultPitch}");
+      uri = uri.replace(
+          path: uri.path +
+              "${zoomLevel?.toDouble() ?? _defaultZoomLevel}," +
+              "${bearing ?? _defaultBearing}," +
+              "${pitch ?? _defaultPitch}");
     }
-    url
-      ..write("/${width ?? _defaultWidth}x${height ?? _defaultHeight}")
-      ..write("${render2x ?? _defaultRender2x ? _render2x : _empty}")
-      ..write("?access_token=$apiKey");
+    uri = uri.replace(
+        path: uri.path +
+            "/${width ?? _defaultWidth}x${height ?? _defaultHeight}" +
+            "${render2x ?? _defaultRender2x ? _render2x : _empty}");
+    // url.write("?access_token=$apiKey");
+    uri = uri.replace(queryParameters: {"access_token": apiKey});
+
+    return uri;
   }
 
   String _generateMarkerLink(String url) {
     if (!url.contains('http')) {
+      print("Invalid marker url: $url");
+      print("Using default marker");
       return _defaultMarker.toString();
     }
 
@@ -146,7 +165,7 @@ class StaticImage {
   /// provided markers and paths.
   ///
   /// If `auto` is `true` then `center`, `zoomLevel`, `bearing`, `pitch` will be ignored.
-  String getStaticUrlWithoutMarker(
+  Uri getStaticUrlWithoutMarker(
       {Location? center,
       num? zoomLevel,
       int? width,
@@ -164,9 +183,8 @@ class StaticImage {
 
       /// ignore all customization and adjust map automatically
       bool? auto}) {
-    var url = StringBuffer();
-    _buildBaseUrl(url, style: style);
-    _buildParams(url,
+    Uri uri = _buildBaseUri(style: style);
+    uri = _buildParams(uri,
         bearing: bearing,
         center: center,
         height: height,
@@ -176,7 +194,7 @@ class StaticImage {
         zoomLevel: zoomLevel,
         auto: auto);
 
-    return url.toString();
+    return uri;
   }
 
   /// When `auto` is set to `true`, the map will adjust automatically to fit the
@@ -191,7 +209,7 @@ class StaticImage {
   /// [markerUrl] is used to render a custom marker using a image/marker url.
   ///
   /// If both [marker] and [markerUrl] are provided then [marker] will be used.
-  String getStaticUrlWithMarker({
+  Uri getStaticUrlWithMarker({
     required Location center,
     num? zoomLevel,
     int? width,
@@ -219,10 +237,10 @@ class StaticImage {
     String pinUrl = marker == null
         ? _generateMarkerLink(markerUrl ?? _defaultMarker.toString())
         : marker.toString();
-    var url = StringBuffer();
-    _buildBaseUrl(url, style: style);
-    url.write("/$pinUrl(${center.asString})");
-    _buildParams(url,
+
+    Uri uri = _buildBaseUri(style: style);
+    uri = uri.replace(path: uri.path + "/$pinUrl(${center.asString})");
+    uri = _buildParams(uri,
         bearing: bearing,
         height: height,
         pitch: pitch,
@@ -232,7 +250,7 @@ class StaticImage {
         zoomLevel: zoomLevel,
         auto: auto);
 
-    return url.toString();
+    return uri;
   }
 
   /// ## Retrieve a map with two points and a polyline overlay,
@@ -248,7 +266,7 @@ class StaticImage {
   /// [markerUrl1] and [markerUrl2] are used to render a custom markers using a image/marker url.
   ///
   /// If both [marker1] and [markerUrl1] are provided then [marker1] will be used.
-  String getStaticUrlWithPolyline({
+  Uri getStaticUrlWithPolyline({
     required Location point1,
     required Location point2,
     num? zoomLevel,
@@ -287,14 +305,14 @@ class StaticImage {
         ? _generateMarkerLink(
             markerUrl2 ?? markerUrl ?? _defaultMarker.toString())
         : marker2.toString();
-    var url = StringBuffer();
-    _buildBaseUrl(url, style: style);
-    url
-      ..write("/$pinUrl1(${point1.asString}),")
-      ..write("$pinUrl2(${point2.asString}),")
-      ..write("${path ?? _defaultPath}");
 
-    _buildParams(url,
+    Uri uri = _buildBaseUri(style: style);
+
+    uri = uri.replace(
+        path: uri.path +
+            "/$pinUrl1(${point1.asString}),$pinUrl2(${point2.asString}),${path ?? _defaultPath}");
+
+    uri = _buildParams(uri,
         bearing: bearing,
         center: center,
         height: height,
@@ -304,7 +322,7 @@ class StaticImage {
         zoomLevel: zoomLevel,
         auto: auto);
 
-    return url.toString();
+    return uri;
   }
 }
 

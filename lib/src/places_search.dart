@@ -17,6 +17,9 @@ class PlacesSearch {
   /// Specify the maximum number of results to return. The default is 5 and the maximum supported is 10.
   final int? limit;
 
+  /// Limit results to only those contained within the supplied bounding box.
+  final BBox? bbox;
+
   /// Filter results to include only a subset (one or more) of the available feature types.
   /// Options are country, region, postcode, district, place, locality, neighborhood, address, and poi.
   /// Multiple options can be comma-separated.
@@ -33,6 +36,7 @@ class PlacesSearch {
     this.limit,
     this.language,
     this.types,
+    this.bbox,
   });
 
   Uri _createUrl(
@@ -51,33 +55,10 @@ class PlacesSearch {
         if (limit != null) 'limit': limit.toString(),
         if (language != null) 'language': language,
         if (types != null) 'types': types?.map((e) => e.value).join(','),
+        if (bbox != null) 'bbox': bbox?.asString,
       },
     );
     return finalUri;
-    // String finalUrl = '$_url${Uri.encodeFull(queryText)}.json?';
-    // finalUrl += 'access_token=$apiKey';
-
-    // if (location != null) {
-    //   finalUrl += '&proximity=${location.lng}%2C${location.lat}';
-    // }
-
-    // if (country != null) {
-    //   finalUrl += "&country=$country";
-    // }
-
-    // if (limit != null) {
-    //   finalUrl += "&limit=$limit";
-    // }
-
-    // if (language != null) {
-    //   finalUrl += "&language=$language";
-    // }
-
-    // if (types != null) {
-    //   finalUrl += "&types=${types?.value}";
-    // }
-
-    // return finalUrl;
   }
 
   Future<List<MapBoxPlace>?> getPlaces(
@@ -97,5 +78,23 @@ class PlacesSearch {
     }
 
     return Predictions.fromRawJson(response.body).features;
+  }
+
+  PlacesSearch copyWith({
+    String? apiKey,
+    String? language,
+    String? country,
+    int? limit,
+    BBox? bbox,
+    List<PlaceType>? types,
+  }) {
+    return PlacesSearch(
+      apiKey: apiKey ?? this.apiKey,
+      language: language ?? this.language,
+      country: country ?? this.country,
+      limit: limit ?? this.limit,
+      bbox: bbox ?? this.bbox,
+      types: types ?? this.types,
+    );
   }
 }
