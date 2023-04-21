@@ -11,10 +11,11 @@ class ColorFilter {
   /**
    * Makes the color lighter by the percentage specified in the first argument, or by 10% if no percentage is specified. Percentages should be specified as a float, e.g. an argument of 0.25 will result in a color 25% lighter than the original. The lightening conversion is performed by adjusting the y component of the color in XYZ color space.
    */
-  static ColorFilter lighten = new ColorFilter((Color inputColor, [List? args]) {
+  static ColorFilter lighten =
+      new ColorFilter((Color inputColor, [List? args]) {
     CielabColor color = inputColor.toCielabColor();
     num percent = 0.1;
-    if (args is List && args.length > 0 && args[0] is num) {
+    if (args is List && args.isNotEmpty && args[0] is num) {
       percent = args[0];
     }
     return new CielabColor(color.l * (1 + percent), color.a, color.b);
@@ -37,15 +38,21 @@ class ColorFilter {
    */
   static ColorFilter sepia = new ColorFilter((Color baseColor, [List? args]) {
     RgbColor color = baseColor.toRgbColor();
-    return new RgbColor(min(RgbColor.rMax, (color.r * 0.393 + color.g * 0.769 + color.b * 0.189)),
-        min(RgbColor.gMax, (color.r * 0.349 + color.g * 0.686 + color.b * 0.168)),
-        min(RgbColor.bMax, (color.r * 0.272 + color.g * 0.534 + color.b * 0.131))).toCielabColor();
+    return new RgbColor(
+            min(RgbColor.rMax,
+                (color.r * 0.393 + color.g * 0.769 + color.b * 0.189)),
+            min(RgbColor.gMax,
+                (color.r * 0.349 + color.g * 0.686 + color.b * 0.168)),
+            min(RgbColor.bMax,
+                (color.r * 0.272 + color.g * 0.534 + color.b * 0.131)))
+        .toCielabColor();
   }, RgbColor);
 
   /**
    * Creates a greyscale color with the same perceived luminance as the source color (as given by the L* value of the color in the CieLAB color space).
    */
-  static ColorFilter greyscale = new ColorFilter((Color inputColor, [List? args]) {
+  static ColorFilter greyscale =
+      new ColorFilter((Color inputColor, [List? args]) {
     CielabColor color = inputColor.toCielabColor();
     num rgbLevel = color.l * 255 / 100;
     return new RgbColor(rgbLevel, rgbLevel, rgbLevel).toCielabColor();
