@@ -56,32 +56,6 @@ class ReverseGeoCoding {
         'types': types.map((e) => e.value).join(','),
       },
     );
-    // String finalUrl = _url +
-    //     location.lng.toString() +
-    //     "," +
-    //     location.lat.toString() +
-    //     '.json?';
-    // finalUrl += 'access_token=$apiKey';
-
-    // if (this.location != null) {
-    //   finalUrl += '&proximity=${this.location!.lng}%2C${this.location!.lat}';
-    // }
-
-    // if (limit != null) {
-    //   finalUrl += '&limit=$limit&types=address';
-    // }
-
-    // if (country != null) {
-    //   finalUrl += '&country=$country';
-    // }
-
-    // if (language != null) {
-    //   finalUrl += '&language=$language';
-    // }
-
-    // if (types != null) {
-    //   finalUrl += "&types=${types?.value}";
-    // }
 
     return finalUri;
   }

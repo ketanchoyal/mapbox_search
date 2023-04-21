@@ -1,3 +1,6 @@
+# [3.2.0] - 21 April 2023
+- Added BBox in Forward Geododing API (As per MapBox API we can use BBox to get the results in a specific area)
+
 ## [3.1.1] - 21 April 2023
 - Fixed Static Image URL generation issue
 

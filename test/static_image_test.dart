@@ -16,7 +16,7 @@ void main() async {
     });
 
     test('polyline', () async {
-      var polyline = staticImage.getStaticUrlWithPolyline(
+      var polylineUri = staticImage.getStaticUrlWithPolyline(
         point1: Location(lat: 37.77343, lng: -122.46589),
         point2: Location(lat: 37.75965, lng: -122.42816),
         marker1: MapBoxMarker(
@@ -36,19 +36,20 @@ void main() async {
         auto: true,
       );
 
-      // print(polyline);
+      // print(polylineUri);
 
-      expect(polyline,
-          "https://api.mapbox.com/styles/v1/mapbox/dark-v10/static/pin-l-aerialway+000000(-122.46589,37.77343),pin-s-q+f44336(-122.42816,37.75965),path-5+723436-0.5(%7DrpeFxbnjVsFwdAvr@cHgFor@jEmAlFmEMwM_FuItCkOi@wc@bg@wBSgM)/auto/600x300@2x?access_token=$MAPBOX_KEY");
-      var uri = Uri.tryParse(polyline)!;
-      expect(uri, isNotNull);
+      expect(
+          polylineUri,
+          Uri.parse(
+              "https://api.mapbox.com/styles/v1/mapbox/dark-v10/static/pin-l-aerialway+000000(-122.46589,37.77343),pin-s-q+f44336(-122.42816,37.75965),path-5+723436-0.5(%7DrpeFxbnjVsFwdAvr@cHgFor@jEmAlFmEMwM_FuItCkOi@wc@bg@wBSgM)/auto/600x300@2x?access_token=$MAPBOX_KEY"));
+      expect(polylineUri, isNotNull);
 
-      var req = await HttpClient().getUrl(uri);
+      var req = await HttpClient().getUrl(polylineUri);
       var resp = await req.close();
       expect(resp.statusCode, 200);
     });
     test('with Marker', () async {
-      var withMarker = staticImage.getStaticUrlWithMarker(
+      var uriWithMarker = staticImage.getStaticUrlWithMarker(
         center: Location(lat: 37.77343, lng: -122.46589),
         marker: MapBoxMarker(
             markerColor: Color.rgb(0, 0, 0) as RgbColor,
@@ -63,18 +64,19 @@ void main() async {
 
       // print(withMarker);
 
-      expect(withMarker,
-          "https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-l-p+000000(-122.46589,37.77343)/-122.46589,37.77343,15.5,0,20/600x300@2x?access_token=$MAPBOX_KEY");
+      expect(
+          uriWithMarker,
+          Uri.parse(
+              "https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-l-p+000000(-122.46589,37.77343)/-122.46589,37.77343,15.5,0,20/600x300@2x?access_token=$MAPBOX_KEY"));
 
-      var uri = Uri.tryParse(withMarker)!;
-      expect(uri, isNotNull);
+      expect(uriWithMarker, isNotNull);
 
-      var req = await HttpClient().getUrl(uri);
+      var req = await HttpClient().getUrl(uriWithMarker);
       var resp = await req.close();
       expect(resp.statusCode, 200);
     });
     test('without Marker', () async {
-      var withoutMarker = staticImage.getStaticUrlWithoutMarker(
+      var uriWithoutMarker = staticImage.getStaticUrlWithoutMarker(
         center: Location(lat: 37.75965, lng: -122.42816),
         height: 300,
         width: 600,
@@ -85,13 +87,14 @@ void main() async {
 
       // print(withoutMarker);
 
-      expect(withoutMarker,
-          "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/-122.42816,37.75965,16.0,0,20/600x300@2x?access_token=$MAPBOX_KEY");
+      expect(
+          uriWithoutMarker,
+          Uri.parse(
+              "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/static/-122.42816,37.75965,16.0,0,20/600x300@2x?access_token=$MAPBOX_KEY"));
 
-      var uri = Uri.tryParse(withoutMarker)!;
-      expect(uri, isNotNull);
+      expect(uriWithoutMarker, isNotNull);
 
-      var req = await HttpClient().getUrl(uri);
+      var req = await HttpClient().getUrl(uriWithoutMarker);
       var resp = await req.close();
       expect(resp.statusCode, 200);
     });
