@@ -1,3 +1,6 @@
+## [3.1.1] - 21 April 2023
+- Fixed Static Image URL generation issue
+
 ## [3.1.0] - 19 April 2023
 - Added Proximity Type to Search (As per MapBox API we can use location or ip address to get the nearest results)
 - Optimized the code and added tests for reverse geocoding class too
