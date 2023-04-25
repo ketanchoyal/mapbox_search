@@ -10,15 +10,15 @@ void main() async {
     expect(MAPBOX_KEY, isNotEmpty);
   });
 
-  test("Places search test", () async {
-    PlacesSearch search = PlacesSearch(
+  test("Forward GeoCoding Test", () async {
+    GeoCoding geocoding = GeoCoding(
       apiKey: MAPBOX_KEY,
       country: "BR",
       limit: 5,
       types: [PlaceType.address, PlaceType.place],
     );
 
-    var searchPlace = search.getPlaces(
+    var searchPlace = geocoding.getPlaces(
       "central park",
       proximity: Location(
         lat: -19.984634,

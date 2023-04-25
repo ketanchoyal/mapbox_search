@@ -1,9 +1,14 @@
 [![Pub](https://img.shields.io/pub/v/mapbox_search)](https://pub.dev/packages/mapbox_search/versions/2.0.0) 
 # About
 
+## Note: Breaking Changes in 4.x.x
+
+- PlaceSearch and ReverseGeoCoding classes are now merged into one class called GeoCoding with two methods `getPlaces` and `getAddress` since both of them are using the same API.
+- MapBox's new [SearchBox API](https://docs.mapbox.com/api/search/search-box/) is added to the package.
+
 This package provides easy api calls to MapBox Search API. 
 
-Also, it contains an static map image generator 😆.
+Also, it contains an static map image generator.
 
 [Maki Icons](https://labs.mapbox.com/maki-icons/) can be used now in marker icon
 
@@ -26,9 +31,36 @@ Then, add the following to your `pubspec.yaml` file:
 
 # Examples
 
+### SearchBox API
+```dart
+SearchBoxAPI search = SearchBoxAPI(
+      apiKey: MAPBOX_KEY,
+      limit: 6,
+);
+```
+  ##### Get Suggestions
+  ```dart
+  SuggestionResponse searchPlace = await search.getSuggestions(
+      "central",
+    );
+  ```
+
+  ##### Get mapbox_id
+  - From SuggestionResponse
+  ```dart
+  String mapboxId = searchPlace.suggestions[0].mapboxId;
+  ```
+
+  ##### Get Place Details
+  ```dart
+  RetrieveResonse searchPlace = await search.getPlace(mapboxId);
+  ```
+
+
+
 ### Reverse GeoCoding
 ```dart
-var reverseGeoCoding = ReverseGeoCoding(
+var reverseGeoCoding = GeoCoding(
     apiKey: 'API Key',
     limit: 5,
 );
@@ -38,16 +70,24 @@ Future<List<MapBoxPlace>> geAddress() =>
     Location(lat: 72.0, lng: 76.00),
 );
 ```
-    
-### Places Seach
+
+### Forward GeoCoding Seach
 ```dart
-var placesSearch = PlacesSearch(
+var geocoding = GeoCoding(
     apiKey: 'API Key',
+    country: "BR",
     limit: 5,
+    types: [PlaceType.address, PlaceType.place],
 );
 
 Future<List<MapBoxPlace>> getPlaces() =>
-  placesSearch.getPlaces("New York");
+  geocoding.getPlaces(
+      "central park",
+      proximity: Location(
+        lat: -19.984634,
+        lng: -43.9502958,
+      ),
+    );
 ```
 
 ### Static Image
@@ -108,8 +148,3 @@ String getStaticImageWithoutMarker() => staticImage.getStaticUrlWithoutMarker(
 
 <img src="https://github.com/ketanchoyal/mapbox_search/raw/dev/Screenshots/staticImages.png" alt="Static Map Image"/>
 
-## Search Widget
-
-<img src="https://github.com/ketanchoyal/mapbox_search/raw/dev/Screenshots/search2.png" alt="Demo"/>
-
-<img src="https://github.com/ketanchoyal/mapbox_search/raw/dev/Screenshots/search1.png" alt="Demo"/>

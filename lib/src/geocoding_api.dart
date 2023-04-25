@@ -1,6 +1,10 @@
 part of mapbox_search;
 
-class PlacesSearch {
+/// The MapBox Geocoding API lets you convert location text into geographic coordinates (1600 Pennsylvania Ave NW → -77.0366,38.8971)
+/// and vice versa (reverse geocoding).
+///
+/// https://docs.mapbox.com/api/search/geocoding/
+class GeoCoding {
   /// API Key of the MapBox.
   final String apiKey;
 
@@ -25,17 +29,17 @@ class PlacesSearch {
   /// Multiple options can be comma-separated.
   ///
   /// For more information on the available types, see the [data types section](https://docs.mapbox.com/api/search/geocoding/#data-types).
-  final List<PlaceType>? types;
+  final List<PlaceType> types;
 
   final Uri _baseUri =
       Uri.parse('https://api.mapbox.com/geocoding/v5/mapbox.places/');
 
-  PlacesSearch({
+  GeoCoding({
     required this.apiKey,
     this.country,
     this.limit,
     this.language,
-    this.types,
+    this.types = const [PlaceType.address],
     this.bbox,
   });
 
@@ -54,13 +58,14 @@ class PlacesSearch {
         if (country != null) 'country': country,
         if (limit != null) 'limit': limit.toString(),
         if (language != null) 'language': language,
-        if (types != null) 'types': types?.map((e) => e.value).join(','),
+        if (types.isNotEmpty) 'types': types.map((e) => e.value).join(','),
         if (bbox != null) 'bbox': bbox?.asString,
       },
     );
     return finalUri;
   }
 
+  /// Get the places for the given query text
   Future<List<MapBoxPlace>?> getPlaces(
     String queryText, {
     @Deprecated('Use `proximity` instead, if `proximity` value is passed then it will be used and this value will be ignored')
@@ -80,7 +85,22 @@ class PlacesSearch {
     return Predictions.fromRawJson(response.body).features;
   }
 
-  PlacesSearch copyWith({
+  /// Get the address of the given location coordinates
+  Future<List<MapBoxPlace>?> getAddress(Location location) async {
+    // Assert that if limit is not null then only one type is passed
+    assert(limit != null && (types.length == 1) || limit == null,
+        'Limit is not null so you can only pass one type');
+    Uri uri = _createUrl(location.asString);
+    final response = await http.get(uri);
+
+    if (response.body.contains('message')) {
+      throw Exception(json.decode(response.body)['message']);
+    }
+
+    return Predictions.fromRawJson(response.body).features;
+  }
+
+  GeoCoding copyWith({
     String? apiKey,
     String? language,
     String? country,
@@ -88,7 +108,7 @@ class PlacesSearch {
     BBox? bbox,
     List<PlaceType>? types,
   }) {
-    return PlacesSearch(
+    return GeoCoding(
       apiKey: apiKey ?? this.apiKey,
       language: language ?? this.language,
       country: country ?? this.country,
