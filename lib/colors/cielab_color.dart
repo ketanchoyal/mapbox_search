@@ -1,5 +1,6 @@
 part of color;
 
+/// A color in the CIELAB color space.
 class CielabColor extends Color {
   final num l;
   final num a;
@@ -12,10 +13,13 @@ class CielabColor extends Color {
     return xyz.toRgbColor();
   }
 
+  /// Converts the color to HSL color space.
   HslColor toHslColor() => this.toRgbColor().toHslColor();
 
+  /// Converts the color to HSV color space.
   HsvColor toHsvColor() => this.toRgbColor().toHsvColor();
 
+  /// Converts the color to XYZ color space.
   XyzColor toXyzColor() {
     Map<String, num> xyz = {
       'x': a / 500 + (l + 16) / 116,
@@ -36,6 +40,7 @@ class CielabColor extends Color {
     return XyzColor(xyz['x']!, xyz['y']!, xyz['z']!);
   }
 
+  // Returns a CielabColor with the same color values as this Color.
   CielabColor toCielabColor() => this;
 
   String toString() => "l: $l, a: $a, b: $b";

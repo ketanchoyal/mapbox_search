@@ -1,3 +1,11 @@
+# [4.0.0-beta.1] - 25 April 2023
+## Breaking Changes
+- PlaceSearch and ReverseGeoCoding classes are now merged into one class called GeoCoding with two methods `getPlaces` and `getAddress` since both of them are using the same API.
+
+## New Features
+- MapBox's new [SearchBox API](https://docs.mapbox.com/api/search/search-box/) is added to the package.
+- Overal code refactoring
+
 # [3.2.0] - 21 April 2023
 - Added BBox in Forward Geododing API (As per MapBox API we can use BBox to get the results in a specific area)
 
