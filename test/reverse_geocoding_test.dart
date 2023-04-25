@@ -11,7 +11,7 @@ void main() async {
   });
 
   test("ReverseGeoCoding address search with limit test", () async {
-    ReverseGeoCoding reverseGeoCoding = ReverseGeoCoding(
+    GeoCoding reverseGeoCoding = GeoCoding(
       apiKey: MAPBOX_KEY,
       country: "BR",
       limit: 2,
@@ -29,7 +29,7 @@ void main() async {
     expect(addresses, completion(hasLength(2)));
   });
   test("ReverseGeoCoding address search without limit test", () async {
-    ReverseGeoCoding reverseGeoCoding = ReverseGeoCoding(
+    GeoCoding reverseGeoCoding = GeoCoding(
       apiKey: MAPBOX_KEY,
       country: "BR",
       types: [PlaceType.address, PlaceType.place],

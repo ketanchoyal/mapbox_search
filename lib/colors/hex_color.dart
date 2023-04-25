@@ -1,7 +1,6 @@
 part of color;
 
 class HexColor extends RgbColor implements CssColorSpace {
-
   /**
    * Creates a [HexColor] using a [String] describing its RGB value in hex.
    *
