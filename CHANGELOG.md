@@ -1,3 +1,7 @@
+# [4.0.0-beta.2] - 15 May 2023
+- Fixed Parsing issue for Search Results
+- Added maki_icons to enum_generating script to keepup with new icons
+
 # [4.0.0-beta.1] - 25 April 2023
 ## Breaking Changes
 - PlaceSearch and ReverseGeoCoding classes are now merged into one class called GeoCoding with two methods `getPlaces` and `getAddress` since both of them are using the same API.

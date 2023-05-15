@@ -55,8 +55,8 @@ class Suggestion {
   final String? namePreferred;
   final String mapboxId;
   final String featureType;
-  final String address;
-  final String fullAddress;
+  final String? address;
+  final String? fullAddress;
   final String placeFormatted;
   final Context context;
   final String language;
