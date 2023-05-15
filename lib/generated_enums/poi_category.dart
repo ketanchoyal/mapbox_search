@@ -1,5 +1,7 @@
 /// This file is auto-generated. Do not modify it manually.
 
+part of mapbox_search;
+
 enum POICategory {
   advertisingAgency('advertising_agency'),
   africanRestaurant('african_restaurant'),
