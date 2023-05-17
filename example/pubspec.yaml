@@ -6,7 +6,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 homepage: https://github.com/ketanchoyal/mapbox_search
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ">=3.0.0"
 
 dependencies:
   mapbox_search:

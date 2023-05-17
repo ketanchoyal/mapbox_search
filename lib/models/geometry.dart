@@ -6,17 +6,22 @@ class Geometry {
     required this.type,
   });
 
-  final List<double> coordinates;
+  // final List<double> coordinates;
   final String type;
+  final ({double long, double lat}) coordinates;
+
+  // (long: coordinates[0], lat: coordinates[1]);
 
   factory Geometry.fromJson(Map<String, dynamic> json) => Geometry(
-        coordinates:
-            List<double>.from(json["coordinates"].map((x) => x?.toDouble())),
+        coordinates: (
+          long: json["coordinates"][0],
+          lat: json["coordinates"][1],
+        ),
         type: json["type"],
       );
 
   Map<String, dynamic> toJson() => {
-        "coordinates": List<dynamic>.from(coordinates.map((x) => x)),
+        "coordinates": [coordinates.long, coordinates.lat],
         "type": type,
       };
 }
