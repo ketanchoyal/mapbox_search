@@ -83,8 +83,8 @@ class RetrieveProperties {
   final String fullAddress;
   final String placeFormatted;
   final Context context;
-  final Coordinates coordinates;
-  final List<double> bbox;
+  final Location coordinates;
+  final BBox bbox;
   final String language;
   final String maki;
   final ExternalIds externalIds;
@@ -99,8 +99,12 @@ class RetrieveProperties {
         fullAddress: json["full_address"],
         placeFormatted: json["place_formatted"],
         context: Context.fromJson(json["context"]),
-        coordinates: Coordinates.fromJson(json["coordinates"]),
-        bbox: List<double>.from(json["bbox"].map((x) => x?.toDouble())),
+        // coordinates: Coordinates.fromJson(json["coordinates"]),
+        coordinates: (
+          long: json['coordinates']['longitude'],
+          lat: json['coordinates']['latitude']
+        ),
+        bbox: BBox.fromList(json["bbox"].map((x) => x.toDouble()).toList()),
         language: json["language"],
         maki: json["maki"],
         externalIds: ExternalIds.fromJson(json["external_ids"]),
@@ -115,8 +119,11 @@ class RetrieveProperties {
         "full_address": fullAddress,
         "place_formatted": placeFormatted,
         "context": context.toJson(),
-        "coordinates": coordinates.toJson(),
-        "bbox": List<dynamic>.from(bbox.map((x) => x)),
+        "coordinates": {
+          "longitude": coordinates.long,
+          "latitude": coordinates.lat
+        },
+        "bbox": bbox.asList,
         "language": language,
         "maki": maki,
         "external_ids": externalIds.toJson(),
@@ -124,22 +131,22 @@ class RetrieveProperties {
       };
 }
 
-class Coordinates {
-  Coordinates({
-    required this.latitude,
-    required this.longitude,
-  });
+// class Coordinates {
+//   Coordinates({
+//     required this.latitude,
+//     required this.longitude,
+//   });
 
-  final double latitude;
-  final double longitude;
+//   final double latitude;
+//   final double longitude;
 
-  factory Coordinates.fromJson(Map<String, dynamic> json) => Coordinates(
-        latitude: json["latitude"]?.toDouble(),
-        longitude: json["longitude"]?.toDouble(),
-      );
+//   factory Coordinates.fromJson(Map<String, dynamic> json) => Coordinates(
+//         latitude: json["latitude"]?.toDouble(),
+//         longitude: json["longitude"]?.toDouble(),
+//       );
 
-  Map<String, dynamic> toJson() => {
-        "latitude": latitude,
-        "longitude": longitude,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "latitude": latitude,
+//         "longitude": longitude,
+//       };
+// }

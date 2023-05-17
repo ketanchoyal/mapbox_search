@@ -3,12 +3,12 @@ part of mapbox_search;
 class Predictions {
   final String? type;
   final List<dynamic>? query;
-  final List<MapBoxPlace>? features;
+  final List<MapBoxPlace> features;
 
   Predictions.prediction({
     this.type,
     this.query,
-    this.features,
+    this.features = const [],
   });
 
   factory Predictions.empty() => Predictions.prediction(
@@ -33,7 +33,7 @@ class Predictions {
   Map<String, dynamic> toJson() => {
         "type": type,
         "query": List<dynamic>.from(query!.map((x) => x)),
-        "features": List<dynamic>.from(features!.map((x) => x.toJson())),
+        "features": List<dynamic>.from(features.map((x) => x.toJson())),
       };
 }
 
@@ -47,8 +47,8 @@ class MapBoxPlace {
   final Properties? properties;
   final String? text;
   final String? placeName;
-  final List<double>? bbox;
-  final List<double>? center;
+  final BBox? bbox;
+  final Location? center;
   final Geometry? geometry;
   // final List<Context>? context;
   final String? matchingText;
@@ -92,10 +92,10 @@ class MapBoxPlace {
         placeName: json["place_name"],
         bbox: json["bbox"] == null
             ? null
-            : List<double>.from(json["bbox"].map((x) => x.toDouble())),
+            : BBox.fromList(json["bbox"].map((x) => x.toDouble()).toList()),
         center: json["center"] == null
             ? null
-            : List<double>.from(json["center"].map((x) => x.toDouble())),
+            : List<double>.from(json["center"]).asLocation,
         geometry: json["geometry"] == null
             ? null
             : Geometry.fromJson(json["geometry"]),
@@ -116,8 +116,8 @@ class MapBoxPlace {
         "properties": properties!.toJson(),
         "text": text,
         "place_name": placeName,
-        "bbox": List<dynamic>.from(bbox!.map((x) => x)),
-        "center": List<dynamic>.from(center!.map((x) => x)),
+        "bbox": bbox?.asList,
+        "center": center?.asList,
         "geometry": geometry!.toJson(),
         // "context": context == null
         //     ? null

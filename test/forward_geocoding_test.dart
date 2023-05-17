@@ -18,16 +18,17 @@ void main() async {
       types: [PlaceType.address, PlaceType.place],
     );
 
-    var searchPlace = geocoding.getPlaces(
+    var getPlacesResponse = await geocoding.getPlaces(
       "central park",
-      proximity: Location(
+      proximity: Proximity.LatLong(
         lat: -19.984634,
-        lng: -43.9502958,
+        long: -43.9502958,
       ),
     );
 
-    expect(searchPlace, completion(isA<List<MapBoxPlace>>()));
-    expect(searchPlace, completion(isNotEmpty));
-    expect(searchPlace, completion(hasLength(5)));
+    expect(getPlacesResponse, isA<ApiResponse<List<MapBoxPlace>>>());
+    expect(getPlacesResponse.failure, isNull);
+    expect(getPlacesResponse.success, isNotNull);
+    expect(getPlacesResponse.success, hasLength(5));
   });
 }

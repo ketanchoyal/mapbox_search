@@ -5,6 +5,9 @@
 
 - PlaceSearch and ReverseGeoCoding classes are now merged into one class called GeoCoding with two methods `getPlaces` and `getAddress` since both of them are using the same API.
 - MapBox's new [SearchBox API](https://docs.mapbox.com/api/search/search-box/) is added to the package.
+- Instead of throwing exceptions, the package now returns `ApiResponse` Record which can be either `Success` or `Failure` and can be handled using `fold` method.
+- Location class is now converted to a record.
+- List of coordinates are now converted to a record `(lat: double, long: doube)` whereever possible.
 
 This package provides easy api calls to MapBox Search API. 
 
@@ -29,18 +32,30 @@ Then, add the following to your `pubspec.yaml` file:
     dependencies:
       mapbox_search: any
 
+## Setup
+ Now you can setup the API key for whole app by calling `MapBoxSearch.init('API KEY')` in your `main()` function, this way you don't have to pass the API key to every class that uses the package.
+
+### Usage of `ApiResponse`
+```dart
+final ApiResponse<List<MapBoxPlace>> addresses = await getAddress();
+addresses.fold(
+    (success) => // Do something with success data,
+    (failure) => // Do something with failure data,
+  );
+```
+
 # Examples
 
 ### SearchBox API
 ```dart
 SearchBoxAPI search = SearchBoxAPI(
-      apiKey: MAPBOX_KEY,
+      apiKey: 'API Key', // dont pass if you have set it in MapBoxSearch.init('API KEY')
       limit: 6,
 );
 ```
   ##### Get Suggestions
   ```dart
-  SuggestionResponse searchPlace = await search.getSuggestions(
+  ApiResponse<SuggestionResponse> searchPlace = await search.getSuggestions(
       "central",
     );
   ```
@@ -53,7 +68,7 @@ SearchBoxAPI search = SearchBoxAPI(
 
   ##### Get Place Details
   ```dart
-  RetrieveResonse searchPlace = await search.getPlace(mapboxId);
+  ApiResponse<RetrieveResonse> searchPlace = await search.getPlace(mapboxId);
   ```
 
 
@@ -61,26 +76,28 @@ SearchBoxAPI search = SearchBoxAPI(
 ### Reverse GeoCoding
 ```dart
 var reverseGeoCoding = GeoCoding(
-    apiKey: 'API Key',
+    apiKey: 'API Key', // dont pass if you have set it in MapBoxSearch.init('API KEY')
     limit: 5,
 );
 
-Future<List<MapBoxPlace>> geAddress() =>
+Future<ApiResponse<List<MapBoxPlace>>> getAddress() =>
   reverseGeoCoding.getAddress(
     Location(lat: 72.0, lng: 76.00),
 );
 ```
 
+
+
 ### Forward GeoCoding Seach
 ```dart
 var geocoding = GeoCoding(
-    apiKey: 'API Key',
+    apiKey: 'API Key', // dont pass if you have set it in MapBoxSearch.init('API KEY')
     country: "BR",
     limit: 5,
     types: [PlaceType.address, PlaceType.place],
 );
 
-Future<List<MapBoxPlace>> getPlaces() =>
+Future<ApiResponse<List<MapBoxPlace>>> getPlaces() =>
   geocoding.getPlaces(
       "central park",
       proximity: Location(
@@ -93,8 +110,8 @@ Future<List<MapBoxPlace>> getPlaces() =>
 ### Static Image
 ```dart
 MapBoxStaticImage staticImage = MapBoxStaticImage(
-    apiKey:
-        "API Key");
+    apiKey: 'API Key', // dont pass if you have set it in MapBoxSearch.init('API KEY')
+  );
 ```
 
 ### Image With Polyline

@@ -1,5 +1,22 @@
 part of mapbox_search;
 
+typedef ApiResponse<T> = ({T? success, FailureResponse? failure});
+
+extension ApiResponseExtension<T> on ApiResponse<T> {
+  R fold<R extends Object?>(
+    R Function(T value) success,
+    R Function(FailureResponse value) failure,
+  ) {
+    if (this.success != null) {
+      return success(this.success!);
+    } else if (this.failure != null) {
+      return failure(this.failure!);
+    } else {
+      throw Exception('ApiResponse is not valid');
+    }
+  }
+}
+
 /// Search for places by name, point, bbox, proximity, and more.
 ///
 ///
@@ -8,7 +25,8 @@ part of mapbox_search;
 /// The Search Box API includes two different endpoints: `/suggest` and `/retrieve`. As the user types, text is sent to the `/suggest` endpoint to get suggested results. When the user selects a suggestion, its `mapbox_id` is sent to `/retrieve` to get the full data.
 class SearchBoxAPI {
   /// API Key of the MapBox.
-  final String apiKey;
+  /// If not provided here then it must be provided [MapBoxSearch()] constructor
+  final String _apiKey;
 
   /// Specify the user’s language. This parameter controls the language of the text supplied in responses.
   ///
@@ -35,20 +53,28 @@ class SearchBoxAPI {
 
   final Uri _baseUri = Uri.parse('https://api.mapbox.com/search/searchbox/v1/');
 
+  /// If [apiKey] is not provided here then it must be provided [MapBoxSearch()] constructor
   SearchBoxAPI({
-    required this.apiKey,
+    String? apiKey,
     this.country,
     this.limit,
     this.language,
     this.types = const [],
     this.bbox,
-  });
+  })  :
+
+        /// Assert that the [apiKey] and [MapBoxSearch._apiKey] are not null at same time
+        assert(
+          apiKey != null || MapBoxSearch._apiKey != null,
+          'The API Key must be provided',
+        ),
+        _apiKey = apiKey ?? MapBoxSearch._apiKey!;
 
   static String? _sessionToken;
 
   Uri _createUrl(
     String queryOrId, [
-    Proximity proximity = const LocationNone(),
+    Proximity proximity = const _LocationNone(),
     bool isSuggestions = false,
     List<POICategory> poi = const [],
   ]) {
@@ -58,12 +84,15 @@ class SearchBoxAPI {
       host: _baseUri.host,
       path: _baseUri.path + (isSuggestions ? 'suggest' : 'retrieve/$queryOrId'),
       queryParameters: {
-        'access_token': apiKey,
+        'access_token': _apiKey,
         'session_token': _sessionToken,
         if (isSuggestions) ...{
           'q': queryOrId,
-          if (proximity is Location) 'proximity': proximity.asString,
-          if (proximity is LocationIp) 'proximity': 'ip',
+          ...switch (proximity) {
+            (_Location l) => {"proximity": l.asString},
+            (_LocationIp _) => {"proximity": 'ip'},
+            (_LocationNone _) => {},
+          },
           if (country != null) 'country': country,
           if (limit != null) 'limit': limit.toString(),
           if (language != null) 'language': language,
@@ -77,9 +106,9 @@ class SearchBoxAPI {
   }
 
   /// Get a list of places that match the query.
-  Future<SuggestionResponse> getSuggestions(
+  Future<ApiResponse<SuggestionResponse>> getSuggestions(
     String queryText, {
-    Proximity proximity = const LocationNone(),
+    Proximity proximity = const _LocationNone(),
     List<POICategory> poi = const [],
   }) async {
     final uri = _createUrl(queryText, proximity, true, poi);
@@ -87,28 +116,30 @@ class SearchBoxAPI {
     final response = await http.get(uri);
 
     if (response.body.contains('message')) {
-      throw Exception(json.decode(response.body)['message']);
+      (
+        success: null,
+        failure: FailureResponse.fromJson(json.decode(response.body))
+      );
     }
 
-    return SuggestionResponse.fromRawJson(response.body);
+    return (
+      success: SuggestionResponse.fromRawJson(response.body),
+      failure: null
+    );
   }
 
   /// Retrive a place by its `mapbox_id`.
-  Future<RetrieveResonse> getPlace(String mapboxId) async {
+  Future<ApiResponse<RetrieveResonse>> getPlace(String mapboxId) async {
     final uri = _createUrl(mapboxId);
     final response = await http.get(uri);
 
     if (response.body.contains('message') || response.statusCode != 200) {
-      final decoded = json.decode(response.body) as Map<String, dynamic>;
-      if (decoded.containsKey('message')) {
-        throw Exception(decoded['message']);
-      }
-      if (decoded.containsKey('error')) {
-        throw Exception(decoded['error']);
-      }
-      throw Exception(json.decode(response.body));
+      return (
+        success: null,
+        failure: FailureResponse.fromJson(json.decode(response.body))
+      );
     }
 
-    return RetrieveResonse.fromRawJson(response.body);
+    return (success: RetrieveResonse.fromRawJson(response.body), failure: null);
   }
 }

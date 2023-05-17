@@ -6,7 +6,7 @@ part of mapbox_search;
 /// https://docs.mapbox.com/api/search/geocoding/
 class GeoCoding {
   /// API Key of the MapBox.
-  final String apiKey;
+  final String _apiKey;
 
   /// Specify the user’s language. This parameter controls the language of the text supplied in responses.
   ///
@@ -34,27 +34,38 @@ class GeoCoding {
   final Uri _baseUri =
       Uri.parse('https://api.mapbox.com/geocoding/v5/mapbox.places/');
 
+  /// If [apiKey] is not provided here then it must be provided [MapBoxSearch()]
   GeoCoding({
-    required this.apiKey,
+    String? apiKey,
     this.country,
     this.limit,
     this.language,
     this.types = const [PlaceType.address],
     this.bbox,
-  });
+  })  :
+
+        /// Assert that the [apiKey] and [MapBoxSearch._apiKey] are not null at same time
+        assert(
+          apiKey != null || MapBoxSearch._apiKey != null,
+          'The API Key must be provided',
+        ),
+        _apiKey = apiKey ?? MapBoxSearch._apiKey!;
 
   Uri _createUrl(
     String queryText, [
-    Proximity proximity = const LocationNone(),
+    Proximity proximity = const _LocationNone(),
   ]) {
     final finalUri = Uri(
       scheme: _baseUri.scheme,
       host: _baseUri.host,
       path: _baseUri.path + Uri.encodeFull(queryText) + '.json',
       queryParameters: {
-        'access_token': apiKey,
-        if (proximity is Location) 'proximity': proximity.asString,
-        if (proximity is LocationIp) 'proximity': 'ip',
+        'access_token': _apiKey,
+        ...switch (proximity) {
+          (_Location l) => {"proximity": l.asString},
+          (_LocationIp _) => {"proximity": 'ip'},
+          (_LocationNone _) => {},
+        },
         if (country != null) 'country': country,
         if (limit != null) 'limit': limit.toString(),
         if (language != null) 'language': language,
@@ -66,27 +77,36 @@ class GeoCoding {
   }
 
   /// Get the places for the given query text
-  Future<List<MapBoxPlace>?> getPlaces(
+  Future<ApiResponse<List<MapBoxPlace>>> getPlaces(
     String queryText, {
-    @Deprecated('Use `proximity` instead, if `proximity` value is passed then it will be used and this value will be ignored')
-        Location? location,
-    Proximity proximity = const LocationNone(),
+    @Deprecated(
+        'Use `proximity` instead, if `proximity` value is passed then it will be used and this value will be ignored')
+    Location? location,
+    Proximity proximity = const _LocationNone(),
   }) async {
     if (proximity is! Location) {
-      proximity = location ?? const LocationNone();
+      proximity = location != null
+          ? Proximity.Location(location)
+          : const _LocationNone();
     }
     final uri = _createUrl(queryText, proximity);
     final response = await http.get(uri);
 
     if (response.body.contains('message')) {
-      throw Exception(json.decode(response.body)['message']);
+      (
+        success: null,
+        failure: FailureResponse.fromJson(json.decode(response.body))
+      );
     }
 
-    return Predictions.fromRawJson(response.body).features;
+    return (
+      success: Predictions.fromRawJson(response.body).features,
+      failure: null
+    );
   }
 
   /// Get the address of the given location coordinates
-  Future<List<MapBoxPlace>?> getAddress(Location location) async {
+  Future<ApiResponse<List<MapBoxPlace>?>> getAddress(Location location) async {
     // Assert that if limit is not null then only one type is passed
     assert(limit != null && (types.length == 1) || limit == null,
         'Limit is not null so you can only pass one type');
@@ -94,10 +114,16 @@ class GeoCoding {
     final response = await http.get(uri);
 
     if (response.body.contains('message')) {
-      throw Exception(json.decode(response.body)['message']);
+      (
+        success: null,
+        failure: FailureResponse.fromJson(json.decode(response.body))
+      );
     }
 
-    return Predictions.fromRawJson(response.body).features;
+    return (
+      success: Predictions.fromRawJson(response.body).features,
+      failure: null
+    );
   }
 
   GeoCoding copyWith({
@@ -109,7 +135,7 @@ class GeoCoding {
     List<PlaceType>? types,
   }) {
     return GeoCoding(
-      apiKey: apiKey ?? this.apiKey,
+      apiKey: apiKey ?? this._apiKey,
       language: language ?? this.language,
       country: country ?? this.country,
       limit: limit ?? this.limit,
