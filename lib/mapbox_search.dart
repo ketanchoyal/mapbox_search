@@ -2,8 +2,10 @@ library mapbox_search;
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:mapbox_search/colors/color.dart';
+import 'package:color/color.dart';
 import 'package:uuid/uuid.dart';
+
+export 'package:color/color.dart';
 
 part 'models/predictions.dart';
 part 'models/location_context.dart';

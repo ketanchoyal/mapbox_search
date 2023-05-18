@@ -1,6 +1,10 @@
+# [4.1.0-beta.2] - 18 May 2023
+- Added color dependency to the package so that I don't have to manage code related to it.
+
 # [4.1.0-beta.1] - 17 May 2023
 - Updated Readme with examples on how to use new added dart 3.0 features
 - Introduced MapBoxSearch.init() method to initialize the API Key for the package (This is not a breaking change since the API Key can be passed to every class that uses the package)
+- Require Dart 3.0 to use the package
 - Breaking Change:
   - Instead of throwing exceptions, the package now returns `ApiResponse` Record which can be either `Success` or `Failure` and can be handled using `fold` method.
   - Location class is now converted to a record.
@@ -10,6 +14,7 @@
 - Fixed Parsing issue for Search Results
 - Added maki_icons to enum_generating script to keepup with new icons
 - This will be last version to support dart < 3.0
+- Require Dart 2.19 to use the package
 
 # [4.0.0-beta.1] - 25 April 2023
 ## Breaking Changes
