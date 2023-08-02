@@ -36,7 +36,7 @@ Future placesSearch(String apiKey) async {
 
   var places = await placesService.getPlaces(
     "patio",
-    location: Location(
+    proximity: Location(
       lat: -19.984634,
       lng: -43.9502958,
     ),
