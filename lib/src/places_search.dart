@@ -39,7 +39,7 @@ class PlacesSearch {
     this.language,
     this.types,
     this.bbox,
-    this.autoComplete = false,
+    this.autoComplete = true,
   });
 
   Uri _createUrl(
@@ -59,7 +59,7 @@ class PlacesSearch {
         if (language != null) 'language': language,
         if (types != null) 'types': types?.map((e) => e.value).join(','),
         if (bbox != null) 'bbox': bbox?.asString,
-        if (autoComplete) 'autocomplete': 'true',
+        if (!autoComplete) 'autocomplete': 'false',
       },
     );
     return finalUri;
