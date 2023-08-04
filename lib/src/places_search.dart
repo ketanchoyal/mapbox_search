@@ -27,6 +27,8 @@ class PlacesSearch {
   /// For more information on the available types, see the [data types section](https://docs.mapbox.com/api/search/geocoding/#data-types).
   final List<PlaceType>? types;
 
+  final bool autoComplete;
+
   final Uri _baseUri =
       Uri.parse('https://api.mapbox.com/geocoding/v5/mapbox.places/');
 
@@ -37,6 +39,7 @@ class PlacesSearch {
     this.language,
     this.types,
     this.bbox,
+    this.autoComplete = false,
   });
 
   Uri _createUrl(
@@ -56,6 +59,7 @@ class PlacesSearch {
         if (language != null) 'language': language,
         if (types != null) 'types': types?.map((e) => e.value).join(','),
         if (bbox != null) 'bbox': bbox?.asString,
+        if (autoComplete) 'autocomplete': 'true',
       },
     );
     return finalUri;
