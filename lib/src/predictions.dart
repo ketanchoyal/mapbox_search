@@ -17,17 +17,14 @@ class Predictions {
     this.query = [];
   }
 
-  factory Predictions.fromRawJson(String str) =>
-      Predictions.fromJson(json.decode(str));
+  factory Predictions.fromRawJson(String str) => Predictions.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Predictions.fromJson(Map<String, dynamic> json) =>
-      Predictions.prediction(
+  factory Predictions.fromJson(Map<String, dynamic> json) => Predictions.prediction(
         type: json["type"],
         query: List<dynamic>.from(json["query"].map((x) => x)),
-        features: List<MapBoxPlace>.from(
-            json["features"].map((x) => MapBoxPlace.fromJson(x))),
+        features: List<MapBoxPlace>.from(json["features"].map((x) => MapBoxPlace.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -42,7 +39,7 @@ class MapBoxPlace {
   FeatureType? type;
   List<PlaceType>? placeType;
 
-  // dynamic relevance;
+  dynamic relevance;
   String? addressNumber;
   Properties? properties;
   String? text;
@@ -58,7 +55,7 @@ class MapBoxPlace {
     this.id,
     this.type,
     this.placeType,
-    // this.relevance,
+    this.relevance,
     this.addressNumber,
     this.properties,
     this.text,
@@ -71,38 +68,39 @@ class MapBoxPlace {
     this.matchingPlaceName,
   });
 
-  factory MapBoxPlace.fromRawJson(String str) =>
-      MapBoxPlace.fromJson(json.decode(str));
+  String? get street {
+    return null;
+  }
+
+  String? get postalCode {
+    try {
+      return context?.firstWhere((element) => element.id?.contains('postcode') ?? false).text;
+    } catch (e) { return null;}
+  }
+
+  String? get city {
+    try {
+      return context?.firstWhere((element) => element.id?.contains('place') ?? false).text;
+    } catch (e) { return null;}
+  }
+
+  factory MapBoxPlace.fromRawJson(String str) => MapBoxPlace.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
   factory MapBoxPlace.fromJson(Map<String, dynamic> json) => MapBoxPlace(
         id: json["id"],
         type: json["type"] == null ? null : featureTypeValues.map[json["type"]],
-        placeType: json["place_type"] == null
-            ? null
-            : List<PlaceType>.from(
-                json["place_type"].map((x) => placeTypeValues.map[x])),
-        // relevance: json["relevance"] == null ? null : json["relevance"],
+        placeType: json["place_type"] == null ? null : List<PlaceType>.from(json["place_type"].map((x) => placeTypeValues.map[x])),
+        relevance: json["relevance"] == null ? null : json["relevance"],
         addressNumber: json["address"],
-        properties: json["properties"] == null
-            ? null
-            : Properties.fromJson(json["properties"]),
+        properties: json["properties"] == null ? null : Properties.fromJson(json["properties"]),
         text: json["text"],
         placeName: json["place_name"],
-        bbox: json["bbox"] == null
-            ? null
-            : List<double>.from(json["bbox"].map((x) => x.toDouble())),
-        center: json["center"] == null
-            ? null
-            : List<double>.from(json["center"].map((x) => x.toDouble())),
-        geometry: json["geometry"] == null
-            ? null
-            : Geometry.fromJson(json["geometry"]),
-        context: json["context"] == null
-            ? null
-            : List<Context>.from(
-                json["context"].map((x) => Context.fromJson(x))),
+        bbox: json["bbox"] == null ? null : List<double>.from(json["bbox"].map((x) => x.toDouble())),
+        center: json["center"] == null ? null : List<double>.from(json["center"].map((x) => x.toDouble())),
+        geometry: json["geometry"] == null ? null : Geometry.fromJson(json["geometry"]),
+        context: json["context"] == null ? null : List<Context>.from(json["context"].map((x) => Context.fromJson(x))),
         matchingText: json["matching_text"],
         matchingPlaceName: json["matching_place_name"],
       );
@@ -110,9 +108,8 @@ class MapBoxPlace {
   Map<String, dynamic> toJson() => {
         "id": id,
         "type": featureTypeValues.reverse![type!],
-        "place_type": List<dynamic>.from(
-            placeType!.map((x) => placeTypeValues.reverse![x])),
-        // "relevance": relevance,
+        "place_type": List<dynamic>.from(placeType!.map((x) => placeTypeValues.reverse![x])),
+        "relevance": relevance,
         "address": addressNumber,
         "properties": properties!.toJson(),
         "text": text,
@@ -120,12 +117,9 @@ class MapBoxPlace {
         "bbox": List<dynamic>.from(bbox!.map((x) => x)),
         "center": List<dynamic>.from(center!.map((x) => x)),
         "geometry": geometry!.toJson(),
-        "context": context == null
-            ? null
-            : List<dynamic>.from(context!.map((x) => x.toJson())),
+        "context": context == null ? null : List<dynamic>.from(context!.map((x) => x.toJson())),
         "matching_text": matchingText == null ? null : matchingText,
-        "matching_place_name":
-            matchingPlaceName == null ? null : matchingPlaceName,
+        "matching_place_name": matchingPlaceName == null ? null : matchingPlaceName,
       };
 
   @override
@@ -173,15 +167,13 @@ class Geometry {
     this.coordinates,
   });
 
-  factory Geometry.fromRawJson(String str) =>
-      Geometry.fromJson(json.decode(str));
+  factory Geometry.fromRawJson(String str) => Geometry.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
   factory Geometry.fromJson(Map<String, dynamic> json) => Geometry(
         type: geometryTypeValues.map[json["type"]],
-        coordinates:
-            List<double>.from(json["coordinates"].map((x) => x.toDouble())),
+        coordinates: List<double>.from(json["coordinates"].map((x) => x.toDouble())),
       );
 
   Map<String, dynamic> toJson() => {
@@ -217,8 +209,7 @@ class Properties {
     this.address,
   });
 
-  factory Properties.fromRawJson(String str) =>
-      Properties.fromJson(json.decode(str));
+  factory Properties.fromRawJson(String str) => Properties.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
