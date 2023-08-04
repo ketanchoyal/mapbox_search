@@ -29,8 +29,7 @@ class PlacesSearch {
 
   final bool autoComplete;
 
-  final Uri _baseUri =
-      Uri.parse('https://api.mapbox.com/geocoding/v5/mapbox.places/');
+  final Uri _baseUri = Uri.parse('https://api.mapbox.com/geocoding/v5/mapbox.places/');
 
   PlacesSearch({
     required this.apiKey,
@@ -44,7 +43,7 @@ class PlacesSearch {
 
   Uri _createUrl(
     String queryText, [
-    Proximity proximity = const LocationNone(),
+    Proximity proximity = const LocationNone()
   ]) {
     final finalUri = Uri(
       scheme: _baseUri.scheme,
@@ -67,8 +66,7 @@ class PlacesSearch {
 
   Future<List<MapBoxPlace>?> getPlaces(
     String queryText, {
-    @Deprecated('Use `proximity` instead, if `proximity` value is passed then it will be used and this value will be ignored')
-        Location? location,
+    @Deprecated('Use `proximity` instead, if `proximity` value is passed then it will be used and this value will be ignored') Location? location,
     Proximity proximity = const LocationNone(),
   }) async {
     if (proximity is! Location) {

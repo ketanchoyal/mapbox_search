@@ -19,3 +19,13 @@ part 'src/places_search.dart';
 part "src/maki_icons.dart";
 
 part 'src/types.dart';
+
+part 'src/map-box-place.dart';
+
+part 'src/geometry.dart';
+
+part 'src/context.dart';
+
+part 'src/properties.dart';
+
+part 'src/enum-values.dart';
