@@ -58,9 +58,9 @@ class Suggestion {
   final String? address;
   final String? fullAddress;
   final String placeFormatted;
-  final Context context;
+  final Context? context;
   final String language;
-  final String maki;
+  final String? maki;
   final ExternalIds externalIds;
   final List<String>? poiCategory;
   final List<String>? poiCategoryIds;
@@ -75,7 +75,8 @@ class Suggestion {
         address: json["address"],
         fullAddress: json["full_address"],
         placeFormatted: json["place_formatted"],
-        context: Context.fromJson(json["context"]),
+        context:
+            json["context"] == null ? null : Context.fromJson(json["context"]),
         language: json["language"],
         maki: json["maki"],
         externalIds: ExternalIds.fromJson(json["external_ids"]),
@@ -99,7 +100,7 @@ class Suggestion {
         "address": address,
         "full_address": fullAddress,
         "place_formatted": placeFormatted,
-        "context": context.toJson(),
+        "context": context?.toJson(),
         "language": language,
         "maki": maki,
         "external_ids": externalIds.toJson(),

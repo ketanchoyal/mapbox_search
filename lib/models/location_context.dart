@@ -11,7 +11,7 @@ class Context {
     this.street,
   });
 
-  final Country country;
+  final Country? country;
   final Region? region;
   final Place? postcode;
   final Place? district;
@@ -20,7 +20,8 @@ class Context {
   final Neighborhood? street;
 
   factory Context.fromJson(Map<String, dynamic> json) => Context(
-        country: Country.fromJson(json["country"]),
+        country:
+            json["country"] == null ? null : Country.fromJson(json["country"]),
         region: json["region"] == null ? null : Region.fromJson(json["region"]),
         postcode:
             json["postcode"] == null ? null : Place.fromJson(json["postcode"]),
@@ -36,7 +37,7 @@ class Context {
       );
 
   Map<String, dynamic> toJson() => {
-        "country": country.toJson(),
+        "country": country?.toJson(),
         "region": region?.toJson(),
         "postcode": postcode?.toJson(),
         "district": district?.toJson(),

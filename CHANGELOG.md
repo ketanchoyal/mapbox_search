@@ -1,3 +1,7 @@
+# [4.1.0-beta.3] - 22 Sep 2023
+- Package Upgrades
+- Minor bug fixes
+
 # [4.1.0-beta.2] - 18 May 2023
 - Added color dependency to the package so that I don't have to manage code related to it.
 
