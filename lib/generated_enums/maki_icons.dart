@@ -1,7 +1,5 @@
 /// This file is auto-generated. Do not modify it manually.
 
-part of mapbox_search;
-
 enum MakiIcons {
   aerialway('aerialway'),
   airfield('airfield'),

@@ -1,5 +1,8 @@
-part of mapbox_search;
+import 'package:json_annotation/json_annotation.dart';
 
+part 'failure_response.g.dart';
+
+@JsonSerializable()
 class FailureResponse {
   final String? message;
   final String? error;
@@ -12,15 +15,7 @@ class FailureResponse {
   });
 
   factory FailureResponse.fromJson(Map<String, dynamic> json) =>
-      FailureResponse(
-        message: json["message"],
-        error: json["error"],
-        response: json,
-      );
+      _$FailureResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        'message': message,
-        'error': error,
-        'response': response,
-      };
+  Map<String, dynamic> toJson() => _$FailureResponseToJson(this);
 }

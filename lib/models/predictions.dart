@@ -1,42 +1,33 @@
-part of mapbox_search;
+import 'package:json_annotation/json_annotation.dart';
+import 'package:mapbox_search/mapbox_search.dart';
 
+part 'predictions.g.dart';
+
+@JsonSerializable()
 class Predictions {
   final String? type;
   final List<dynamic>? query;
   final List<MapBoxPlace> features;
 
-  Predictions.prediction({
+  Predictions({
     this.type,
     this.query,
     this.features = const [],
   });
 
-  factory Predictions.empty() => Predictions.prediction(
+  factory Predictions.empty() => Predictions(
         type: '',
         query: [],
         features: [],
       );
 
-  factory Predictions.fromRawJson(String str) =>
-      Predictions.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
   factory Predictions.fromJson(Map<String, dynamic> json) =>
-      Predictions.prediction(
-        type: json["type"],
-        query: List<dynamic>.from(json["query"].map((x) => x)),
-        features: List<MapBoxPlace>.from(
-            json["features"].map((x) => MapBoxPlace.fromJson(x))),
-      );
+      _$PredictionsFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        "type": type,
-        "query": List<dynamic>.from(query!.map((x) => x)),
-        "features": List<dynamic>.from(features.map((x) => x.toJson())),
-      };
+  Map<String, dynamic> toJson() => _$PredictionsToJson(this);
 }
 
+@JsonSerializable()
 class MapBoxPlace {
   final String? id;
   final FeatureType? type;
@@ -47,7 +38,9 @@ class MapBoxPlace {
   final Properties? properties;
   final String? text;
   final String? placeName;
+  @BBoxConverter()
   final BBox? bbox;
+  @OptionalLocationConverter()
   final Location? center;
   final Geometry? geometry;
   // final List<Context>? context;
@@ -71,61 +64,10 @@ class MapBoxPlace {
     this.matchingPlaceName,
   });
 
-  factory MapBoxPlace.fromRawJson(String str) =>
-      MapBoxPlace.fromJson(json.decode(str));
+  factory MapBoxPlace.fromJson(Map<String, dynamic> json) =>
+      _$MapBoxPlaceFromJson(json);
 
-  String toRawJson() => json.encode(toJson());
-
-  factory MapBoxPlace.fromJson(Map<String, dynamic> json) => MapBoxPlace(
-        id: json["id"],
-        type: json["type"] == null ? null : featureTypeValues.map[json["type"]],
-        placeType: json["place_type"] == null
-            ? []
-            : List<PlaceType>.from(
-                json["place_type"].map((x) => x.toString().placeType)),
-        // relevance: json["relevance"] == null ? null : json["relevance"],
-        addressNumber: json["address"],
-        properties: json["properties"] == null
-            ? null
-            : Properties.fromJson(json["properties"]),
-        text: json["text"],
-        placeName: json["place_name"],
-        bbox: json["bbox"] == null
-            ? null
-            : BBox.fromList(json["bbox"].map((x) => x.toDouble()).toList()),
-        center: json["center"] == null
-            ? null
-            : List<double>.from(json["center"]).asLocation,
-        geometry: json["geometry"] == null
-            ? null
-            : Geometry.fromJson(json["geometry"]),
-        // context: json["context"] == null
-        //     ? null
-        //     : List<Context>.from(
-        //         json["context"].map((x) => Context.fromJson(x))),
-        matchingText: json["matching_text"],
-        matchingPlaceName: json["matching_place_name"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "type": featureTypeValues.reverse![type!],
-        "place_type": List<dynamic>.from(placeType.map((x) => x?.value)),
-        // "relevance": relevance,
-        "address": addressNumber,
-        "properties": properties!.toJson(),
-        "text": text,
-        "place_name": placeName,
-        "bbox": bbox?.asList,
-        "center": center?.asList,
-        "geometry": geometry!.toJson(),
-        // "context": context == null
-        //     ? null
-        //     : List<dynamic>.from(context!.map((x) => x.toJson())),
-        "matching_text": matchingText == null ? null : matchingText,
-        "matching_place_name":
-            matchingPlaceName == null ? null : matchingPlaceName,
-      };
+  Map<String, dynamic> toJson() => _$MapBoxPlaceToJson(this);
 
   @override
   String toString() => text ?? placeName!;
@@ -144,10 +86,6 @@ class MapBoxPlace {
 //     this.text,
 //   });
 
-//   factory Context.fromRawJson(String str) => Context.fromJson(json.decode(str));
-
-//   String toRawJson() => json.encode(toJson());
-
 //   factory Context.fromJson(Map<String, dynamic> json) => Context(
 //         id: json["id"],
 //         shortCode: json["short_code"],
@@ -163,10 +101,12 @@ class MapBoxPlace {
 //       };
 // }
 
-enum GeometryType { POINT }
+enum GeometryType {
+  @JsonValue("Point")
+  POINT
+}
 
-final geometryTypeValues = EnumValues({"Point": GeometryType.POINT});
-
+@JsonSerializable()
 class Properties {
   String? shortCode;
   String? wikidata;
@@ -178,27 +118,16 @@ class Properties {
     this.address,
   });
 
-  factory Properties.fromRawJson(String str) =>
-      Properties.fromJson(json.decode(str));
+  factory Properties.fromJson(Map<String, dynamic> json) =>
+      _$PropertiesFromJson(json);
 
-  String toRawJson() => json.encode(toJson());
-
-  factory Properties.fromJson(Map<String, dynamic> json) => Properties(
-        shortCode: json["short_code"] == null ? null : json["short_code"],
-        wikidata: json["wikidata"],
-        address: json["address"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "short_code": shortCode == null ? null : shortCode,
-        "wikidata": wikidata,
-        "address": address,
-      };
+  Map<String, dynamic> toJson() => _$PropertiesToJson(this);
 }
 
-enum FeatureType { FEATURE }
-
-final featureTypeValues = EnumValues({"Feature": FeatureType.FEATURE});
+enum FeatureType {
+  @JsonValue("Feature")
+  FEATURE
+}
 
 class EnumValues<T> {
   Map<String, T> map;

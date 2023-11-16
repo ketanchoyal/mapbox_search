@@ -1,27 +1,21 @@
-part of mapbox_search;
+import 'package:json_annotation/json_annotation.dart';
+import 'package:mapbox_search/models/location.dart';
 
+part 'geometry.g.dart';
+
+@JsonSerializable()
 class Geometry {
   Geometry({
     required this.coordinates,
     required this.type,
   });
 
-  // final List<double> coordinates;
   final String type;
-  final ({double long, double lat}) coordinates;
+  @LocationConverter()
+  final Location coordinates;
 
-  // (long: coordinates[0], lat: coordinates[1]);
+  factory Geometry.fromJson(Map<String, dynamic> json) =>
+      _$GeometryFromJson(json);
 
-  factory Geometry.fromJson(Map<String, dynamic> json) => Geometry(
-        coordinates: (
-          long: json["coordinates"][0],
-          lat: json["coordinates"][1],
-        ),
-        type: json["type"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "coordinates": [coordinates.long, coordinates.lat],
-        "type": type,
-      };
+  Map<String, dynamic> toJson() => _$GeometryToJson(this);
 }

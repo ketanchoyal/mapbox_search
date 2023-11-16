@@ -1,4 +1,8 @@
-part of mapbox_search;
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+import 'package:mapbox_search/mapbox_search.dart';
+import 'package:mapbox_search/models/location.dart';
 
 /// The MapBox Geocoding API lets you convert location text into geographic coordinates (1600 Pennsylvania Ave NW → -77.0366,38.8971)
 /// and vice versa (reverse geocoding).
@@ -46,14 +50,14 @@ class GeoCoding {
 
         /// Assert that the [apiKey] and [MapBoxSearch._apiKey] are not null at same time
         assert(
-          apiKey != null || MapBoxSearch._apiKey != null,
+          apiKey != null || MapBoxSearch.apiKey != null,
           'The API Key must be provided',
         ),
-        _apiKey = apiKey ?? MapBoxSearch._apiKey!;
+        _apiKey = apiKey ?? MapBoxSearch.apiKey!;
 
   Uri _createUrl(
     String queryText, [
-    Proximity proximity = const _LocationNone(),
+    Proximity proximity = const NoProximity(),
   ]) {
     final finalUri = Uri(
       scheme: _baseUri.scheme,
@@ -62,9 +66,9 @@ class GeoCoding {
       queryParameters: {
         'access_token': _apiKey,
         ...switch (proximity) {
-          (_Location l) => {"proximity": l.asString},
-          (_LocationIp _) => {"proximity": 'ip'},
-          (_LocationNone _) => {},
+          (LocationProximity l) => {"proximity": l.asString},
+          (IpProximity _) => {"proximity": 'ip'},
+          (NoProximity _) => {},
         },
         if (country != null) 'country': country,
         if (limit != null) 'limit': limit.toString(),
@@ -82,12 +86,11 @@ class GeoCoding {
     @Deprecated(
         'Use `proximity` instead, if `proximity` value is passed then it will be used and this value will be ignored')
     Location? location,
-    Proximity proximity = const _LocationNone(),
+    Proximity proximity = const NoProximity(),
   }) async {
     if (proximity is! Location) {
-      proximity = location != null
-          ? Proximity.Location(location)
-          : const _LocationNone();
+      proximity =
+          location != null ? Proximity.Location(location) : const NoProximity();
     }
     final uri = _createUrl(queryText, proximity);
     final response = await http.get(uri);
@@ -100,7 +103,7 @@ class GeoCoding {
     }
 
     return (
-      success: Predictions.fromRawJson(response.body).features,
+      success: Predictions.fromJson(json.decode(response.body)).features,
       failure: null
     );
   }
@@ -121,7 +124,7 @@ class GeoCoding {
     }
 
     return (
-      success: Predictions.fromRawJson(response.body).features,
+      success: Predictions.fromJson(json.decode(response.body)).features,
       failure: null
     );
   }
