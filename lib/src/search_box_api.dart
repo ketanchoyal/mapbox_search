@@ -120,17 +120,17 @@ class SearchBoxAPI {
     print(uri);
     final response = await http.get(uri);
 
-    if (response.body.contains('message')) {
-      (
+    if (response.statusCode != 200) {
+      return (
         success: null,
         failure: FailureResponse.fromJson(json.decode(response.body))
       );
+    } else {
+      return (
+        success: SuggestionResponse.fromJson(json.decode(response.body)),
+        failure: null
+      );
     }
-
-    return (
-      success: SuggestionResponse.fromJson(json.decode(response.body)),
-      failure: null
-    );
   }
 
   /// Retrive a place by its `mapbox_id`.
@@ -138,16 +138,16 @@ class SearchBoxAPI {
     final uri = _createUrl(mapboxId);
     final response = await http.get(uri);
 
-    if (response.body.contains('message') || response.statusCode != 200) {
+    if (response.statusCode != 200) {
       return (
         success: null,
         failure: FailureResponse.fromJson(json.decode(response.body))
       );
+    } else {
+      return (
+        success: RetrieveResonse.fromJson(json.decode(response.body)),
+        failure: null
+      );
     }
-
-    return (
-      success: RetrieveResonse.fromJson(json.decode(response.body)),
-      failure: null
-    );
   }
 }

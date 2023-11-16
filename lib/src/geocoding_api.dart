@@ -95,8 +95,8 @@ class GeoCoding {
     final uri = _createUrl(queryText, proximity);
     final response = await http.get(uri);
 
-    if (response.body.contains('message')) {
-      (
+    if (response.statusCode != 200) {
+      return (
         success: null,
         failure: FailureResponse.fromJson(json.decode(response.body))
       );
@@ -116,8 +116,8 @@ class GeoCoding {
     Uri uri = _createUrl(location.asString);
     final response = await http.get(uri);
 
-    if (response.body.contains('message')) {
-      (
+    if (response.statusCode != 200) {
+      return (
         success: null,
         failure: FailureResponse.fromJson(json.decode(response.body))
       );
