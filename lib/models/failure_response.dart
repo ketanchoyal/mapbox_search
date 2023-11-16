@@ -6,7 +6,7 @@ part 'failure_response.g.dart';
 class FailureResponse {
   final String? message;
   final String? error;
-  final Map<String, dynamic> response;
+  final Map<String, dynamic>? response;
 
   FailureResponse({
     required this.message,

@@ -55,7 +55,7 @@ class Suggestion {
   final List<String>? poiCategory;
   final List<String>? poiCategoryIds;
   final List<String>? brand;
-  final String? brandId;
+  final List<String>? brandId;
 
   factory Suggestion.fromJson(Map<String, dynamic> json) =>
       _$SuggestionFromJson(json);
