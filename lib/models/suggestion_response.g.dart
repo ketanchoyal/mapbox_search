@@ -45,7 +45,9 @@ Suggestion _$SuggestionFromJson(Map<String, dynamic> json) => Suggestion(
           .toList(),
       brand:
           (json['brand'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      brandId: json['brand_id'] as String?,
+      brandId: (json['brand_id'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$SuggestionToJson(Suggestion instance) =>

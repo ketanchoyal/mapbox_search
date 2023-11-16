@@ -41,7 +41,7 @@ class Country {
   final String name;
   final String countryCode;
   @JsonKey(name: "country_code_alpha_3")
-  final String countryCodeAlpha3;
+  final String? countryCodeAlpha3;
 
   factory Country.fromJson(Map<String, dynamic> json) =>
       _$CountryFromJson(json);

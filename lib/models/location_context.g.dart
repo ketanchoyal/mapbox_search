@@ -44,7 +44,7 @@ Country _$CountryFromJson(Map<String, dynamic> json) => Country(
       id: json['id'] as String?,
       name: json['name'] as String,
       countryCode: json['country_code'] as String,
-      countryCodeAlpha3: json['country_code_alpha_3'] as String,
+      countryCodeAlpha3: json['country_code_alpha_3'] as String?,
     );
 
 Map<String, dynamic> _$CountryToJson(Country instance) => <String, dynamic>{
