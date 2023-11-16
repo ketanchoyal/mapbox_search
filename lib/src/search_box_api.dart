@@ -1,4 +1,9 @@
-part of mapbox_search;
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+import 'package:mapbox_search/mapbox_search.dart';
+import 'package:mapbox_search/models/location.dart';
+import 'package:uuid/uuid.dart';
 
 typedef ApiResponse<T> = ({T? success, FailureResponse? failure});
 
@@ -65,16 +70,16 @@ class SearchBoxAPI {
 
         /// Assert that the [apiKey] and [MapBoxSearch._apiKey] are not null at same time
         assert(
-          apiKey != null || MapBoxSearch._apiKey != null,
+          apiKey != null || MapBoxSearch.apiKey != null,
           'The API Key must be provided',
         ),
-        _apiKey = apiKey ?? MapBoxSearch._apiKey!;
+        _apiKey = apiKey ?? MapBoxSearch.apiKey!;
 
   static String? _sessionToken;
 
   Uri _createUrl(
     String queryOrId, [
-    Proximity proximity = const _LocationNone(),
+    Proximity proximity = const NoProximity(),
     bool isSuggestions = false,
     List<POICategory> poi = const [],
   ]) {
@@ -89,9 +94,9 @@ class SearchBoxAPI {
         if (isSuggestions) ...{
           'q': queryOrId,
           ...switch (proximity) {
-            (_Location l) => {"proximity": l.asString},
-            (_LocationIp _) => {"proximity": 'ip'},
-            (_LocationNone _) => {},
+            (LocationProximity l) => {"proximity": l.asString},
+            (IpProximity _) => {"proximity": 'ip'},
+            (NoProximity _) => {},
           },
           if (country != null) 'country': country,
           if (limit != null) 'limit': limit.toString(),
@@ -108,7 +113,7 @@ class SearchBoxAPI {
   /// Get a list of places that match the query.
   Future<ApiResponse<SuggestionResponse>> getSuggestions(
     String queryText, {
-    Proximity proximity = const _LocationNone(),
+    Proximity proximity = const NoProximity(),
     List<POICategory> poi = const [],
   }) async {
     final uri = _createUrl(queryText, proximity, true, poi);
@@ -123,7 +128,7 @@ class SearchBoxAPI {
     }
 
     return (
-      success: SuggestionResponse.fromRawJson(response.body),
+      success: SuggestionResponse.fromJson(json.decode(response.body)),
       failure: null
     );
   }
@@ -140,6 +145,9 @@ class SearchBoxAPI {
       );
     }
 
-    return (success: RetrieveResonse.fromRawJson(response.body), failure: null);
+    return (
+      success: RetrieveResonse.fromJson(json.decode(response.body)),
+      failure: null
+    );
   }
 }

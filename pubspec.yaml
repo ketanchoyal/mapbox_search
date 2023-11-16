@@ -8,7 +8,8 @@ environment:
   sdk: ^3.0.0
 
 dependencies:
-  http: ^1.1.0
+  http: ^1.1.0  
+  json_annotation: ^4.4.0
   uuid: ^4.0.0
   color: ^3.0.0
 
@@ -17,3 +18,5 @@ dev_dependencies:
   test: ^1.24.6
   meta: ^1.10.0
   http_multi_server: ^3.2.1
+  json_serializable: ^6.3.0
+  build_runner: ^2.1.0

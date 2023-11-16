@@ -1,4 +1,5 @@
-part of mapbox_search;
+import 'package:json_annotation/json_annotation.dart';
+import 'package:mapbox_search/models/location.dart';
 
 class BBox {
   final Location min;
@@ -16,18 +17,25 @@ class BBox {
         ...max.asList,
       ];
 
-  factory BBox.fromJson(Map<String, dynamic> json) => BBox(
-        min: (
-          long: json["bbox"][0],
-          lat: json["bbox"][1],
-        ),
-        max: (
-          long: json["bbox"][2],
-          lat: json["bbox"][3],
-        ),
-      );
-  factory BBox.fromList(List<dynamic> list) => BBox(
+  factory BBox.fromList(List<double> list) => BBox(
         min: list.asLocation,
         max: list.sublist(2).asLocation,
       );
+}
+
+class BBoxConverter extends JsonConverter<BBox, List<dynamic>> {
+  const BBoxConverter() : super();
+
+  @override
+  BBox fromJson(List<dynamic> json) {
+    return BBox(
+      min: (long: json[0], lat: json[1]),
+      max: (long: json[2], lat: json[3]),
+    );
+  }
+
+  @override
+  List<double> toJson(BBox object) {
+    return object.asList;
+  }
 }

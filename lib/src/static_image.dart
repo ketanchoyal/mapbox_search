@@ -1,4 +1,5 @@
-part of mapbox_search;
+import 'package:mapbox_search/mapbox_search.dart';
+import 'package:mapbox_search/models/location.dart';
 
 enum MapBoxStyle {
   Light("light-v10"),
@@ -69,10 +70,10 @@ class StaticImage {
 
         /// Assert that the [apiKey] and [MapBoxSearch._apiKey] are not null at same time
         assert(
-          apiKey != null || MapBoxSearch._apiKey != null,
+          apiKey != null || MapBoxSearch.apiKey != null,
           'The API Key must be provided',
         ),
-        _apiKey = apiKey ?? MapBoxSearch._apiKey!;
+        _apiKey = apiKey ?? MapBoxSearch.apiKey!;
 
   final double _defaultZoomLevel = 15;
   final int _defaultWidth = 600;

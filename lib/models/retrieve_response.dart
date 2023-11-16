@@ -1,8 +1,19 @@
-part of mapbox_search;
+import 'dart:convert';
+
+import 'package:json_annotation/json_annotation.dart';
+import 'package:mapbox_search/models/bbox.dart';
+import 'package:mapbox_search/models/geometry.dart';
+import 'package:mapbox_search/models/location.dart';
+import 'package:mapbox_search/models/location_context.dart';
+import 'package:mapbox_search/models/predictions.dart';
+import 'package:mapbox_search/models/suggestion_response.dart';
+
+part 'retrieve_response.g.dart';
 
 String retrieveResonseToJson(RetrieveResonse data) =>
     json.encode(data.toJson());
 
+@JsonSerializable()
 class RetrieveResonse {
   RetrieveResonse({
     required this.type,
@@ -17,24 +28,12 @@ class RetrieveResonse {
   final String? url;
 
   factory RetrieveResonse.fromJson(Map<String, dynamic> json) =>
-      RetrieveResonse(
-        type: json["type"],
-        features: List<Feature>.from(
-            json["features"].map((x) => Feature.fromJson(x))),
-        attribution: json["attribution"],
-        url: json["url"],
-      );
-  factory RetrieveResonse.fromRawJson(String str) =>
-      RetrieveResonse.fromJson(json.decode(str));
+      _$RetrieveResonseFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        "type": type,
-        "features": List<dynamic>.from(features.map((x) => x.toJson())),
-        "attribution": attribution,
-        "url": url,
-      };
+  Map<String, dynamic> toJson() => _$RetrieveResonseToJson(this);
 }
 
+@JsonSerializable()
 class Feature {
   Feature({
     required this.type,
@@ -46,19 +45,13 @@ class Feature {
   final Geometry geometry;
   final Properties properties;
 
-  factory Feature.fromJson(Map<String, dynamic> json) => Feature(
-        type: json["type"],
-        geometry: Geometry.fromJson(json["geometry"]),
-        properties: Properties.fromJson(json["properties"]),
-      );
+  factory Feature.fromJson(Map<String, dynamic> json) =>
+      _$FeatureFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        "type": type,
-        "geometry": geometry.toJson(),
-        "properties": properties.toJson(),
-      };
+  Map<String, dynamic> toJson() => _$FeatureToJson(this);
 }
 
+@JsonSerializable()
 class RetrieveProperties {
   RetrieveProperties({
     required this.name,
@@ -83,7 +76,9 @@ class RetrieveProperties {
   final String fullAddress;
   final String placeFormatted;
   final Context context;
+  @LocationConverter()
   final Location coordinates;
+  @BBoxConverter()
   final BBox bbox;
   final String language;
   final String maki;
@@ -91,44 +86,9 @@ class RetrieveProperties {
   final ExternalIds metadata;
 
   factory RetrieveProperties.fromJson(Map<String, dynamic> json) =>
-      RetrieveProperties(
-        name: json["name"],
-        mapboxId: json["mapbox_id"],
-        featureType: json["feature_type"],
-        address: json["address"],
-        fullAddress: json["full_address"],
-        placeFormatted: json["place_formatted"],
-        context: Context.fromJson(json["context"]),
-        // coordinates: Coordinates.fromJson(json["coordinates"]),
-        coordinates: (
-          long: json['coordinates']['longitude'],
-          lat: json['coordinates']['latitude']
-        ),
-        bbox: BBox.fromList(json["bbox"].map((x) => x.toDouble()).toList()),
-        language: json["language"],
-        maki: json["maki"],
-        externalIds: ExternalIds.fromJson(json["external_ids"]),
-        metadata: ExternalIds.fromJson(json["metadata"]),
-      );
+      _$RetrievePropertiesFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        "name": name,
-        "mapbox_id": mapboxId,
-        "feature_type": featureType,
-        "address": address,
-        "full_address": fullAddress,
-        "place_formatted": placeFormatted,
-        "context": context.toJson(),
-        "coordinates": {
-          "longitude": coordinates.long,
-          "latitude": coordinates.lat
-        },
-        "bbox": bbox.asList,
-        "language": language,
-        "maki": maki,
-        "external_ids": externalIds.toJson(),
-        "metadata": metadata.toJson(),
-      };
+  Map<String, dynamic> toJson() => _$RetrievePropertiesToJson(this);
 }
 
 // class Coordinates {

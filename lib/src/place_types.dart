@@ -1,5 +1,3 @@
-part of mapbox_search;
-
 ///Various types of geographic features are available in the Mapbox geocoder. Any type might appear as a top-level response, as context in a top-level response, or as a filtering option using the types parameter. Not all features are available or relevant in all parts of the world. New types are occasionally added as necessary to correctly capture global administrative hierarchies.
 ///The data types available in the geocoder, listed from the largest to the most granular, are:
 enum PlaceType {
@@ -35,7 +33,7 @@ enum PlaceType {
   final String value;
 }
 
-extension on String {
+extension StringToPlaceType on String {
   PlaceType? get placeType {
     switch (this) {
       case 'country':
