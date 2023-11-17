@@ -63,6 +63,7 @@ class Suggestion {
   Map<String, dynamic> toJson() => _$SuggestionToJson(this);
 }
 
+@JsonSerializable()
 class ExternalIds {
   ExternalIds({
     this.foursquare,
@@ -72,13 +73,8 @@ class ExternalIds {
   final String? foursquare;
   final String? safegraph;
 
-  factory ExternalIds.fromJson(Map<String, dynamic> json) => ExternalIds(
-        foursquare: json["foursquare"],
-        safegraph: json["safegraph"],
-      );
+  factory ExternalIds.fromJson(Map<String, dynamic> json) =>
+      _$ExternalIdsFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        "foursquare": foursquare,
-        "safegraph": safegraph,
-      };
+  Map<String, dynamic> toJson() => _$ExternalIdsToJson(this);
 }
