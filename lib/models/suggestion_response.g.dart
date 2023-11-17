@@ -68,3 +68,14 @@ Map<String, dynamic> _$SuggestionToJson(Suggestion instance) =>
       'brand': instance.brand,
       'brand_id': instance.brandId,
     };
+
+ExternalIds _$ExternalIdsFromJson(Map<String, dynamic> json) => ExternalIds(
+      foursquare: json['foursquare'] as String?,
+      safegraph: json['safegraph'] as String?,
+    );
+
+Map<String, dynamic> _$ExternalIdsToJson(ExternalIds instance) =>
+    <String, dynamic>{
+      'foursquare': instance.foursquare,
+      'safegraph': instance.safegraph,
+    };
