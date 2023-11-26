@@ -1,6 +1,6 @@
 name: mapbox_search
 description: A Flutter package for place search using MapBox Api and for Static map image
-version: 4.1.0-beta.3
+version: 4.2.0
 
 homepage: https://github.com/ketanchoyal/mapbox_search
 
@@ -8,7 +8,7 @@ environment:
   sdk: ^3.0.0
 
 dependencies:
-  http: ^1.1.0  
+  http: ^1.1.0
   json_annotation: ^4.4.0
   uuid: ^4.0.0
   color: ^3.0.0
