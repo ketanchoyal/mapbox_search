@@ -1,3 +1,7 @@
+# [4.2.0] - 26 Nov 2023
+- Huge code refactoring by [@LorenzSchueler](https://github.com/LorenzSchueler). Json parsing is now done using [json_serializable](https://pub.dev/packages/json_serializable) and [json_annotation](https://pub.dev/packages/json_annotation) packages.
+
+
 # [4.1.0-beta.3] - 22 Sep 2023
 - Package Upgrades
 - Minor bug fixes
