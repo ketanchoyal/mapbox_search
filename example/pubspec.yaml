@@ -1,0 +1,13 @@
+name: example
+description: A Flutter package for place search using MapBox Api and for Static map image
+version: 1.0.0
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+homepage: https://github.com/ketanchoyal/mapbox_search
+
+environment:
+  sdk: ">=3.0.0"
+
+dependencies:
+  mapbox_search:
+    path: ../

@@ -1,3 +1,37 @@
+# [4.2.0] - 26 Nov 2023
+- Huge code refactoring by [@LorenzSchueler](https://github.com/LorenzSchueler). Json parsing is now done using [json_serializable](https://pub.dev/packages/json_serializable) and [json_annotation](https://pub.dev/packages/json_annotation) packages.
+
+
+# [4.1.0-beta.3] - 22 Sep 2023
+- Package Upgrades
+- Minor bug fixes
+
+# [4.1.0-beta.2] - 18 May 2023
+- Added color dependency to the package so that I don't have to manage code related to it.
+
+# [4.1.0-beta.1] - 17 May 2023
+- Updated Readme with examples on how to use new added dart 3.0 features
+- Introduced MapBoxSearch.init() method to initialize the API Key for the package (This is not a breaking change since the API Key can be passed to every class that uses the package)
+- Require Dart 3.0 to use the package
+- Breaking Change:
+  - Instead of throwing exceptions, the package now returns `ApiResponse` Record which can be either `Success` or `Failure` and can be handled using `fold` method.
+  - Location class is now converted to a record.
+  - List of coordinates are now converted to a record `(lat: double, long: doube)` whereever possible.
+
+# [4.0.0-beta.2] - 15 May 2023
+- Fixed Parsing issue for Search Results
+- Added maki_icons to enum_generating script to keepup with new icons
+- This will be last version to support dart < 3.0
+- Require Dart 2.19 to use the package
+
+# [4.0.0-beta.1] - 25 April 2023
+## Breaking Changes
+- PlaceSearch and ReverseGeoCoding classes are now merged into one class called GeoCoding with two methods `getPlaces` and `getAddress` since both of them are using the same API.
+
+## New Features
+- MapBox's new [SearchBox API](https://docs.mapbox.com/api/search/search-box/) is added to the package.
+- Overal code refactoring
+
 # [3.2.0] - 21 April 2023
 - Added BBox in Forward Geododing API (As per MapBox API we can use BBox to get the results in a specific area)
 
@@ -17,7 +51,7 @@
 - Homepage URL fixed
 
 ## [3.0.1] - 14 Sep 2021
-- Added [Places type]((https://docs.mapbox.com/api/search/geocoding/#data-types)) to filter Search  [PR #48]
+- Added [Places type](https://docs.mapbox.com/api/search/geocoding/#data-types) to filter Search  [PR #48]
 
 ## [3.0.0-nullsafety.0] - 07 Mar 2021
 - Migrate to null safety [Pull Request #43]
@@ -29,7 +63,7 @@
 ## [2.1.0] - 10 Feb 2021
 - Updated dependencies
 - Major missing feature added
-  - Maki Icons can be use now in marker icon
+  - Maki Icons can now be used in marker icon
 
 ## [2.0.1+1] - 02 Oct 2020
 
@@ -60,7 +94,7 @@
 
 - Removed 'flutter' dependency. 
 
-All Flutter code, inclusing 'MapBoxPlaceSearchWidget' has been moved to library 
+All Flutter code, including 'MapBoxPlaceSearchWidget' has been moved to library 
 [mapbox_search_flutter](https://pub.dev/packages/mapbox_search_flutter). Check README for more details.
 
 ## [1.0.7] - 29 January 2020.
@@ -101,5 +135,5 @@ Initial release.
 Feature:
 - Places Search with prediction
 - Static Image with marker
-- Static Image without Marker
+- Static Image without marker
 - Static Image with Polyline path

@@ -1,21 +1,33 @@
 library mapbox_search;
 
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:mapbox_search/colors/color.dart';
+export 'package:color/color.dart';
 
-part 'src/location.dart';
+export 'generated_enums/maki_icons.dart';
+export 'generated_enums/poi_category.dart';
+export 'models/bbox.dart';
+export 'models/failure_response.dart';
+export 'models/geometry.dart';
+export 'models/location.dart'
+    hide
+        LocationAsList,
+        DoubleListToLocation,
+        LocationProximity,
+        NoProximity,
+        IpProximity;
+export 'models/location_context.dart';
+export 'models/predictions.dart';
+export 'models/retrieve_response.dart';
+export 'models/suggestion_response.dart';
+export 'src/geocoding_api.dart';
+// part "src/maki_icons.dart";
+export 'src/place_types.dart' hide StringToPlaceType;
+export 'src/search_box_api.dart';
+export 'src/static_image.dart';
 
-part 'src/predictions.dart';
+final class MapBoxSearch {
+  static String? apiKey;
 
-part 'src/bbox.dart';
-
-part 'src/static_image.dart';
-
-part 'src/reverse_geocoding.dart';
-
-part 'src/places_search.dart';
-
-part "src/maki_icons.dart";
-
-part 'src/types.dart';
+  MapBoxSearch.init(String apiKey) {
+    MapBoxSearch.apiKey = apiKey;
+  }
+}

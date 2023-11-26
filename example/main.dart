@@ -1,10 +1,13 @@
+import 'dart:core';
+
 import 'package:mapbox_search/mapbox_search.dart';
 
 // import 'credentials.dart';
 final MAPBOX_KEY = '';
 
 Future<void> main() async {
-  String apiKey = MAPBOX_KEY; //Set up a test api key before running
+  final apiKey = MAPBOX_KEY; //Set up a test api key before running
+  MapBoxSearch.init(apiKey);
 
   await geoCoding(apiKey).catchError(print);
   await placesSearch(apiKey).catchError(print);
@@ -12,23 +15,27 @@ Future<void> main() async {
 
 ///Reverse GeoCoding sample call
 Future geoCoding(String apiKey) async {
-  var geoCodingService = ReverseGeoCoding(
-    apiKey: apiKey,
+  var geoCodingService = GeoCoding(
     country: "BR",
     limit: 5,
   );
 
-  var addresses = await geoCodingService.getAddress(Location(
+  var addresses = await geoCodingService.getAddress((
     lat: -19.984846,
-    lng: -43.946852,
+    long: -43.946852,
   ));
 
-  print(addresses);
+  addresses.fold(
+    (success) => print(success),
+    (failure) => print(failure),
+  );
+
+  print(addresses.success);
 }
 
 ///Places search sample call
 Future placesSearch(String apiKey) async {
-  var placesService = PlacesSearch(
+  var placesService = GeoCoding(
     apiKey: apiKey,
     country: "BR",
     limit: 5,
@@ -36,9 +43,9 @@ Future placesSearch(String apiKey) async {
 
   var places = await placesService.getPlaces(
     "patio",
-    location: Location(
+    proximity: Proximity.LatLong(
       lat: -19.984634,
-      lng: -43.9502958,
+      long: -43.9502958,
     ),
   );
 

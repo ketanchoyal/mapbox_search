@@ -1,4 +1,5 @@
-part of mapbox_search;
+import 'package:mapbox_search/mapbox_search.dart';
+import 'package:mapbox_search/models/location.dart';
 
 enum MapBoxStyle {
   Light("light-v10"),
@@ -60,11 +61,19 @@ enum MarkerSize {
 // }
 
 class StaticImage {
-  final String apiKey;
+  final String _apiKey;
 
+  /// If [apiKey] is not provided here then it must be provided [MapBoxSearch()]
   StaticImage({
-    required this.apiKey,
-  });
+    String? apiKey,
+  })  :
+
+        /// Assert that the [apiKey] and [MapBoxSearch._apiKey] are not null at same time
+        assert(
+          apiKey != null || MapBoxSearch.apiKey != null,
+          'The API Key must be provided',
+        ),
+        _apiKey = apiKey ?? MapBoxSearch.apiKey!;
 
   final double _defaultZoomLevel = 15;
   final int _defaultWidth = 600;
@@ -138,7 +147,7 @@ class StaticImage {
             "/${width ?? _defaultWidth}x${height ?? _defaultHeight}" +
             "${render2x ?? _defaultRender2x ? _render2x : _empty}");
     // url.write("?access_token=$apiKey");
-    uri = uri.replace(queryParameters: {"access_token": apiKey});
+    uri = uri.replace(queryParameters: {"access_token": _apiKey});
 
     return uri;
   }
@@ -289,7 +298,7 @@ class StaticImage {
 
     ///Custom Marker url
     @Deprecated('Please use `markerUrl1` and  `markerUrl2` instead')
-        String? markerUrl,
+    String? markerUrl,
     MapBoxPath? path,
     MapBoxMarker? marker1,
     String? markerUrl1,

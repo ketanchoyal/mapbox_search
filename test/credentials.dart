@@ -1,0 +1,2 @@
+const MAPBOX_KEY =
+    "";

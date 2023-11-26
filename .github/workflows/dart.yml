@@ -1,0 +1,19 @@
+name: Publish to Pub.dev
+
+on:
+  push:
+    branches: [beta, master]
+
+jobs:
+  publishing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2 # required!
+
+      - name: ">> Flutter package <<"
+        uses: k-paxian/dart-package-publisher@master
+        with:
+          credentialJson: ${{ secrets.CREDENTIAL_JSON }}
+          flutter: true
+          skipTests: true
