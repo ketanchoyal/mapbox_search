@@ -21,8 +21,7 @@ class Predictions {
         features: [],
       );
 
-  factory Predictions.fromJson(Map<String, dynamic> json) =>
-      _$PredictionsFromJson(json);
+  factory Predictions.fromJson(Map<String, dynamic> json) => _$PredictionsFromJson(json);
 
   Map<String, dynamic> toJson() => _$PredictionsToJson(this);
 }
@@ -43,7 +42,7 @@ class MapBoxPlace {
   @OptionalLocationConverter()
   final Location? center;
   final Geometry? geometry;
-  // final List<Context>? context;
+  final List<Context>? context;
   final String? matchingText;
   final String? matchingPlaceName;
 
@@ -59,13 +58,12 @@ class MapBoxPlace {
     this.bbox,
     this.center,
     this.geometry,
-    // this.context,
+    this.context,
     this.matchingText,
     this.matchingPlaceName,
   });
 
-  factory MapBoxPlace.fromJson(Map<String, dynamic> json) =>
-      _$MapBoxPlaceFromJson(json);
+  factory MapBoxPlace.fromJson(Map<String, dynamic> json) => _$MapBoxPlaceFromJson(json);
 
   Map<String, dynamic> toJson() => _$MapBoxPlaceToJson(this);
 
@@ -118,8 +116,7 @@ class Properties {
     this.address,
   });
 
-  factory Properties.fromJson(Map<String, dynamic> json) =>
-      _$PropertiesFromJson(json);
+  factory Properties.fromJson(Map<String, dynamic> json) => _$PropertiesFromJson(json);
 
   Map<String, dynamic> toJson() => _$PropertiesToJson(this);
 }
