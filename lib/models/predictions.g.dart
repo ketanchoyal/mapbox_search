@@ -42,6 +42,9 @@ MapBoxPlace _$MapBoxPlaceFromJson(Map<String, dynamic> json) => MapBoxPlace(
       geometry: json['geometry'] == null
           ? null
           : Geometry.fromJson(json['geometry'] as Map<String, dynamic>),
+      context: (json['context'] as List<dynamic>?)
+          ?.map((e) => Context.fromJson(e as Map<String, dynamic>))
+          .toList(),
       matchingText: json['matching_text'] as String?,
       matchingPlaceName: json['matching_place_name'] as String?,
     );
@@ -60,6 +63,7 @@ Map<String, dynamic> _$MapBoxPlaceToJson(MapBoxPlace instance) =>
           instance.bbox, const BBoxConverter().toJson),
       'center': const OptionalLocationConverter().toJson(instance.center),
       'geometry': instance.geometry,
+      'context': instance.context,
       'matching_text': instance.matchingText,
       'matching_place_name': instance.matchingPlaceName,
     };
