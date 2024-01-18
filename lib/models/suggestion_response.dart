@@ -34,7 +34,7 @@ class Suggestion {
     required this.context,
     required this.language,
     required this.maki,
-    required this.externalIds,
+    this.externalIds,
     this.poiCategory,
     this.poiCategoryIds,
     this.brand,
@@ -51,7 +51,7 @@ class Suggestion {
   final Context? context;
   final String language;
   final String? maki;
-  final ExternalIds externalIds;
+  final ExternalIds? externalIds;
   final List<String>? poiCategory;
   final List<String>? poiCategoryIds;
   final List<String>? brand;
