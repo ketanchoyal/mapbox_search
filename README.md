@@ -88,7 +88,7 @@ Future<ApiResponse<List<MapBoxPlace>>> getAddress() =>
 
 
 
-### Forward GeoCoding Seach
+### Forward GeoCoding Search
 ```dart
 var geocoding = GeoCoding(
     apiKey: 'API Key', // dont pass if you have set it in MapBoxSearch.init('API KEY')
