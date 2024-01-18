@@ -1,3 +1,7 @@
+# [4.2.1] - 18 Jan 2024
+- Fixed `externalIds` in `SuggestionResponse` class. Mapbox has changed the response for `externalIds` and it can be nullable now.
+
+
 # [4.2.0] - 26 Nov 2023
 - Huge code refactoring by [@LorenzSchueler](https://github.com/LorenzSchueler). Json parsing is now done using [json_serializable](https://pub.dev/packages/json_serializable) and [json_annotation](https://pub.dev/packages/json_annotation) packages.
 
