@@ -35,8 +35,7 @@ class GeoCoding {
   /// For more information on the available types, see the [data types section](https://docs.mapbox.com/api/search/geocoding/#data-types).
   final List<PlaceType> types;
 
-  final Uri _baseUri =
-      Uri.parse('https://api.mapbox.com/geocoding/v5/mapbox.places/');
+  final Uri _baseUri = Uri.parse('https://api.mapbox.com/geocoding/v5/mapbox.places/');
 
   /// If [apiKey] is not provided here then it must be provided [MapBoxSearch()]
   GeoCoding({
@@ -88,9 +87,8 @@ class GeoCoding {
     Location? location,
     Proximity proximity = const NoProximity(),
   }) async {
-    if (proximity is! Location) {
-      proximity =
-          location != null ? Proximity.Location(location) : const NoProximity();
+    if (proximity is! LocationProximity) {
+      proximity = location != null ? Proximity.Location(location) : const NoProximity();
     }
     final uri = _createUrl(queryText, proximity);
     final response = await http.get(uri);
@@ -98,34 +96,33 @@ class GeoCoding {
     if (response.statusCode != 200) {
       return (
         success: null,
-        failure: FailureResponse.fromJson(json.decode(response.body))
+        failure: FailureResponse.fromJson(json.decode(response.body)),
       );
     }
 
     return (
       success: Predictions.fromJson(json.decode(response.body)).features,
-      failure: null
+      failure: null,
     );
   }
 
   /// Get the address of the given location coordinates
   Future<ApiResponse<List<MapBoxPlace>?>> getAddress(Location location) async {
     // Assert that if limit is not null then only one type is passed
-    assert(limit != null && (types.length == 1) || limit == null,
-        'Limit is not null so you can only pass one type');
+    assert(limit != null && (types.length == 1) || limit == null, 'Limit is not null so you can only pass one type');
     Uri uri = _createUrl(location.asString);
     final response = await http.get(uri);
 
     if (response.statusCode != 200) {
       return (
         success: null,
-        failure: FailureResponse.fromJson(json.decode(response.body))
+        failure: FailureResponse.fromJson(json.decode(response.body)),
       );
     }
 
     return (
       success: Predictions.fromJson(json.decode(response.body)).features,
-      failure: null
+      failure: null,
     );
   }
 
