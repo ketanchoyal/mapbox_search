@@ -36,7 +36,7 @@ Suggestion _$SuggestionFromJson(Map<String, dynamic> json) => Suggestion(
       language: json['language'] as String,
       maki: json['maki'] as String?,
       externalIds:
-          ExternalIds.fromJson(json['external_ids'] as Map<String, dynamic>),
+          ExternalIds.fromJson((json['external_ids'] ?? Map<String, dynamic>()) as Map<String, dynamic>),
       poiCategory: (json['poi_category'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
