@@ -51,8 +51,9 @@ RetrieveProperties _$RetrievePropertiesFromJson(Map<String, dynamic> json) =>
       bbox: const BBoxConverter().fromJson(json['bbox'] as List),
       language: json['language'] as String,
       maki: json['maki'] as String,
-      externalIds:
-          ExternalIds.fromJson(json['external_ids'] as Map<String, dynamic>),
+      externalIds: json['external_ids'] == null
+          ? null
+          : ExternalIds.fromJson(json['external_ids'] as Map<String, dynamic>),
       metadata: ExternalIds.fromJson(json['metadata'] as Map<String, dynamic>),
     );
 

@@ -1,3 +1,7 @@
+# [4.2.2] - 31 Jan 2024
+- Fixed `externalIds` in `SuggestionResponse` and `RetrieveResonse` class and generated *.g.dart files again to include these changes.
+- Fixed bug where `proximity` would always resolve to `NoProximity()` even when supplied with a value.
+
 # [4.2.1] - 18 Jan 2024
 - Fixed `externalIds` in `SuggestionResponse` class. Mapbox has changed the response for `externalIds` and it can be nullable now.
 
