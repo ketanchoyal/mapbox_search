@@ -88,7 +88,7 @@ class GeoCoding {
     Location? location,
     Proximity proximity = const NoProximity(),
   }) async {
-    if (proximity is! Location) {
+    if (proximity is! LocationProximity) {
       proximity =
           location != null ? Proximity.Location(location) : const NoProximity();
     }

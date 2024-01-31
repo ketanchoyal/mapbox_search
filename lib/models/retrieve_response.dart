@@ -65,7 +65,7 @@ class RetrieveProperties {
     required this.bbox,
     required this.language,
     required this.maki,
-    required this.externalIds,
+    this.externalIds,
     required this.metadata,
   });
 
@@ -82,7 +82,7 @@ class RetrieveProperties {
   final BBox bbox;
   final String language;
   final String maki;
-  final ExternalIds externalIds;
+  final ExternalIds? externalIds;
   final ExternalIds metadata;
 
   factory RetrieveProperties.fromJson(Map<String, dynamic> json) =>
