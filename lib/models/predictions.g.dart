@@ -35,6 +35,7 @@ MapBoxPlace _$MapBoxPlaceFromJson(Map<String, dynamic> json) => MapBoxPlace(
           : Properties.fromJson(json['properties'] as Map<String, dynamic>),
       text: json['text'] as String?,
       placeName: json['place_name'] as String?,
+      address: json['address'] as String?,
       bbox: _$JsonConverterFromJson<List<dynamic>, BBox>(
           json['bbox'], const BBoxConverter().fromJson),
       center:
@@ -53,6 +54,7 @@ Map<String, dynamic> _$MapBoxPlaceToJson(MapBoxPlace instance) =>
       'place_type':
           instance.placeType.map((e) => _$PlaceTypeEnumMap[e]).toList(),
       'address_number': instance.addressNumber,
+      'address': instance.address,
       'properties': instance.properties,
       'text': instance.text,
       'place_name': instance.placeName,
