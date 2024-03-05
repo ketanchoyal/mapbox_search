@@ -35,6 +35,8 @@ class MapBoxPlace {
 
   // dynamic relevance;
   final String? addressNumber;
+  final String? address;
+
   final Properties? properties;
   final String? text;
   final String? placeName;
@@ -56,6 +58,7 @@ class MapBoxPlace {
     this.properties,
     this.text,
     this.placeName,
+    this.address,
     this.bbox,
     this.center,
     this.geometry,
