@@ -78,6 +78,7 @@ const _$PlaceTypeEnumMap = {
   PlaceType.neighborhood: 'neighborhood',
   PlaceType.address: 'address',
   PlaceType.poi: 'poi',
+  PlaceType.street: 'street',
 };
 
 Value? _$JsonConverterFromJson<Json, Value>(

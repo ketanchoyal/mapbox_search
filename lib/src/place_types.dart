@@ -26,7 +26,10 @@ enum PlaceType {
   address('address'),
 
   ///Points of interest. These include restaurants, stores, concert venues, parks, museums, etc.
-  poi('poi');
+  poi('poi'),
+
+  ///Street features which host one or more addresses.
+  street('street');
 
   const PlaceType(this.value);
 
@@ -54,6 +57,8 @@ extension StringToPlaceType on String {
         return PlaceType.address;
       case 'poi':
         return PlaceType.poi;
+      case 'street':
+        return PlaceType.street;
       default:
         return null;
     }
