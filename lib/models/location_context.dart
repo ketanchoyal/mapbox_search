@@ -59,9 +59,9 @@ class Region {
   });
 
   final String? id;
-  final String name;
-  final String regionCode;
-  final String regionCodeFull;
+  final String? name;
+  final String? regionCode;
+  final String? regionCodeFull;
 
   factory Region.fromJson(Map<String, dynamic> json) => _$RegionFromJson(json);
 
