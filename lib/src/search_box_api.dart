@@ -1,26 +1,9 @@
-import 'dart:convert';
+import 'dart:developer';
 
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:mapbox_search/mapbox_search.dart';
 import 'package:mapbox_search/models/location.dart';
 import 'package:uuid/uuid.dart';
-
-typedef ApiResponse<T> = ({T? success, FailureResponse? failure});
-
-extension ApiResponseExtension<T> on ApiResponse<T> {
-  R fold<R extends Object?>(
-    R Function(T value) success,
-    R Function(FailureResponse value) failure,
-  ) {
-    if (this.success != null) {
-      return success(this.success!);
-    } else if (this.failure != null) {
-      return failure(this.failure!);
-    } else {
-      throw Exception('ApiResponse is not valid');
-    }
-  }
-}
 
 /// Search for places by name, point, bbox, proximity, and more.
 ///
@@ -56,7 +39,10 @@ class SearchBoxAPI {
   /// For more information on the available types, see the [data types section](https://docs.mapbox.com/api/search/geocoding/#data-types).
   final List<PlaceType> types;
 
-  final Uri _baseUri = Uri.parse('https://api.mapbox.com/search/searchbox/v1/');
+  final Dio _dio;
+
+  final _baseUrl = 'https://api.mapbox.com';
+  final _basePath = '/search/searchbox/v1/';
 
   /// If [apiKey] is not provided here then it must be provided [MapBoxSearch()] constructor
   SearchBoxAPI({
@@ -66,6 +52,7 @@ class SearchBoxAPI {
     this.language,
     this.types = const [],
     this.bbox,
+    Dio? dio,
   })  :
 
         /// Assert that the [apiKey] and [MapBoxSearch._apiKey] are not null at same time
@@ -73,80 +60,126 @@ class SearchBoxAPI {
           apiKey != null || MapBoxSearch.apiKey != null,
           'The API Key must be provided',
         ),
-        _apiKey = apiKey ?? MapBoxSearch.apiKey!;
+        _dio = dio ?? Dio(),
+        _apiKey = apiKey ?? MapBoxSearch.apiKey! {
+    _dio.options.baseUrl = _baseUrl;
+    _dio.options.queryParameters = {
+      'access_token': _apiKey,
+      'session_token': _sessionToken ??= Uuid().v1(),
+    };
+    _dio.options.receiveDataWhenStatusError = true;
+  }
 
   static String? _sessionToken;
-
-  Uri _createUrl(
-    String queryOrId, [
-    Proximity proximity = const NoProximity(),
-    bool isSuggestions = false,
-    List<POICategory> poi = const [],
-  ]) {
-    _sessionToken ??= Uuid().v1();
-    final finalUri = Uri(
-      scheme: _baseUri.scheme,
-      host: _baseUri.host,
-      path: _baseUri.path + (isSuggestions ? 'suggest' : 'retrieve/$queryOrId'),
-      queryParameters: {
-        'access_token': _apiKey,
-        'session_token': _sessionToken,
-        if (isSuggestions) ...{
-          'q': queryOrId,
-          ...switch (proximity) {
-            (LocationProximity l) => {"proximity": l.asString},
-            (IpProximity _) => {"proximity": 'ip'},
-            (NoProximity _) => {},
-          },
-          if (country != null) 'country': country,
-          if (limit != null) 'limit': limit.toString(),
-          if (language != null) 'language': language,
-          if (types.isNotEmpty) 'types': types.map((e) => e.value).join(','),
-          if (bbox != null) 'bbox': bbox?.asString,
-          if (poi.isNotEmpty) 'poi_category': poi.map((e) => e.value).join(','),
-        },
-      },
-    );
-    return finalUri;
-  }
 
   /// Get a list of places that match the query.
   Future<ApiResponse<SuggestionResponse>> getSuggestions(
     String queryText, {
     Proximity proximity = const NoProximity(),
     List<POICategory> poi = const [],
+    CancelToken? cancelToken,
   }) async {
-    final uri = _createUrl(queryText, proximity, true, poi);
-    print(uri);
-    final response = await http.get(uri);
+    final Map<String, dynamic> queryParameters = {
+      'q': queryText,
+      ...switch (proximity) {
+        (LocationProximity l) => {"proximity": l.asString},
+        (IpProximity ip) => {"proximity": ip.asString},
+        (NoProximity _) => {},
+      },
+      if (country != null) 'country': country,
+      if (limit != null) 'limit': limit.toString(),
+      if (language != null) 'language': language,
+      if (types.isNotEmpty) 'types': types.map((e) => e.value).join(','),
+      if (bbox != null) 'bbox': bbox?.asString,
+      if (poi.isNotEmpty) 'poi_category': poi.map((e) => e.value).join(','),
+    };
 
-    if (response.statusCode != 200) {
+    final path = _basePath + 'suggest';
+    try {
+      final response = await _dio.get(
+        path,
+        queryParameters: queryParameters,
+        cancelToken: cancelToken,
+      );
+
+      if (response.statusCode != 200) {
+        return (
+          success: null,
+          failure: FailureResponse.fromJson(response.data)
+        );
+      } else {
+        return (
+          success: SuggestionResponse.fromJson(response.data),
+          failure: null
+        );
+      }
+    } on DioException catch (e) {
       return (
         success: null,
-        failure: FailureResponse.fromJson(json.decode(response.body))
+        failure: FailureResponse(
+          message: e.message ?? 'Unknown error',
+          error: e.error.toString(),
+          code: e.response?.statusCode.toString(),
+        ),
       );
-    } else {
+    } catch (e) {
       return (
-        success: SuggestionResponse.fromJson(json.decode(response.body)),
-        failure: null
+        success: null,
+        failure: FailureResponse(
+          message: e.toString(),
+          error: e.toString(),
+          code: '500',
+        ),
       );
     }
   }
 
   /// Retrive a place by its `mapbox_id`.
-  Future<ApiResponse<RetrieveResonse>> getPlace(String mapboxId) async {
-    final uri = _createUrl(mapboxId);
-    final response = await http.get(uri);
+  Future<ApiResponse<RetrieveResonse>> getPlace(
+    String mapboxId, {
+    CancelToken? cancelToken,
+  }) async {
+    try {
+      final path = _basePath + 'retrieve/$mapboxId';
+      final response = await _dio.get(
+        path,
+        cancelToken: cancelToken,
+        options: Options(
+          receiveDataWhenStatusError: true,
+          validateStatus: (x) => true,
+        ),
+      );
 
-    if (response.statusCode != 200) {
+      log('getPlace: ${response.realUri.toString()}');
+
+      if (response.statusCode != 200) {
+        return (
+          success: null,
+          failure: FailureResponse.fromJson(response.data)
+        );
+      } else {
+        return (
+          success: RetrieveResonse.fromJson(response.data),
+          failure: null
+        );
+      }
+    } on DioException catch (e) {
       return (
         success: null,
-        failure: FailureResponse.fromJson(json.decode(response.body))
+        failure: FailureResponse(
+          message: e.message ?? 'Unknown error',
+          error: e.error.toString(),
+          code: e.response?.statusCode.toString(),
+        ),
       );
-    } else {
+    } catch (e) {
       return (
-        success: RetrieveResonse.fromJson(json.decode(response.body)),
-        failure: null
+        success: null,
+        failure: FailureResponse(
+          message: e.toString(),
+          error: e.toString(),
+          code: '500',
+        ),
       );
     }
   }

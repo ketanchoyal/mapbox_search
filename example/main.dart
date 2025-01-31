@@ -3,7 +3,8 @@ import 'dart:core';
 import 'package:mapbox_search/mapbox_search.dart';
 
 // import 'credentials.dart';
-final MAPBOX_KEY = '';
+final MAPBOX_KEY =
+    'pk.eyJ1IjoicGFya2luZ3N5c3RlbSIsImEiOiJja2w0MmppZGQwNWdqMm9wYzliYXE1ZWxhIn0.7T9je6moQNxw9eaEV78wqw';
 
 Future<void> main() async {
   final apiKey = MAPBOX_KEY; //Set up a test api key before running

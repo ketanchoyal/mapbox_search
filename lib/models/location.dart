@@ -73,4 +73,71 @@ class NoProximity implements Proximity {
 /// A class that represents that the location will be based on the IP address of the user.
 class IpProximity implements Proximity {
   const IpProximity();
+
+  String get asString => 'ip';
+}
+
+class Coordinates {
+  Coordinates({
+    required this.location,
+    required this.roundablePoints,
+  });
+
+  final Location location;
+  final List<RoundablePoint>? roundablePoints;
+
+  factory Coordinates.fromJson(Map<String, dynamic> json) => Coordinates(
+        location: (
+          long: json['longitude'] as double,
+          lat: json['latitude'] as double
+        ),
+        roundablePoints: (json['roundable_point'] as List<dynamic>?)
+            ?.map((e) => RoundablePoint.fromJson(e as Map<String, dynamic>))
+            .toList(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'longitude': location.long,
+        'latitude': location.lat,
+        'roundable_point': roundablePoints?.map((e) => e.toJson()).toList(),
+      };
+}
+
+class RoundablePoint {
+  RoundablePoint({
+    required this.location,
+    required this.name,
+  });
+
+  final Location location;
+  final String name;
+
+  factory RoundablePoint.fromJson(Map<String, dynamic> json) => RoundablePoint(
+        location: (
+          long: json['longitude'] as double,
+          lat: json['latitude'] as double
+        ),
+        name: json['name'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'longitude': location.long,
+        'latitude': location.lat,
+        'name': name,
+      };
+}
+
+class OptionalCoordinatesConverter
+    extends JsonConverter<Coordinates?, Map<String, dynamic>?> {
+  const OptionalCoordinatesConverter() : super();
+
+  @override
+  Coordinates? fromJson(Map<String, dynamic>? json) {
+    return json == null ? null : Coordinates.fromJson(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(Coordinates? object) {
+    return object == null ? null : object.toJson();
+  }
 }

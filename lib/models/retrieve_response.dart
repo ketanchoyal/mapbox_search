@@ -1,12 +1,9 @@
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:mapbox_search/models/bbox.dart';
 import 'package:mapbox_search/models/geometry.dart';
 import 'package:mapbox_search/models/location.dart';
 import 'package:mapbox_search/models/location_context.dart';
-import 'package:mapbox_search/models/predictions.dart';
-import 'package:mapbox_search/models/suggestion_response.dart';
 
 part 'retrieve_response.g.dart';
 
@@ -43,7 +40,7 @@ class Feature {
 
   final String type;
   final Geometry geometry;
-  final Properties properties;
+  final RetrieveProperties properties;
 
   factory Feature.fromJson(Map<String, dynamic> json) =>
       _$FeatureFromJson(json);
@@ -55,58 +52,46 @@ class Feature {
 class RetrieveProperties {
   RetrieveProperties({
     required this.name,
+    this.namePreferred,
     required this.mapboxId,
     required this.featureType,
-    required this.address,
-    required this.fullAddress,
+    this.address,
+    this.fullAddress,
     required this.placeFormatted,
     required this.context,
     required this.coordinates,
-    required this.bbox,
+    // required this.bbox,
     required this.language,
     required this.maki,
-    this.externalIds,
-    required this.metadata,
+    this.brand,
+    this.brandId,
+    this.poiCategory,
+    this.poiCategoryIds,
   });
 
   final String name;
+  final String? namePreferred;
   final String mapboxId;
   final String featureType;
-  final String address;
-  final String fullAddress;
+  final String? address;
+  final String? fullAddress;
   final String placeFormatted;
   final Context context;
-  @LocationConverter()
-  final Location coordinates;
-  @BBoxConverter()
-  final BBox bbox;
+  @OptionalCoordinatesConverter()
+  final Coordinates? coordinates;
+  // @BBoxConverter()
+  // final BBox? bbox;
   final String language;
   final String maki;
-  final ExternalIds? externalIds;
-  final ExternalIds metadata;
+  final List<String>? brand;
+  final List<String>? brandId;
+  final List<String>? poiCategory;
+  final List<String>? poiCategoryIds;
+  // final ExternalIds? externalIds;
+  // final ExternalIds metadata;
 
   factory RetrieveProperties.fromJson(Map<String, dynamic> json) =>
       _$RetrievePropertiesFromJson(json);
 
   Map<String, dynamic> toJson() => _$RetrievePropertiesToJson(this);
 }
-
-// class Coordinates {
-//   Coordinates({
-//     required this.latitude,
-//     required this.longitude,
-//   });
-
-//   final double latitude;
-//   final double longitude;
-
-//   factory Coordinates.fromJson(Map<String, dynamic> json) => Coordinates(
-//         latitude: json["latitude"]?.toDouble(),
-//         longitude: json["longitude"]?.toDouble(),
-//       );
-
-//   Map<String, dynamic> toJson() => {
-//         "latitude": latitude,
-//         "longitude": longitude,
-//       };
-// }

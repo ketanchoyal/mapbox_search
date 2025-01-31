@@ -33,13 +33,13 @@ class Country {
   Country({
     required this.id,
     required this.name,
-    required this.countryCode,
+    this.countryCode,
     required this.countryCodeAlpha3,
   });
 
   final String? id;
   final String name;
-  final String countryCode;
+  final String? countryCode;
   @JsonKey(name: "country_code_alpha_3")
   final String? countryCodeAlpha3;
 
@@ -52,16 +52,16 @@ class Country {
 @JsonSerializable()
 class Region {
   Region({
-    required this.id,
-    required this.name,
-    required this.regionCode,
-    required this.regionCodeFull,
+    this.id,
+    this.name,
+    this.regionCode,
+    this.regionCodeFull,
   });
 
   final String? id;
-  final String name;
-  final String regionCode;
-  final String regionCodeFull;
+  final String? name;
+  final String? regionCode;
+  final String? regionCodeFull;
 
   factory Region.fromJson(Map<String, dynamic> json) => _$RegionFromJson(json);
 

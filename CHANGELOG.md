@@ -1,3 +1,7 @@
+# [4.3.0] - 31 Jan 2025
+- Replaces http with dio for network requests.
+- Fixed Reported bugs and fixed some issues with mapping of response.
+
 # [4.2.2] - 31 Jan 2024
 - Fixed `externalIds` in `SuggestionResponse` and `RetrieveResonse` class and generated *.g.dart files again to include these changes.
 - Fixed bug where `proximity` would always resolve to `NoProximity()` even when supplied with a value.
