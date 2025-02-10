@@ -45,7 +45,7 @@ RetrieveProperties _$RetrievePropertiesFromJson(Map<String, dynamic> json) =>
       featureType: json['feature_type'] as String,
       address: json['address'] as String?,
       fullAddress: json['full_address'] as String?,
-      placeFormatted: json['place_formatted'] as String,
+      placeFormatted: json['place_formatted'] as String?,
       context: Context.fromJson(json['context'] as Map<String, dynamic>),
       coordinates: const OptionalCoordinatesConverter()
           .fromJson(json['coordinates'] as Map<String, dynamic>?),
