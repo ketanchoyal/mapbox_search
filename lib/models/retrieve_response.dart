@@ -75,7 +75,7 @@ class RetrieveProperties {
   final String featureType;
   final String? address;
   final String? fullAddress;
-  final String placeFormatted;
+  final String? placeFormatted;
   final Context context;
   @OptionalCoordinatesConverter()
   final Coordinates? coordinates;
