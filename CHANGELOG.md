@@ -1,3 +1,6 @@
+# [4.3.1] - 12 Feb 2025
+- Fixed nullable issue `RetrieveProperties.placeFormatted`
+
 # [4.3.0] - 31 Jan 2025
 - Replaces http with dio for network requests.
 - Fixed Reported bugs and fixed some issues with mapping of response.
