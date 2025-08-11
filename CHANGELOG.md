@@ -1,3 +1,6 @@
+# [4.3.2] - 11 Aug 2025
+- Fixed Typecasting issue in `BBox` (Fix #100)
+
 # [4.3.1] - 12 Feb 2025
 - Fixed nullable issue `RetrieveProperties.placeFormatted`
 
