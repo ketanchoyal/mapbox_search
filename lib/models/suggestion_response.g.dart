@@ -23,33 +23,32 @@ Map<String, dynamic> _$SuggestionResponseToJson(SuggestionResponse instance) =>
     };
 
 Suggestion _$SuggestionFromJson(Map<String, dynamic> json) => Suggestion(
-      name: json['name'] as String,
-      namePreferred: json['name_preferred'] as String?,
-      mapboxId: json['mapbox_id'] as String,
-      featureType: json['feature_type'] as String,
-      address: json['address'] as String?,
-      fullAddress: json['full_address'] as String?,
-      placeFormatted: json['place_formatted'] as String,
-      context: json['context'] == null
-          ? null
-          : Context.fromJson(json['context'] as Map<String, dynamic>),
-      language: json['language'] as String,
-      maki: json['maki'] as String?,
-      externalIds: json['external_ids'] == null
-          ? null
-          : ExternalIds.fromJson(json['external_ids'] as Map<String, dynamic>),
-      poiCategory: (json['poi_category'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      poiCategoryIds: (json['poi_category_ids'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      brand:
-          (json['brand'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      brandId: (json['brand_id'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-    );
+  name: json['name'] as String,
+  namePreferred: json['name_preferred'] as String?,
+  mapboxId: json['mapbox_id'] as String,
+  featureType: json['feature_type'] as String,
+  address: json['address'] as String?,
+  fullAddress: json['full_address'] as String?,
+  placeFormatted: json['place_formatted'] as String,
+  context: json['context'] == null
+      ? null
+      : Context.fromJson(json['context'] as Map<String, dynamic>),
+  language: json['language'] as String,
+  maki: json['maki'] as String?,
+  externalIds: json['external_ids'] == null
+      ? null
+      : ExternalIds.fromJson(json['external_ids'] as Map<String, dynamic>),
+  poiCategory: (json['poi_category'] as List<dynamic>?)
+      ?.map((e) => e as String)
+      .toList(),
+  poiCategoryIds: (json['poi_category_ids'] as List<dynamic>?)
+      ?.map((e) => e as String)
+      .toList(),
+  brand: (json['brand'] as List<dynamic>?)?.map((e) => e as String).toList(),
+  brandId: (json['brand_id'] as List<dynamic>?)
+      ?.map((e) => e as String)
+      .toList(),
+);
 
 Map<String, dynamic> _$SuggestionToJson(Suggestion instance) =>
     <String, dynamic>{
@@ -71,9 +70,9 @@ Map<String, dynamic> _$SuggestionToJson(Suggestion instance) =>
     };
 
 ExternalIds _$ExternalIdsFromJson(Map<String, dynamic> json) => ExternalIds(
-      foursquare: json['foursquare'] as String?,
-      safegraph: json['safegraph'] as String?,
-    );
+  foursquare: json['foursquare'] as String?,
+  safegraph: json['safegraph'] as String?,
+);
 
 Map<String, dynamic> _$ExternalIdsToJson(ExternalIds instance) =>
     <String, dynamic>{

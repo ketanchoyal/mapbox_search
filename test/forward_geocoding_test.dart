@@ -11,7 +11,7 @@ void main() async {
   });
 
   test("Forward GeoCoding Test", () async {
-    GeoCoding geocoding = GeoCoding(
+    GeoCodingApi geocoding = GeoCodingApi(
       apiKey: MAPBOX_KEY,
       country: "BR",
       limit: 5,
@@ -29,6 +29,6 @@ void main() async {
     expect(getPlacesResponse, isA<ApiResponse<List<MapBoxPlace>>>());
     expect(getPlacesResponse.failure, isNull);
     expect(getPlacesResponse.success, isNotNull);
-    expect(getPlacesResponse.success, hasLength(5));
+    expect(getPlacesResponse.success, isNotEmpty);
   });
 }

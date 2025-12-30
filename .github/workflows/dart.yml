@@ -11,9 +11,14 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v2 # required!
 
+      - name: Create credentials.dart
+        run: |
+          rm -f test/credentials.dart
+          echo "const MAPBOX_KEY = '${{ secrets.MAPBOX_KEY }}';" > test/credentials.dart
+
       - name: ">> Flutter package <<"
         uses: k-paxian/dart-package-publisher@master
         with:
           credentialJson: ${{ secrets.CREDENTIAL_JSON }}
           flutter: true
-          skipTests: true
+          skipTests: false
