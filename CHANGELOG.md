@@ -1,3 +1,11 @@
+# [4.4.0] - 30 Dec 2025
+- Added Batch Geocoding support (v6) with `batch()` method.
+- Improved Static Image API:
+    - Fixed URL encoding for polylines.
+    - Added `auto` parameter for automatic viewport adjustment.
+    - Added `center` parameter requirement check for manual framing.
+- Enhanced Example App with tabs for Geocoding, Batch, and Static Images.
+
 # [4.3.2] - 11 Aug 2025
 - Fixed Typecasting issue in `BBox` (Fix #100)
 

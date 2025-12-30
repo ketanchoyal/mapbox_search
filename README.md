@@ -107,43 +107,63 @@ Future<ApiResponse<List<MapBoxPlace>>> getPlaces() =>
     );
 ```
 
-### Static Image
+### Batch Geocoding (v6)
+Perform multiple geocoding queries (forward, reverse, or structured) in a single request.
+
 ```dart
-MapBoxStaticImage staticImage = MapBoxStaticImage(
-    apiKey: 'API Key', // dont pass if you have set it in MapBoxSearch.init('API KEY')
+var geocoding = GeoCodingApiV6(
+    apiKey: 'API Key', // or use MapBoxSearch.init('API KEY')
+    limit: 5,
+);
+
+Future<ApiResponse<BatchGeocodingResponse>> getBatch() =>
+  geocoding.batch([
+    ForwardQuery(query: "Eiffel Tower", limit: 1),
+    ReverseQuery(location: (lat: 40.6892, long: -74.0445), limit: 1),
+  ]);
+```
+
+### Static Image
+
+```dart
+StaticImage staticImage = StaticImage(
+    apiKey: 'API Key', // or use MapBoxSearch.init('API KEY')
   );
 ```
 
 ### Image With Polyline
 ```dart
     String getStaticImageWithPolyline() => staticImage.getStaticUrlWithPolyline(
-      point1: Location(lat: 37.77343, lng: -122.46589),
-      point2: Location(lat: 37.75965, lng: -122.42816),
-      marker1: MapBoxMarker( markerColor: Colors.black, 
-      markerLetter: MakiIcons.aerialway.value, 
-      markerSize: MarkerSize.LARGE),
+      point1: (lat: 37.77343, long: -122.46589),
+      point2: (lat: 37.75965, long: -122.42816),
+      marker1: MapBoxMarker( markerColor: const RgbColor(0, 0, 0),
+          markerLetter: 'p',
+          markerSize: MarkerSize.LARGE),
       marker2: MapBoxMarker(
-          markerColor: Color.rgb(244, 67, 54),
+          markerColor: const RgbColor(244, 67, 54),
           markerLetter: 'q',
           markerSize: MarkerSize.SMALL),
       height: 300,
       width: 600,
-      zoomLevel: 16,
-      style: MapBoxStyle.Mapbox_Dark,
-      path: MapBoxPath(pathColor: Color.rgb(255, 0, 0), pathOpacity: 0.5,     pathWidth: 5),
-      render2x: true);
-``` 
+      zoomLevel: 15.5,
+      style: MapBoxStyle.Dark,
+      path: MapBoxPath(pathColor: const RgbColor(255, 0, 0), pathOpacity: 0.5, pathWidth: 5, pathPolyline: "%7DrpeFxbnjVsFwdAvr%40cHgFor%40jEmAlFmEMwM_FuItCkOi%40wc%40bg%40wBSgM"),
+      render2x: true,
+      center: (lat: 37.766541503617475, long: -122.44702324243272), // Required when auto is false
+      // auto: true, // Alternatively, use auto: true to automatically fit markers and path
+    );
+```
 
 ### Image with Marker
 ```dart
 String getStaticImageWithMarker() => staticImage.getStaticUrlWithMarker(
-  center: Location(lat: 37.77343, lng: -122.46589),
+  center: (lat: 37.77343, long: -122.46589),
   marker: MapBoxMarker(
-      markerColor: Color.rgb(0, 0, 0), markerLetter: 'p', markerSize: MarkerSize.LARGE),
+      markerColor: const RgbColor(0, 0, 0), markerLetter: 'p', markerSize: MarkerSize.LARGE),
   height: 300,
   width: 600,
   zoomLevel: 16,
-  style: MapBoxStyle.Mapbox_Streets,
+  style: MapBoxStyle.Streets,
   render2x: true,
 );
 ```
@@ -151,17 +171,19 @@ String getStaticImageWithMarker() => staticImage.getStaticUrlWithMarker(
 ### Image without Marker
 ```dart
 String getStaticImageWithoutMarker() => staticImage.getStaticUrlWithoutMarker(
-    center: Location(lat: 37.75965, lng: -122.42816),
+    center: (lat: 37.75965, long: -122.42816),
     height: 300,
     width: 600,
     zoomLevel: 16,
-    style: MapBoxStyle.Mapbox_Outdoors,
+    style: MapBoxStyle.Outdoors,
     render2x: true,
   );
 ```
-# Screenshots
 
-## Static Map Image
+### Example App
+Check out the `example/` directory for a complete Flutter application demonstrating:
+- Forward & Reverse Geocoding
+- Batch Geocoding
+- Static Images (Markers, Polylines, Auto-framing)
 
-<img src="https://github.com/ketanchoyal/mapbox_search/raw/dev/Screenshots/staticImages.png" alt="Static Map Image"/>
 

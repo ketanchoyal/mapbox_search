@@ -24,6 +24,11 @@ export 'src/place_types.dart' hide StringToPlaceType;
 export 'src/search_box_api.dart';
 export 'src/static_image.dart';
 
+export 'src/geocoding_v6.dart';
+export 'models/v6/geocoding_v6_response.dart';
+export 'models/v6/batch_response.dart';
+export 'models/v6/batch_requests.dart';
+
 final class MapBoxSearch {
   static String? apiKey;
 

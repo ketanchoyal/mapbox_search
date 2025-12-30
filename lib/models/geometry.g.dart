@@ -7,12 +7,11 @@ part of 'geometry.dart';
 // **************************************************************************
 
 Geometry _$GeometryFromJson(Map<String, dynamic> json) => Geometry(
-      coordinates:
-          const LocationConverter().fromJson(json['coordinates'] as List),
-      type: json['type'] as String,
-    );
+  coordinates: const LocationConverter().fromJson(json['coordinates'] as List),
+  type: json['type'] as String,
+);
 
 Map<String, dynamic> _$GeometryToJson(Geometry instance) => <String, dynamic>{
-      'type': instance.type,
-      'coordinates': const LocationConverter().toJson(instance.coordinates),
-    };
+  'type': instance.type,
+  'coordinates': const LocationConverter().toJson(instance.coordinates),
+};
