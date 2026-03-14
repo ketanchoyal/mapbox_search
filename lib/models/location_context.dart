@@ -10,6 +10,7 @@ class Context {
     required this.postcode,
     this.district,
     required this.place,
+    this.locality,
     this.neighborhood,
     this.street,
   });
@@ -19,6 +20,7 @@ class Context {
   final Place? postcode;
   final Place? district;
   final Place? place;
+  final Place? locality;
   final Neighborhood? neighborhood;
   final Neighborhood? street;
 
@@ -51,12 +53,7 @@ class Country {
 
 @JsonSerializable()
 class Region {
-  Region({
-    this.id,
-    this.name,
-    this.regionCode,
-    this.regionCodeFull,
-  });
+  Region({this.id, this.name, this.regionCode, this.regionCodeFull});
 
   final String? id;
   final String? name;
@@ -70,9 +67,7 @@ class Region {
 
 @JsonSerializable()
 class Neighborhood {
-  Neighborhood({
-    required this.name,
-  });
+  Neighborhood({required this.name});
 
   final String name;
 
@@ -84,10 +79,7 @@ class Neighborhood {
 
 @JsonSerializable()
 class Place {
-  Place({
-    this.id,
-    required this.name,
-  });
+  Place({this.id, required this.name});
 
   final String? id;
   final String name;
