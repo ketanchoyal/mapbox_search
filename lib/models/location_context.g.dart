@@ -22,6 +22,9 @@ Context _$ContextFromJson(Map<String, dynamic> json) => Context(
   place: json['place'] == null
       ? null
       : Place.fromJson(json['place'] as Map<String, dynamic>),
+  locality: json['locality'] == null
+      ? null
+      : Place.fromJson(json['locality'] as Map<String, dynamic>),
   neighborhood: json['neighborhood'] == null
       ? null
       : Neighborhood.fromJson(json['neighborhood'] as Map<String, dynamic>),
@@ -36,6 +39,7 @@ Map<String, dynamic> _$ContextToJson(Context instance) => <String, dynamic>{
   'postcode': instance.postcode,
   'district': instance.district,
   'place': instance.place,
+  'locality': instance.locality,
   'neighborhood': instance.neighborhood,
   'street': instance.street,
 };
